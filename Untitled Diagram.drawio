@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-08-14T09:15:03.221Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 OPR/101.0.0.0" etag="wAhGW0uLumgV3xfMC4ON" version="21.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-14T09:19:46.712Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 OPR/101.0.0.0" etag="XHXjMjOrFX6p94KQ7Gf6" version="21.6.8" type="github">
   <diagram name="Page-1" id="uK-o1H5q1hf4X-KmGsuB">
-    <mxGraphModel dx="1342" dy="1011" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1285" dy="946" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -88,7 +88,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="dwWhSKTQToxHHi_fsbyU-33" value="League" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=16;" parent="1" vertex="1">
-          <mxGeometry x="-219" y="309" width="180" height="334.1579204358552" as="geometry" />
+          <mxGeometry x="-219" y="309" width="180" height="367.2500000000001" as="geometry" />
         </mxCell>
         <mxCell id="dwWhSKTQToxHHi_fsbyU-34" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;fontSize=16;" parent="dwWhSKTQToxHHi_fsbyU-33" vertex="1">
           <mxGeometry y="30" width="180" height="37" as="geometry" />
@@ -150,7 +150,7 @@
             <mxRectangle width="30" height="30" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="dwWhSKTQToxHHi_fsbyU-48" value="requirements" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;fontSize=16;" parent="dwWhSKTQToxHHi_fsbyU-46" vertex="1">
+        <mxCell id="dwWhSKTQToxHHi_fsbyU-48" value="remainingPlaces" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;fontSize=16;" parent="dwWhSKTQToxHHi_fsbyU-46" vertex="1">
           <mxGeometry x="30" width="150" height="30" as="geometry">
             <mxRectangle width="150" height="30" as="alternateBounds" />
           </mxGeometry>
@@ -218,6 +218,19 @@
         <mxCell id="dwWhSKTQToxHHi_fsbyU-149" value="sportType" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;fontSize=16;" parent="dwWhSKTQToxHHi_fsbyU-147" vertex="1">
           <mxGeometry x="30" width="150" height="30" as="geometry">
             <mxRectangle width="150" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IuVlJMqa_FTVn9__E9sm-7" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;fontSize=16;" vertex="1" parent="dwWhSKTQToxHHi_fsbyU-33">
+          <mxGeometry y="334" width="180" height="33" as="geometry" />
+        </mxCell>
+        <mxCell id="IuVlJMqa_FTVn9__E9sm-8" value="" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;fontSize=16;" vertex="1" parent="IuVlJMqa_FTVn9__E9sm-7">
+          <mxGeometry width="30" height="33" as="geometry">
+            <mxRectangle width="30" height="33" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IuVlJMqa_FTVn9__E9sm-9" value="requirements" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;fontSize=16;" vertex="1" parent="IuVlJMqa_FTVn9__E9sm-7">
+          <mxGeometry x="30" width="150" height="33" as="geometry">
+            <mxRectangle width="150" height="33" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
         <mxCell id="dwWhSKTQToxHHi_fsbyU-64" value="Tournament" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fontSize=16;" parent="1" vertex="1">
