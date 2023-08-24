@@ -15,14 +15,19 @@ return new class extends Migration
             $table->id();
             $table->string("firstUserName");
             $table->string("secondUserName");
-            $table->integer("firstUserScore");
-            $table->integer("secondUserScore");
+            $table->integer("firstUserScore")->default(Null)->nullable();
+            $table->integer("secondUserScore")->default(Null)->nullable();
             $table->time("duration");
             $table->time("timeLeft");
+            $table->time("startTime");
+            $table->date("date");
             $table->string("sportType");
+            $table->string("gameType");
             $table->string("competetionType");
-            $table->foreignId("tourna_id")->nullable();
-            $table->foreignId("league_id")->nullable();
+            $table->string("status")->default('not started');
+            $table->foreignId("tournaments_id")->default(Null)->nullable();
+            $table->foreignId("leagues_id")->default(Null)->nullable();
+            $table->foreignId("winner_id")->default(Null)->nullable();
             $table->timestamps();
         });
     }

@@ -11,6 +11,6 @@ class Acheivements extends Model
     use HasFactory;
     
     function users(){
-        return $this->belongsToMany(User::class);
+        return $this->hasMany(Acheive::class);
     }
 }

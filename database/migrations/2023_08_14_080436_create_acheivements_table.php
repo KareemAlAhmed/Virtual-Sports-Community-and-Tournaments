@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('acheivements', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("photo_url")->nullable();
-            $table->string("video_url")->nullable();
+            $table->string("image_url")->default(Null)->nullable();
+            $table->string("video_url")->default(Null)->nullable();
             $table->text("description");
             $table->text("requirementToAcheive");
             $table->string("sportType");
-            $table->foreignId("user_id");
             $table->timestamps();
         });
     }

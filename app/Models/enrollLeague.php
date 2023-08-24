@@ -5,13 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tournaments extends Model
+class enrollLeague extends Model
 {
     use HasFactory;
     function members(){
-      return  $this->hasMany(enrollTourn::class,"tournament_id");
+        return $this->belongsTo(User::class);
     }
-    function games(){
-        return  $this->hasMany(Games::class);
-      }
 }

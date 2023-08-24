@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text("description");
             $table->integer("maxPlaces");
             $table->integer("remainingPlaces");
-            $table->integer("takesPlaces");
+            $table->integer("takesPlaces")->default(0);
             $table->text("rewards");
             $table->text("requirements");
             $table->string("sportType");
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date("endDate");
             $table->time("duration");
             $table->time("timeLeft");
-            $table->foreignId("winner_id")->nullable();
+            $table->foreignId("winner_id")->default(Null)->nullable();
             $table->foreignId("organizer_id");
             $table->string("type");
             $table->timestamps();

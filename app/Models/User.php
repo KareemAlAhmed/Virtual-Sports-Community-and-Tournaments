@@ -48,12 +48,18 @@ class User extends Authenticatable
     }
 
     function acheivements(){
-        return $this->hasMany(Acheivements::class);
+        return $this->hasMany(Acheive::class);
+    }
+    function winningTourn(){
+        return $this->hasMany(Tournaments::class,'winner_id');
+    }
+    function winningLeague(){
+        return $this->hasMany(Leagues::class,'winner_id');
     }
     function leagues(){
-        return $this->belongsToMany(Leagues::class);
+        return $this->hasMany(enrollLeague::class);
     }
     function tournaments(){
-        return $this->belongsToMany(Tournaments::class);
+        return $this->hasMany(enrollTourn::class);
     }
 }
