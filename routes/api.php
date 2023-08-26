@@ -31,16 +31,16 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::controller(acheiveController::class)->group(function () {
         Route::post('acheive','create'); // to create an acheivement
         Route::get('acheive/{id}/edit','edit'); // to get the acheivement info for edit
-        Route::post('acheive/{id}/edit','update');// to update the info of an acheivement
-        Route::post('acheive/{id}/delete','delete');// to delete an acheivement
-        Route::post('acheivement/{id}/user/{id2}','getAcheiv'); //To let a user get the acheivement
+        Route::put('acheive/{id}/edit','update');// to update the info of an acheivement
+        Route::delete('acheive/{id}/delete','delete');// to delete an acheivement
+        Route::get('acheivement/{id}/user/{id2}','getAcheiv'); //To let a user get the acheivement
     });
 
     Route::controller(PostController::class)->group(function () {
         Route::post('post/user/{id}/[','create'); // to create a post
         Route::get('post/{id}/edit','edit'); // to get the info of a post to be updated
-        Route::post('post/{id}/edit/','update'); // to update the info of a post 
-        Route::post('post/{id}/delete','delete'); // to delete a post 
+        Route::put('post/{id}/edit/','update'); // to update the info of a post 
+        Route::delete('post/{id}/delete','delete'); // to delete a post 
         Route::get('post/{id}/user','user'); // to get the user of a post 
     
     });
@@ -48,35 +48,39 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::controller(TournamentController::class)->group(function () {
         Route::post('tournament/user/{id}','create'); // to create a tournament
         Route::get('tournament/{id}/edit','edit');// to get the info of a tournamnet to be updated
-        Route::post('tournament/{id}/edit','update');// to update the info of a tournament 
-        Route::post('tournament/delete/{id}','delete');// to delete a tournament
-        Route::post('tournament/{tournId}/member/{userId}/winner','setWinner'); // to save that a user won a tournament
+        Route::put('tournament/{id}/edit','update');// to update the info of a tournament 
+        Route::delete('tournament/delete/{id}','delete');// to delete a tournament
+        Route::put('tournament/{tournId}/member/{userId}/winner','setWinner'); // to save that a user won a tournament
         Route::get('tournament/{tournId}/winner','getWinner'); // to get the user that won a specific tournament
+        Route::post('tournament/{id}/createGames','createGames'); // to create  the games of a tournament
+        
     });
 
     Route::controller(LeagueController::class)->group(function () {
         Route::post('league/user/{id}','create'); // to create a league
         Route::get('league/{id}/edit','edit'); // // to get the info of a league to be updated
-        Route::post('league/{id}/edit','update'); // to update the info of a league 
-        Route::post('league/{id}/delete','delete'); // to delete a League
-        Route::post('league/{leagueId}/member/{userId}/winner','setWinner'); // to save that a user won a league
+        Route::put('league/{id}/edit','update'); // to update the info of a league 
+        Route::delete('league/{id}/delete','delete'); // to delete a League
+        Route::put('league/{leagueId}/member/{userId}/winner','setWinner'); // to save that a user won a league
         Route::get('league/{leagueId}/winner','getWinner'); // to get the user that won a specific League
+        Route::post('league/{id}/createGames','createGames'); // to create the games of a league
+        
     });
 
 
     Route::post('enroll/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'enroll']);// to enroll a user in a specific tournament 
-    Route::post('kick/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'kick']);// to kick a user from a specific tournament
+    Route::delete('kick/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'kick']);// to kick a user from a specific tournament
     
     Route::post('enroll/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'enroll']);// to enroll a user in a specific league 
-    Route::post('kick/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'kick']);// to kick a user from a specific league
+    Route::delete('kick/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'kick']);// to kick a user from a specific league
 
 
     Route::controller(GameController::class)->group(function () {
-        Route::post('game/{tournOrLeagueId}/create','create'); // to create a game
+        Route::post('game/{tournOrLeagueId}/create','create'); // to create a game  (should competetionType be Tournament or League)
         Route::get('game/{id}/edit','edit'); // // to get the info of a game to be updated
-        Route::post('game/{id}/edit/{tournOrLeagueId}','update'); // to update the info of a game 
-        Route::post('game/{id}/delete','delete'); // to delete a game
-        Route::post('game/{gameId}/member/{userId}/winner','setWinner'); // to save that a user won a game
+        Route::put('game/{id}/edit/{tournOrLeagueId}','update'); // to update the info of a game 
+        Route::delete('game/{id}/delete','delete'); // to delete a game
+        Route::put('game/{gameId}/member/{userId}/winner','setWinner'); // to save that a user won a game
         Route::get('game/{gameId}/winner','getWinner'); // to get the user that won a specific game
     });
 });
@@ -114,9 +118,6 @@ Route::get('user/{id}/leagues',[AuthController::class,'leagues']);// to get the 
 
 
 Route::get('game/{id}',[GameController::class,'show']); // to show a league
-
-
-
 
 Route::get('user/{id}/leagues/games',[AuthController::class,'leagueGames']); //to get the games of user in leagues
 Route::get('user/{id}/tournaments/games',[AuthController::class,'tournGames']); //to get the games of user in tournaments

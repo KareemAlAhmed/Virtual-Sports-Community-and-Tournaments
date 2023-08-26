@@ -244,4 +244,51 @@ class LeagueController extends Controller
             ],404);
         }
     }
+
+    function createGames($id){
+        $league=Leagues::find($id);
+        $members=$league->members;
+        $nubs=array();
+        if($league){
+            if(count($members) > 1){
+                for($i=0;$i < count($members) - 1;$i++){
+                    for($j=$i +1 ;$j < count($members);$j++){
+                        $firstUser=User::find($members[$i]->user_id);
+                        $secondtUser=User::find($members[$j]->user_id);
+                        $data=[
+                           'firstUserName'=>$firstUser->name,
+                            'secondUserName'=>$secondtUser->name,
+                            'firstUserScore'=>'Null',
+                            'secondUserScore'=>'Null',
+                            'duration'=>$league->sportType==='football' ? '01:30:00' : '02:00:00',
+                            'timeLeft'=>'01:30:00',
+                            'startTime'=>'05:00:00',
+                            'date'=>$league->startDate,
+                            'sportType'=>$league->sportType,
+                            'gameType'=>'ranked',
+                            'status'=>'Not Started',
+                            'competetionType'=>'League'
+                        ];
+                         (new GameController)->createLeagueGame($data,$id);
+                        array_push($nubs,$data);
+                    }
+                }
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'The Games created successfuly'
+                ],200);
+            }else{
+                return response()->json([
+                    'status'=>404,
+                    'error'=>'Not enough player to make a game'
+                ],404);
+            }
+        }else{
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The wanted League doesnt exist'
+            ],404);
+        }
+        
+    }
 }

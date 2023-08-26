@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string("gameType");
             $table->string("competetionType");
             $table->string("status")->default('not started');
-            $table->foreignId("tournaments_id")->default(Null)->nullable();
-            $table->foreignId("leagues_id")->default(Null)->nullable();
+            $table->foreignId("tournaments_id")->default(Null)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId("leagues_id")->default(Null)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId("winner_id")->default(Null)->nullable();
             $table->timestamps();
         });

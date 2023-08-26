@@ -255,4 +255,46 @@ class TournamentController extends Controller
             ],404);
         }
     }
+    function createGames($id){
+        $tourn=Tournaments::find($id);
+        $members=$tourn->members;
+        $nubs=array();
+        if($tourn){
+            if(count($members) > 1){
+                for($i=0;$i < count($members) - 1;$i++){
+                    for($j=$i +1 ;$j < count($members);$j++){
+                        $firstUser=User::find($members[$i]->user_id);
+                        $secondtUser=User::find($members[$j]->user_id);
+                        $data=[
+                           'firstUserName'=>$firstUser->name,
+                            'secondUserName'=>$secondtUser->name,
+                            'firstUserScore'=>'Null',
+                            'secondUserScore'=>'Null',
+                            'duration'=>$tourn->sportType==='football' ? '01:30:00' : '02:00:00',
+                            'timeLeft'=>'01:30:00',
+                            'startTime'=>'05:00:00',
+                            'date'=>$tourn->startDate,
+                            'sportType'=>$tourn->sportType,
+                            'gameType'=>$tourn->type,
+                            'status'=>'Not Started',
+                            'competetionType'=>'Tournament'
+                        ];
+                         (new GameController)->createTournGame($data,$id);
+                        array_push($nubs,$data);
+                    }
+                }
+                return $nubs;
+            }else{
+                return response()->json([
+                    'status'=>404,
+                    'error'=>'Not enough player to make a game'
+                ],404);
+            }
+        }else{
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The wanted Tournament doesnt exist'
+            ],404);
+        }
+    }
 }

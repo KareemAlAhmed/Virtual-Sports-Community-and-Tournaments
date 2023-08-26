@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('enroll_tourns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('tournament_id');
+            $table->foreignId('tournament_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
