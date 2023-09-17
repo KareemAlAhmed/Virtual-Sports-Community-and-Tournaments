@@ -17,7 +17,6 @@ class AuthController extends Controller
     function register(siginReq $request){
         $user=new User;
         $user->name=$request->input("name");
-        $user->password=$request->input("password");
         $user->password=bcrypt($user->password);
         $user->bio=$request->input("bio");
         $user->email=$request->input("email");

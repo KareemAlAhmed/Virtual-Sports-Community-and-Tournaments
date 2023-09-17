@@ -37,7 +37,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     });
 
     Route::controller(PostController::class)->group(function () {
-        Route::post('post/user/{id}/[','create'); // to create a post
+        Route::post('post/user/{id}/','create'); // to create a post
         Route::get('post/{id}/edit','edit'); // to get the info of a post to be updated
         Route::put('post/{id}/edit/','update'); // to update the info of a post 
         Route::delete('post/{id}/delete','delete'); // to delete a post 
