@@ -27,7 +27,8 @@ use Illuminate\Support\Facades\Route;
 //Protected route(should user be authenticated)
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('logout',[AuthController::class,'logout']);// to logout a user
-    
+    Route::post('userUpdate/{userid}',[AuthController::class,'edit']); // to edit the  user info
+
     Route::controller(acheiveController::class)->group(function () {
         Route::post('acheive','create'); // to create an acheivement
         Route::get('acheive/{id}/edit','edit'); // to get the acheivement info for edit
@@ -92,6 +93,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register',[AuthController::class,'register']); // to register a user
 Route::post('login',[AuthController::class,'login']); // to login a user
 
+
 Route::get('user/{id}/acheivements',[AuthController::class,'acheivements']); // to get the acheivements of a specific user
 Route::get('acheivement/{id}/user',[acheiveController::class,'users']); // to get the users that have a specific acheivement
 Route::get('acheive/{id}',[acheiveController::class ,'show']); // to show an acheivement
@@ -121,3 +123,5 @@ Route::get('game/{id}',[GameController::class,'show']); // to show a league
 
 Route::get('user/{id}/leagues/games',[AuthController::class,'leagueGames']); //to get the games of user in leagues
 Route::get('user/{id}/tournaments/games',[AuthController::class,'tournGames']); //to get the games of user in tournaments
+
+

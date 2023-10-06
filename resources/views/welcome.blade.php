@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -16,6 +17,13 @@
         </style>
     </head>
     <body class="antialiased">
-    
+
+    <form method="post"  action="api/userUpdate/1" enctype="multipart/form-data">
+            <input type="text" name="name">
+            <input type="text" name="bio">
+            <input type="file" name="image_url">
+
+            <input type="submit" onsubmit="redirect('./')">
+    </form>
     </body>
 </html>

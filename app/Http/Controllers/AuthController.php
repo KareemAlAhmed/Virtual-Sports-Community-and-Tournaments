@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -20,6 +21,10 @@ class AuthController extends Controller
         $user->password=bcrypt($user->password);
         $user->bio=$request->input("bio");
         $user->email=$request->input("email");
+        if($request->hasFile('image_url')){
+            $user->image_url=$request->image_url->getClientOriginalName();
+            $request->image_url->storeAs('public/UserProfilePic',$user->image_url);
+        }
         $user->save();
         $token=$user->createToken('myapptoken')->plainTextToken;
         $response=[
@@ -168,5 +173,42 @@ class AuthController extends Controller
             'status'=>200,
             'Games'=>$games
         ],200);
+    }
+    function edit(Request $request,int $id){
+        $user=User::find($id);
+        $val=Validator::make($request->all(),[
+            'name'=>'min:3|unique:users',
+            'bio'=>"min:20 |required"
+            ]);
+        if($val->fails()){
+            return response()->json([
+                'status'=>402,
+                'errors'=>$val->messages()
+            ],402);
+        }else{
+            if($user){
+                $user->name=$request->input('name');
+                $user->bio=$request->input('bio');
+                if($request->hasFile('image_url')){
+                    $user->image_url=$request->image_url->getClientOriginalName();
+                    $request->image_url->storeAs('public/UserProfilePic',$user->image_url);
+                }
+                $user->update();
+
+                return response()->json([
+                    'status'=>200,
+                    'message'=>'Your information updated successfuly',
+                ],200);
+            }else{
+                return response()->json([
+                    'status'=>404,
+                    'errors'=>'The User doesnt exist'
+                ],404);
+            }
+        }
+
+
+        
+        
     }
 }

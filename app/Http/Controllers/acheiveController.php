@@ -15,7 +15,9 @@ class acheiveController extends Controller
             'name'=>'required|min:5|unique:acheivements',
             'description'=>'required|min:10',
             'requirementToAcheive'=>'required|min:15',
-            'sportType'=>'required|min:5'
+            'sportType'=>'required|min:5',
+            'image_url'=>'min:5',
+            'video_url'=>'min:5'
         ]);
         if($val->fails()){
             return response()->json([
@@ -25,11 +27,17 @@ class acheiveController extends Controller
         }else{
             $a= new Acheivements;
             $a->name=$request->input('name');
-            $a->image_url=$request->input('image_url');
-            $a->video_url=$request->input('video_url');
             $a->description=$request->input('description');
             $a->requirementToAcheive=$request->input('requirementToAcheive');
             $a->sportType=$request->input('sportType');
+            if($request->hasFile('image_url')){
+                $a->image_url=$request->image_url->getClientOriginalName();              
+                $request->image_url->storeAs('public/acheivemenPhotos',$a->image_url);
+            }
+            if($request->hasFile('video_url')){
+                $a->video_url=$request->video_url->getClientOriginalName();              
+                $request->video_url->storeAs('public/acheivemenVideos',$a->video_url);
+            }
             $a->save();
 
             return response()->json([
@@ -81,11 +89,17 @@ class acheiveController extends Controller
 
                 if($ach){
                     $ach->name=$request->input('name');
-                    $ach->image_url=$request->input('image_url');
-                    $ach->video_url=$request->input('video_url');
                     $ach->description=$request->input('description');
                     $ach->requirementToAcheive=$request->input('requirementToAcheive');
                     $ach->sportType=$request->input('sportType');
+                    if($request->hasFile('image_url')){
+                        $ach->image_url=$request->image_url->getClientOriginalName();              
+                        $request->image_url->storeAs('public/acheivemenPhotos',$ach->image_url);
+                    }
+                    if($request->hasFile('video_url')){
+                        $ach->video_url=$request->video_url->getClientOriginalName();              
+                        $request->video_url->storeAs('public/acheivemenVideos',$ach->video_url);
+                    }
                     $ach->update();
         
                     return response()->json([

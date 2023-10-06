@@ -26,10 +26,17 @@ class PostController extends Controller
         }else{
             $post= new Posts;
             $post->title=$request->input('title');
-            $post->image_url=$request->input('image_url');
-            $post->video_url=$request->input('video_url');
+           
             $post->content=$request->input('content');
             $post->user_id=$id;
+            if($request->hasFile('image_url')){
+                $post->image_url=$request->image_url->getClientOriginalName();              
+                $request->image_url->storeAs('public/postImage',$post->image_url);
+            }
+            if($request->hasFile('video_url')){
+                $post->video_url=$request->video_url->getClientOriginalName();              
+                $request->video_url->storeAs('public/postVideo',$post->video_url);
+            }
             $post->save();
 
             return response()->json([
@@ -80,10 +87,17 @@ class PostController extends Controller
 
                 if($post ){
                     $post->title=$request->input('title');
-                    $post->image_url=$request->input('image_url');
-                    $post->video_url=$request->input('video_url');
                     $post->content=$request->input('content');
-                    $post->user_id=$post->user_id;
+                    $post->user_id=$request->user_id;
+                    
+                    if($request->hasFile('image_url')){
+                        $post->image_url=$request->image_url->getClientOriginalName();              
+                        $request->image_url->storeAs('public/postImage',$post->image_url);
+                    }
+                    if($request->hasFile('video_url')){
+                        $post->video_url=$request->video_url->getClientOriginalName();              
+                        $request->video_url->storeAs('public/postVideo',$post->video_url);
+                    }
                     $post->update();
         
                     return response()->json([
