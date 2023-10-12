@@ -43,7 +43,7 @@ class acheiveController extends Controller
             return response()->json([
                 'message'=>'Acheivement created successfuly',
                 'Acheivement'=>$a
-            ]);
+            ],201);
         }
     }
     function show( $id){
@@ -139,7 +139,9 @@ class acheiveController extends Controller
             $get=User::find($user[$i]->user_id);
             array_push($users, $get);
         }    
-        return $users;
+        return response()->json([
+            'Users'=>$users
+        ],200);
     }
     function getAcheiv($acheivId,$userId){
         $new= new Acheive;
@@ -148,6 +150,6 @@ class acheiveController extends Controller
         $new->save();
         return response()->json([
             'Message'=>'The user get the acheivement successfuly'
-        ]);
+        ],200);
     }
 }

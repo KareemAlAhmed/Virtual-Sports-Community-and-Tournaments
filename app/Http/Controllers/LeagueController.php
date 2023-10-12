@@ -44,10 +44,10 @@ class LeagueController extends Controller
                 $league->save();
             
                 return response()->json([
-                    'status'=>200,
+                    'status'=>201,
                     'message'=>'The League created successfuly',
                     'league'=>$league
-                ],200);
+                ],201);
             }else{
                 return response()->json([
                     'status'=>404,

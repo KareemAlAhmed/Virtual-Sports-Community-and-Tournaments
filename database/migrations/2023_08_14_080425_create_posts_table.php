@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string("title");
-            $table->text("content");
+            $table->text("content")->default(Null)->nullable();
             $table->string("image_url")->default(Null)->nullable();
             $table->string("video_url")->default(Null)->nullable();
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();

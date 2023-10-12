@@ -27,14 +27,14 @@ use Illuminate\Support\Facades\Route;
 //Protected route(should user be authenticated)
 Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::post('logout',[AuthController::class,'logout']);// to logout a user
-    Route::post('userUpdate/{userid}',[AuthController::class,'edit']); // to edit the  user info
+    Route::put('userUpdate/{userid}',[AuthController::class,'edit']); // to edit the  user info
 
     Route::controller(acheiveController::class)->group(function () {
         Route::post('acheive','create'); // to create an acheivement
         Route::get('acheive/{id}/edit','edit'); // to get the acheivement info for edit
         Route::put('acheive/{id}/edit','update');// to update the info of an acheivement
         Route::delete('acheive/{id}/delete','delete');// to delete an acheivement
-        Route::get('acheivement/{id}/user/{id2}','getAcheiv'); //To let a user get the acheivement
+        Route::post('acheivement/{id}/user/{id2}','getAcheiv'); //To let a user get the acheivement
     });
 
     Route::controller(PostController::class)->group(function () {
@@ -61,7 +61,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::post('league/user/{id}','create'); // to create a league
         Route::get('league/{id}/edit','edit'); // // to get the info of a league to be updated
         Route::put('league/{id}/edit','update'); // to update the info of a league 
-        Route::delete('league/{id}/delete','delete'); // to delete a League
+        Route::delete('league/delete/{id}','delete'); // to delete a League
         Route::put('league/{leagueId}/member/{userId}/winner','setWinner'); // to save that a user won a league
         Route::get('league/{leagueId}/winner','getWinner'); // to get the user that won a specific League
         Route::post('league/{id}/createGames','createGames'); // to create the games of a league

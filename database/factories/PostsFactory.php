@@ -18,7 +18,6 @@ class PostsFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->word(),
             'image_url'=>fake()->word(),
             'video_url'=>fake()->word(),
             'content'=>fake()->text(),

@@ -1,0 +1,133 @@
+for User :
+
+    . post: 'api/register': to create a new user . And the request should contain name(unique , at least 5 char), password(at least 5 char), bio (at least 20 char), email (at least 10 char)and if the user want image_url
+
+    . post: 'api/login' : to let the user login to his account . The request should contain email , password .
+
+    . post : 'api/logout' : to let the user logout of his account . no need for anything in the request . but the client should be auth .
+
+    . put : 'api/userUpdate/{userid}': to update the info of a user . The client should be signed in order to update the info . the request should contain name(unique , at least 5 char), password(at least 5 char), bio (at least 20 char), email (at least 10 char)and if the user want image_url
+
+    . get : 'api/user/{id}/acheivements' : to get the acheivements of a specific user  . the request should contain the user id .
+
+    . get : 'api/user/{id}/posts': to get the posts of a user and the request should contain the user id.
+
+    . get : 'api/user/{id}/tournaments': to get the tournaments that a user is participating in it . the request should contain the user id .
+
+    . get : 'api/user/{id}/winningTournaments' : to get the tournaments that a user have won . the request should contain the user id .
+
+    . get : 'api/user/{id}/leagues' : to get the leagues that a user is participating in it . the request should contain the user id .
+
+    . get : 'api/user/{id}/winningLeagues' : to get the leagues that a user have won . the request should contain the user id .
+
+    . get : 'api/user/{id}/leagues/games' : to get the games that a user have in all leagues .
+
+    . get : 'user/{id}/tournaments/games' : to get the games that a user have in all Tournaments .
+
+For Acheivements:
+
+    . post : 'api/acheive' : to create an acheivement . the request should contain name(at least 5 charac), description(at least 5 charac),requirementToAcheive(at least 15 charac),sportType(at least 5 charac), and if the admin want image_url, video_url. only admin can use it .
+
+    . get : 'api/acheive/{id}' : to get the info of  an acheivement and The request should contain the id of the acheivemnt .
+
+    .get : 'api/acheive/{id}/edit' : to get the info of the acheivement in order to edit it . The request should contain the id of the acheivement . only admin can use it .
+
+    .put : 'api/acheive/{id}/edit' : to update the info of an acheivement in the database . The request should contain the id of the acheivement , name(at least 5 charac), description(at least 5 charac),requirementToAcheive(at least 15 charac),sportType(at least 5 charac), and if the admin want image_url, video_url. only admin can use it .
+
+    .delete : 'api/acheive/{id}/delete': to delete the acheivement from the database . The request should contain the id of the acheivement . only admin can use it .
+
+    .post : 'api/acheivement/{id}/user/{id2}' : to save in the database that a user that has id {id2} get the acheivement that has id {id}. only admin can use it .
+
+    .get : 'api/acheivement/{id}/user' : to get users that get that specific acheivement . The request should contain the id of the acheivement .
+
+For Post :
+
+    .post : 'api/post/user/{id}' : to create a post . the request should contain the id of the user ,  and if the client want to post an image (image_url), and/or video (video_url) , and/or content(content at least 5 char) . The client should be auth .
+
+    . get : 'api/post/{id}' : to get the info of  a post  and The request should contain the id of the post .
+
+    .get : 'api/post/{id}/edit' : to get the info of the post in order to edit it . The request should contain the id of the post . the client should be auth.
+
+    .put : 'api/post/{id}/edit' : to update the info of a post in the database . The request should contain the id of the post ,if the client want to add an image (image_url), and/or video (video_url) , and/or content(content at least 5 char) . The client should be auth .
+
+    .delete : 'api/post/{id}/delete': to delete the post from the database . The request should contain the id of the post . the client should be auth and  admin can use it .
+
+    .get : 'api/post/{id}/user': to get user of a specific post . the request should contain the id of the post . the client should be auth .
+
+For Tournament:
+
+    .post : 'api/tournament/user/{id}' : to create a tournament . the request should contain the id of the user , name (unique, at least 5 char), description(at least 15 char),maxPlaces,rewards(at least 15 char),requirements(at least 15 char),sportType(at least 5 char),startDate,endDate,duration,timeleft,type(friendly or ranked) . The client should be auth .
+
+    . get : 'api/tournament/{id}' : to get the info of  a tournament  and The request should contain the id of the tournament .
+
+    .get : 'api/tournament/{id}/edit' : to get the info of the tournament in order to edit it . The request should contain the id of the tournament . the client should be auth.
+
+    .put : 'api/tournament/{id}/edit' : to update the info of a tournament in the database . The request should contain the id of the tournament , name (unique, at least 5 char), description(at least 15 char),maxPlaces,rewards(at least 15 char),requirements(at least 15 char),sportType(at least 5 char),startDate,endDate,duration,timeleft,type(friendly or ranked) . The client should be auth .
+
+    .delete : 'api/tournament/{id}/delete': to delete the tournament from the database . The request should contain the id of the tournament . the client should be auth and  admin can use it .
+
+    .get : 'api/tournament/{tournId}/organizer' : to get the organizer of the tournament . the request should contain the id of the tournament .
+
+    .get : 'api/tournament/{id}/members' : to get all the users that is participating in this tournament . the request should contain the id of the tournament .
+
+    .put : 'api/tournament/{tournId}/member/{userId}/winner' : to save in the database that the user having id (userId) has won the tournament having id(tournId) . the request should contain the id of the user and of the tournament . the client should be auth and  admin can use it .
+
+
+    .get : 'api/tournament/{tournId}/winner' : to get the winner of the tournament . the request should contain the id of the user and of the tournament . the client should be auth and  admin can use it .
+
+
+    .post : 'api/tournament/{id}/createGames' : to create all the games of a tournament . the request should contain the id of the user and of the tournament . the client should be auth and  admin can use it .
+
+
+    .get : 'api/tournament/{id}/games' : to get all the games of the tournament . the request should contain the id of the tournament .
+
+    .post : 'api/enroll/user/{userId}/tournament/{tournId}': to save in the database that user having id (userId) is a member of the tournament having id (tournId) . the request should contain the id of the user and tournament . The client should be auth .
+
+    .delete : 'api/kick/user/{userId}/tournament/{tournId}' : to remove  the user having id (userId) from the tournament having id (tournId) . the request should contain the id of the user and tournament . The client should be auth .
+
+Fror League :
+
+    .post : 'api/league/user/{id}' : to create a league . the request should contain the id of the user , name (unique, at least 5 char), description(at least 15 char),maxPlaces,rewards(at least 15 char),requirements(at least 15 char),sportType(at least 5 char),startDate,endDate . The client should be auth .
+
+    . get : 'api/league/{id}' : to get the info of  a league  and The request should contain the id of the league .
+
+    .get : 'api/league/{id}/edit' : to get the info of the league in order to edit it . The request should contain the id of the league . the client should be auth.
+
+    .put : 'api/league/{id}/edit' : to update the info of a league in the database . The request should contain the id of the league , name (unique, at least 5 char), description(at least 15 char),maxPlaces,rewards(at least 15 char),requirements(at least 15 char),sportType(at least 5 char),startDate,endDate . The client should be auth .
+
+    .delete : 'api/league/{id}/delete': to delete the league from the database . The request should contain the id of the league . the client should be auth and  admin can use it .
+
+    .get : 'api/league/{leagueId}/organizer' : to get the organizer of the league . the request should contain the id of the league .
+
+    .get : 'api/league/{id}/members' : to get all the users that is participating in this league . the request should contain the id of the league .
+
+    .put : 'api/league/{leagueId}/member/{userId}/winner' : to save in the database that the user having id (userId) has won the league having id(leagueId) . the request should contain the id of the user and of the league . the client should be auth and  admin can use it .
+
+
+    .get : 'api/league/{leagueId}/winner' : to get the winner of the league . the request should contain the id of the user and of the league . the client should be auth and  admin can use it .
+
+
+    .post : 'api/league/{id}/createGames' : to create all the games of a league . the request should contain the id of the user and of the league . the client should be auth and  admin can use it .
+
+
+    .get : 'api/league/{id}/games' : to get all the games of the league . the request should contain the id of the league .
+
+    .post : 'api/enroll/user/{userId}/league/{leagueId}': to save in the database that user having id (userId) is a member of the league having id (leagueId) . the request should contain the id of the user and league . The client should be auth .
+
+    .delete : 'api/kick/user/{userId}/league/{leagueId}' : to remove  the user having id (userId) from the league having id (leagueId) . the request should contain the id of the user and league . The client should be auth .
+
+For Game:
+
+    .post : 'api/game/user/{id}' : to create a game . the request should contain the id of the user , firstUserName ( at least  5 char),  secondUserName ( at least  5 char),firstUserScore(should be number),secondUserScore(should be number),duration,timeLeft,startTime,date,sportType(at least 5 char),gameType(friendly or ranked),status(not started or live or finished),competetionType(League or Tournament) . The client should be auth .
+
+    . get : 'api/game/{id}' : to get the info of  a game  and The request should contain the id of the game .
+
+    .get : 'api/game/{id}/edit' : to get the info of the game in order to edit it . The request should contain the id of the game . the client should be auth.
+
+    .put : 'api/game/{id}/edit' : to update the info of a game in the database . The request should contain the id of the game , firstUserName ( at least  5 char),  secondUserName ( at least  5 char),firstUserScore(should be number),secondUserScore(should be number),duration,timeLeft,startTime,date,sportType(at least 5 char),gameType(friendly or ranked),status(not started or live or finished),competetionType(League or Tournament) . The client should be auth .
+
+    .delete : 'api/game/{id}/delete': to delete the game from the database . The request should contain the id of the game . the client should be auth and  admin can use it .
+
+    .put : 'api/game/{gameId}/member/{userId}/winner' : to save in the database that the user having id (userId) has won the game having id(gameId) . the request should contain the id of the user and of the game . the client should be auth and  admin can use it .
+
+    .get : 'api/game/{gameId}/winner' : to get the winner of the game . the request should contain the id of the user and of the game . the client should be auth and  admin can use it .

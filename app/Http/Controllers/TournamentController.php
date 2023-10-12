@@ -49,10 +49,10 @@ class TournamentController extends Controller
                 $tourn->save();
             
                 return response()->json([
-                    'status'=>200,
+                    'status'=>201,
                     'message'=>'The Tournament created successfuly',
                     'tournament'=>$tourn
-                ],200);
+                ],201);
             }else{
                 return response()->json([
                     'status'=>404,

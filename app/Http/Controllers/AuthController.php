@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
     function logout(Request $request){
         auth()->user()->tokens()->delete();
-        return  response()->json(['message'=>'logout succesfuly'],201) ;
+        return  response()->json(['message'=>'logout succesfuly'],200) ;
 
     }
     function acheivements($id){
@@ -67,7 +67,8 @@ class AuthController extends Controller
                 array_push($achs, $get);
             }      
             return response()->json([
-                "Acheivements"=>$ach
+                "Acheivements"=>$ach,
+                
             ]);
         }else{
             return response()->json([

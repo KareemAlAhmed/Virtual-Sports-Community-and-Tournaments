@@ -18,10 +18,10 @@
     </head>
     <body class="antialiased">
 
-    <form method="post"  action="api/userUpdate/1" enctype="multipart/form-data">
-            <input type="text" name="name">
-            <input type="text" name="bio">
-            <input type="file" name="image_url">
+    <form method="post"  action="api/post/user/1" enctype="multipart/form-data">
+            <input type="text" name="title">
+            <input type="text" name="content">
+            <input type="file" name="video_url">
 
             <input type="submit" onsubmit="redirect('./')">
     </form>

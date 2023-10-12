@@ -25,7 +25,7 @@ class GameController extends Controller
             'date'=>'required|date',
             'sportType'=>'required|min:5',
             'gameType'=>'required|min:5',
-            'status'=>'required|min:5',
+            'status'=>'required|min:3',
             'competetionType'=>'min:5|required'
         ]);
         if($attr->fails()){
@@ -60,9 +60,9 @@ class GameController extends Controller
                         }
                         $game->save();
                         return response()->json([
-                            'status'=>200,
+                            'status'=>201,
                             'Game'=>$game
-                        ],200);
+                        ],201);
                     }else{
                         return response()->json([
                             'status'=>404,
@@ -104,9 +104,9 @@ class GameController extends Controller
                             }
                             $game->save();
                             return response()->json([
-                                'status'=>200,
+                                'status'=>201,
                                 'Game'=>$game
-                            ],200);
+                            ],201);
                         }else{
                             return response()->json([
                                 'status'=>404,
@@ -169,7 +169,7 @@ class GameController extends Controller
             'date'=>'required|date',
             'sportType'=>'required|min:5',
             'gameType'=>'required|min:5',
-            'status'=>'required|min:5',
+            'status'=>'required|min:3',
             'competetionType'=>'min:5|required'
         ]);
         if($attr->fails()){
@@ -397,9 +397,9 @@ class GameController extends Controller
                         $game->tournaments_id=$id;
                         $game->save();
                         return response()->json([
-                            'status'=>200,
+                            'status'=>201,
                             'Game'=>$game
-                        ],200);
+                        ],201);
                     }else{
                         return response()->json([
                             'status'=>404,
@@ -432,8 +432,8 @@ class GameController extends Controller
             return null;
         }
         $attr=Validator::make($request,[
-            'firstUserName'=>'min:3|required',
-            'secondUserName'=>'min:3|required',
+            'firstUserName'=>'min:5|required',
+            'secondUserName'=>'min:5|required',
             'firstUserScore'=>'required',
             'secondUserScore'=>'required',
             'duration'=>'required',
@@ -470,9 +470,9 @@ class GameController extends Controller
                         $game->leagues_id=$id;
                         $game->save();
                         return response()->json([
-                            'status'=>200,
+                            'status'=>201,
                             'Game'=>$game
-                        ],200);
+                        ],201);
                     }else{
                         return response()->json([
                             'status'=>404,
