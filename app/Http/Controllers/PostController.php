@@ -14,7 +14,7 @@ class PostController extends Controller
         $user=User::find($id);
         if($user){
             if($request->input('content') || $request->hasFile('image_url') || $request->hasFile('video_url')){
-                $val=Validator::make($request->all(),[,
+                $val=Validator::make($request->all(),[
                 'content'=>'min:5',
                 'image_url'=>'min:5',
                 'video_url'=>'min:5',
