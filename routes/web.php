@@ -14,10 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome',['info'=>request()]);
+    return view('home',['info'=>request()]);
 });
-Route::get('/userUpdate/1', function () {
-    return view('welcome',[
-        'info'=>request()->all()
-    ]);
+Route::get('/register', function () {
+    return view('register',['info'=>request()]);
 });
+Route::get('/login', function () {
+    return view('login',['info'=>request()]);
+});
+
+// Route::post(s'register',[AuthController::class,'register']); // to register a user
+

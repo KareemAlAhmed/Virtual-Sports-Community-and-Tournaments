@@ -15,10 +15,17 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    function register(siginReq $request){
+    function register(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name'=>'min:3|unique:users|required',
+            'email'=>'min:10|unique:users|required',
+            'password'=>'min:5|required',
+            'bio'=>"min:10 |required",
+            'image_url'=>"min:5"
+        ]);
         $user=new User;
         $user->name=$request->input("name");
-        $user->password=bcrypt($user->password);
+        $user->password=bcrypt($request->input("password"));
         $user->bio=$request->input("bio");
         $user->email=$request->input("email");
         if($request->hasFile('image_url')){
@@ -32,12 +39,11 @@ class AuthController extends Controller
             'token'=>$token,
         ];
         Auth::login($user);
-        return response()->json($response,201);
+        return redirect('/')->with('response',[response()->json($response,201)]);
     }
     function login(Request $request){
         //check the email
-        $user= User::where('email',$request->input('email'))->first();
-            
+       $user= User::where('email',$request->input('email'))->first();
         //check the the password
         if(!$user || !Hash::check($request->input('password'),$user->password)){
            return ['error'=>'the email or password doesnt exist!'] ;
@@ -49,11 +55,13 @@ class AuthController extends Controller
             'token'=>$token
         ];
         Auth::login($user);
-        return  response()->json($response,201);
+       return redirect('/')->with('response',[response()->json($response,200)]);
     }
     function logout(Request $request){
+        auth()->guard('web')->logout();
         auth()->user()->tokens()->delete();
-        return  response()->json(['message'=>'logout succesfuly'],200) ;
+
+        return redirect('/')->with('response',[response()->json(['message'=>'logout succesfuly'],200)]);
 
     }
     function acheivements($id){

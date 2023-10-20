@@ -25,7 +25,7 @@ class siginReq extends FormRequest
             'name'=>'min:3|unique:users|required',
             'email'=>'min:10|unique:users|required',
             'password'=>'min:5|required',
-            'bio'=>"min:20 |required",
+            'bio'=>"min:10 |required",
             'image_url'=>"min:5"
         ];
     }
