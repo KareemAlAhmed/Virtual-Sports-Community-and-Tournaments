@@ -4,7 +4,7 @@
         <div class="flex-container">
             <div class="content-container">
                 <div class="form-container">
-                <form  method="POST" id="registerForm" action="http://127.0.0.1:8000/api/login">
+                <form  method="POST" id="registerForm" action="https://vsct.xpertbotacademy.online/api/login">
                   @csrf
                     <h1>
                     Register

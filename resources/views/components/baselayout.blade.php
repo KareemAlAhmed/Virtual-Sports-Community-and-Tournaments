@@ -178,7 +178,7 @@
                 color: white;
                 background-color: #191919;
                 /* padding: 7px 13px; */
-                width: 115px;
+                width: 130px;
                 display: flex;
                 flex-direction: column;
                 font-weight: 600;
