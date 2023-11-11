@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tournaments;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class TournamentController extends Controller
@@ -15,9 +16,9 @@ class TournamentController extends Controller
             'name'=>'required|min:5|unique:tournaments',
             'description'=>'required|min:15',
             'maxPlaces'=>'required',
-            'rewards'=>'required|min:15',
+            'rewards'=>'required|min:2',
             'requirements'=>'required|min:15',
-            'sportType'=>'required|min:5',
+            'sportType'=>'required|min:3',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
             'duration'=>'required',
@@ -26,10 +27,11 @@ class TournamentController extends Controller
         ]);
 
         if($val->fails()){
-            return response()->json([
+            return Redirect::back()->with('error',[response()->json([
                 'status'=>402,
-                'errors'=>$val->messages()
-            ],402); 
+                'errors'=>$val->messages()->toJson()
+            ],402)]);
+
         }else{
             if($user){
                 $tourn=new Tournaments;
@@ -48,16 +50,19 @@ class TournamentController extends Controller
                 $tourn->organizer_id=$id;
                 $tourn->save();
             
-                return response()->json([
+                
+
+                return redirect('/')->with('response',[response()->json([
                     'status'=>201,
                     'message'=>'The Tournament created successfuly',
                     'tournament'=>$tourn
-                ],201);
-            }else{
-                return response()->json([
+                ],201)]);
+
+            }else{              
+                return Redirect::back()->with('error',[response()->json([
                     'status'=>404,
                     'errors'=>'The organizer doesnt exist'
-                ],404);
+                ],404)]);
             }
         }
 
@@ -100,9 +105,9 @@ class TournamentController extends Controller
             'name'=>'required|min:5',
             'description'=>'required|min:15',
             'maxPlaces'=>'required',
-            'rewards'=>'required|min:15',
+            'rewards'=>'required|min:2',
             'requirements'=>'required|min:15',
-            'sportType'=>'required|min:5',
+            'sportType'=>'required|min:3',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
             'duration'=>'required',

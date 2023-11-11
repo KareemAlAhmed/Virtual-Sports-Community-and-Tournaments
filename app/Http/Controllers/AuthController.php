@@ -37,6 +37,7 @@ class AuthController extends Controller
         $response=[
             'user'=>$user,
             'token'=>$token,
+            'message'=>'User Created Successfuly'
         ];
         Auth::login($user);
         return redirect('/')->with('response',[response()->json($response,201)]);
@@ -52,7 +53,8 @@ class AuthController extends Controller
         $token=$user->createToken('myapptoken')->plainTextToken;
         $response=[
             'user'=>$user,
-            'token'=>$token
+            'token'=>$token,
+            'message'=>'Welcome Back ' . $user->name
         ];
         Auth::login($user);
        return redirect('/')->with('response',[response()->json($response,200)]);

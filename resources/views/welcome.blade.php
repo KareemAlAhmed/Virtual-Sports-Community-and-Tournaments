@@ -124,7 +124,7 @@
                     </div>
                 </div>        
                 @if(request()->session()->has('response'))
-                <p>has res</p>
+                <p>{{session('response')}}</p>
                 @endif
                 
     </body>

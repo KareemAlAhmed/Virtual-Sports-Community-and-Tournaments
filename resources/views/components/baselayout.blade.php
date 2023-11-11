@@ -53,7 +53,7 @@
                 display:flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 0Px 70px;
+                padding: 0px 165px;
                 background-color: #000000e6;
             }
     
@@ -132,38 +132,27 @@
             color: rgba(177, 177, 177, 0.3);
             }
 
-            input {
+            .flex-container input {
             border: none;
             border-bottom: solid rgb(143, 143, 143) 1px;
-
             margin-bottom: 30px;
-
             background: none ;
             background-color: transparent ;
             color: rgba(255, 255, 255, 0.555);
-
             height: 35px;
             width: 300px;
             }
             input:-internal-autofill-selected{
                 background-color: transparent !important;
             }
-            input#file-upload-button{
-                background-color: transparent;
-            }
             .submit-btn {
-            cursor: pointer;
-
-            border: none;
+                cursor: pointer;
+            border: none !important;
             border-radius: 8px;
-
             box-shadow: 2px 2px 7px #121212;
-
-            background: #121212;
-            color: rgba(255, 255, 255, 0.8);
-
-            width: 80px;
-
+            background: #121212 !important;
+            color: rgba(255, 255, 255, 0.8) !important;
+            width: 90px !important;
             transition: all 1s;
             }
 
@@ -185,8 +174,22 @@
                 font-size: 17px;
                 align-items: center;
             }
+            .tournPop{
+                width: 104%;
+                left: -5px;
+                z-index: 8;
+            }
+            .leaguePop,.gamePop{
+                width: 105%;
+                left: -5px;
+                z-index: 8;
+            }
+            .userOp{
+                top: 100%;
+            }
             .listContainer{
                 position: relative;
+                display: flex;
             }
             .popup a{
                 width: 100%;
@@ -201,6 +204,9 @@
                 height: 15px;
                 margin-top: 2px;
                 fill: white;
+            }
+            .tourns,.leagues,.games,.authen{
+                position: relative;
             }
         </style>
     </head>
@@ -217,28 +223,68 @@
                             <a href="/"> <h1>Kamkom</h1></a>
                         
                     
-                            <div class="flex2 text-end d-none d-md-block listContainer" x-data="{ open: false }" x-on:click.away="open = false" >
+                            <div class=" text-end d-none d-md-block listContainer" x-data="{ open: false,tournOpen: false,leagOpen: false,gameOpen: false }" x-on:click.away="open = false" >
                                 <a href="/"> <button class="siteLink" id="ins">Home</button></a>
-                                <a href="register"> <button class="siteLink">Tournaments</button></a>
-                                <a href="register"> <button class="siteLink">Leagues</button></a>
-                                <a href="login"> <button class="siteLink">Games</button></a>
+
+                                <div class="tourns">
+                                    <a href="/tournament/tops" @click="tournOpen = !open" @mouseover = "tournOpen = true" >
+                                        <button class="siteLink tourn">Tournaments</button>
+                                    </a>
+
+                                    <div x-show="tournOpen" class="popup tournPop" @mouseover = "tournOpen = true" @mouseover.away = "tournOpen = (e)=> e.target.className.split(' ')[1] == 'tourn' ? null : tournOpen = false">                                     
+                                        <a href="/tournament/tops">Top Tournaments</a>  
+                                        @auth
+                                            <a href="/tournament/mytourns">My Tournament</a>
+                                            <a href="/tournament/create">Create Tournament</a>
+                                        @endauth
+                                    </div>
+                                </div>
+
+
+                                <div class="leagues">
+                                    <a href="register" @click="leagOpen = !open" @mouseover = "leagOpen = true" >
+                                        <button class="siteLink league">Leagues</button>
+                                    </a>
+
+                                    <div x-show="leagOpen" class="popup leaguePop" @mouseover = "leagOpen = true" @mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
+                                        <a href="#">Top Leagues</a>  
+                                        <a href="#">My League</a>
+                                        <a href="#">Create League</a>
+                                    </div>
+                                </div>
+
+                                <div class="games">
+                                    <a href="register" @click="gameOpen = !open" @mouseover = "gameOpen = true" >
+                                    <button class="siteLink game">Games</button>
+                                    </a>
+
+                                    <div x-show="gameOpen" class="popup gamePop" @mouseover = "gameOpen = true" @mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'game' ? null : gameOpen = false">                                     
+                                        <a href="#">Top Games</a>  
+                                        <a href="#">My Games</a>
+                                        <a href="#">Create Game</a>
+                                    </div>
+                                </div>
+                                
                                 @guest
                                 <a href="register"> <button class="siteLink">REGISTER</button></a>
                                 <a href="login">   <button class=" siteLink">Login</button></a>
                                 @endguest
                                 @auth
-                                    <a href="#" onclick="(event)=> event.preventDefault();" @click="open = !open" @mouseover = "open = true" >   
+                                <div class="authen">
+                                    <a href="/ki" @click="(event)=> event.preventDefault();" @click="open = !open" @mouseover = "open = true" >   
                                         <button class="siteLink user">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
                                             {{ucfirst(auth()->user()->name)}}
                                         </button>
                                     </a>
-                                    <div x-show="open" class="popup" @mouseover = "open = true" @mouseover.away = "open = (e)=> e.target.className.split(' ')[1] == 'user' ? null : open = false">
+
+                                    <div x-show="open" class="popup userOp" @mouseover = "open = true" @mouseover.away = "open = (e)=> e.target.className.split(' ')[1] == 'user' ? null : open = false">
                                         @can('admin')
                                         <a href="#">Dashboard</a>
                                         @endcan
                                         <a href="#" @click="(e)=> e.preventDefault();document.getElementById('logout').submit()">Logout</a>
                                     </div>
+                                </div>       
                                 @endauth
                             </div> 
                         </div>

@@ -4,16 +4,16 @@
         <div class="flex-container">
             <div class="content-container">
                 <div class="form-container">
-                <form  method="POST" id="registerForm" action="https://vsct.xpertbotacademy.online/api/login">
+                <form  method="POST" id="registerForm" action="api/login">
                   @csrf
                     <h1>
-                    Register
+                    Login
                     </h1>
                     <br>
                     <br>
                     <span class="subtitle">EMAIL:</span>
                     <br>
-                    <input type="email" name="email" value="">
+                    <input type="email" name="email" value="" @readonly(auth()->user()== 'Kareem')>
                     <br>
                     <span class="subtitle">PASSWORD:</span>
                     <br>

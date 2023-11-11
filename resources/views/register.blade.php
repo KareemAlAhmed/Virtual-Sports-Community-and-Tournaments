@@ -3,7 +3,7 @@
         <div class="flex-container">
             <div class="content-container">
                 <div class="form-container">
-                    <form  method="POST" id="registerForm" action="https://vsct.xpertbotacademy.online/api/register">
+                    <form  method="POST" id="registerForm" action="api/register" enctype="multipart/form-data">
                     @csrf
                         <h1>
                         Register
