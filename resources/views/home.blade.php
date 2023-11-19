@@ -159,7 +159,6 @@ use App\Models\User;
     }
     .responseContent{
         padding: 10px 10px;
-        background-color: #4bb543;
         width: fit-content;
         display: flex;
         align-items: center;
@@ -179,7 +178,13 @@ use App\Models\User;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-    }
+        }
+        .success{
+            background-color: #4bb543;
+        }
+        .error{
+            background-color: red;
+        }
     label{
         cursor: pointer;
     }
@@ -285,7 +290,7 @@ $userPic= auth()->check() ? auth()->user()->image_url : 'images.jpeg';
                     @endphp
                     
                     
-                        @if($postDayNb == $todyDayNb && $postMonNb == $todyMonNb && $postHourNb == $currentHour && (int)$currentMin - (int)$postMinNb < 35)
+                        @if($postDayNb == $todyDayNb && $postMonNb == $todyMonNb && $postHourNb == $currentHour && (int)$currentMin - (int)$postMinNb < 59)
                             <x-post :post='$userposts[$j]'></x-post>
                         @endif
                     @endfor

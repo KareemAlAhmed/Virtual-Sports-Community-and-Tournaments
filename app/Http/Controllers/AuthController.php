@@ -47,7 +47,11 @@ class AuthController extends Controller
        $user= User::where('email',$request->input('email'))->first();
         //check the the password
         if(!$user || !Hash::check($request->input('password'),$user->password)){
-           return ['error'=>'the email or password doesnt exist!'] ;
+
+           return redirect()->back()->with('error',[response()->json([
+            'status'=>404,
+            'errors'=>'the email or password doesnt exist!'
+        ],400)]);
         }
         
         $token=$user->createToken('myapptoken')->plainTextToken;

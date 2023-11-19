@@ -208,11 +208,39 @@
             .tourns,.leagues,.games,.authen{
                 position: relative;
             }
+            .responseContent{
+        padding: 10px 10px;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        border-radius: 10px;
+    }
+    .responseMessage{
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        background-color: transparent;
+        color: white;
+        width: 100%;
+        height: 60px;
+        padding: 5px 25px 5px 10px;
+        font-size: 19px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        }
+        .success{
+            background-color: #4bb543;
+        }
+        .error{
+            background-color: red;
+        }
         </style>
     </head>
 
     <body class="antialiased">
-                <form method="POST" action="api/logout"  id="logout">
+                <form method="POST" action="../api/logout"  id="logout">
                     @csrf
                     <input type="hidden" >
 
@@ -266,8 +294,8 @@
                                 </div>
                                 
                                 @guest
-                                <a href="register"> <button class="siteLink">REGISTER</button></a>
-                                <a href="login">   <button class=" siteLink">Login</button></a>
+                                <a href="../register"> <button class="siteLink">REGISTER</button></a>
+                                <a href="../login">   <button class=" siteLink">Login</button></a>
                                 @endguest
                                 @auth
                                 <div class="authen">
@@ -282,7 +310,7 @@
                                         @can('admin')
                                         <a href="#">Dashboard</a>
                                         @endcan
-                                        <a href="#" @click="(e)=> e.preventDefault();document.getElementById('logout').submit()">Logout</a>
+                                        <a href="../" @click="(e)=> e.preventDefault();document.getElementById('logout').submit()">Logout</a>
                                     </div>
                                 </div>       
                                 @endauth
@@ -296,5 +324,24 @@
                 @dd(session('response'))
               <p>hello</p> 
              @endif -->
+
+             @if(request()->session()->has('response'))
+                
+                <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
+                    <p   class="responseContent success">{{session('response')[0]->original['message']}}</p>   
+                    @php
+                    session()->forget('response');
+                    @endphp
+                </div>
+            @endif
+    
+            @if(request()->session()->has('error'))
+                  <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
+                      <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
+                      @php
+                        session()->forget('error');
+                    @endphp
+                  </div>
+            @endif
     </body>
 </html>

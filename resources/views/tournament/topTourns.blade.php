@@ -73,7 +73,7 @@
 }
 .sideContainer{
     width: calc(100% - 755px);
-    min-height: 100%;
+    height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
 }
@@ -112,7 +112,7 @@ h4::after{
 use App\Models\Tournaments;
 use App\Models\Posts;
 
-$tourn=Tournaments::find(1);
+$tourn=Tournaments::first();
 $allTourn=Tournaments::all();
 
 $firstSide=Posts::find(31);
@@ -134,9 +134,9 @@ $thirdSide=Posts::find(36);
             <div class="tournsInfo">
                 <ul class="tournsList">
                     
-                    <x-tournSmallPost :tourn='$tourn'></x-tournSmallPost>
+                    <x-tournSmallPost :tourn='$tourn'  nojoined='true'></x-tournSmallPost>
                     @for( $i = 1; $i<count($allTourn);$i++)
-                        <x-tournSmallPost :tourn='$allTourn[$i]'></x-tournSmallPost>
+                        <x-tournSmallPost :tourn='$allTourn[$i]'  nojoined='true'></x-tournSmallPost>
                     @endfor
                 </ul>
 
@@ -149,9 +149,26 @@ $thirdSide=Posts::find(36);
                     </ul>
                 </div>
             </div>
-               
+           
             
         </div>
-        
+        @if(request()->session()->has('response'))
+                
+                <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
+                    <p   class="responseContent success">{{session('response')[0]->original['message']}}</p>   
+                    @php
+                    session()->forget('response');
+                    @endphp
+                </div>
+            @endif
+    
+            @if(request()->session()->has('error'))
+                  <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
+                      <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
+                      @php
+                        session()->forget('error');
+                    @endphp
+                  </div>
+            @endif
     </x-slot>
 </x-baselayout>

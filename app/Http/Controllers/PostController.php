@@ -66,7 +66,7 @@ class PostController extends Controller
            
                 return redirect('/')->with('error',[response()->json([
                     'status'=>404,
-                    'errors'=>['content'=>['The wanted Post doesnt exist']],
+                    'errors'=>'The wanted Post doesnt exist',
                 ],404)]);
         }else{
             
@@ -81,7 +81,7 @@ class PostController extends Controller
                  
             return redirect('/')->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>['content'=>['The wanted Post doesnt exist']],
+                'errors'=>'The wanted Post doesnt exist',
             ],404)]);
         }else{
             return redirect('/')->with('response',[response()->json([
@@ -125,7 +125,7 @@ class PostController extends Controller
                     }else{
                         return redirect('/')->with('error',[response()->json([
                             'status'=>404,
-                            'errors'=>['content'=>['There is no content or image or video']],
+                            'errors'=>'There is no content or image or video',
                         ],404)]);
                                                    
                     }
@@ -133,7 +133,7 @@ class PostController extends Controller
                 }else{
                     return redirect('/')->with('error',[response()->json([
                         'status'=>404,
-                        'errors'=>['content'=>['The wanted Post doesnt exist']],
+                        'errors'=>'The wanted Post doesnt exist',
                     ],404)]);
                 }
         }
@@ -149,7 +149,7 @@ class PostController extends Controller
         }else{
             return redirect('/')->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>['content'=>['The wanted Post doesnt exist']],
+                'errors'=>'The wanted Post doesnt exist',
             ],404)]);
         }
     }
@@ -164,7 +164,7 @@ class PostController extends Controller
         }else{
             return redirect('/')->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>['content'=>['The wanted Post doesnt exist']],
+                'errors'=>'The wanted Post doesnt exist',
             ],404)]);
         }
     }

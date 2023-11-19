@@ -64,11 +64,7 @@ class TournamentController extends Controller
                     'errors'=>'The organizer doesnt exist'
                 ],404)]);
             }
-        }
-
-       
-            
-        
+        }      
     }
 
     function show( $id){
@@ -88,14 +84,15 @@ class TournamentController extends Controller
     function edit($id){
         $tourn=Tournaments::find($id);
         if(!$tourn){
-            return response()->json([
-                'status'=>404,
-                'errors'=>'The wanted Tournament doesnt exist'],404);
+                return Redirect::back()->with('error',[response()->json([
+                    'status'=>404,
+                    'errors'=>'The wanted Tournament doesnt exist'
+                ],404)]);
         }else{
-            return response()->json([
+            return redirect('/tournament/create')->with('response',[response()->json([
                 'status'=>200,
-                'Tournament'=>$tourn
-            ],200);
+                'tournament'=>$tourn
+            ],200)]);
         }
     }
 
@@ -115,10 +112,10 @@ class TournamentController extends Controller
             'type'=>'required|min:5'
         ]);
         if($val->fails()){
-            return response()->json([
+            return redirect()->back()->with('error',[response()->json([
                 'status'=>422,
                 'errors'=>$val->messages()
-            ],422);
+            ],422)]);
         }else{
 
                 if($tourn){
@@ -135,17 +132,17 @@ class TournamentController extends Controller
                     $tourn->duration=$request->input('duration');
                     $tourn->type=$request->input('type');
                     $tourn->update();
-        
-                    return response()->json([
+
+                    return redirect('/tournament/' . $id)->with('response',[response()->json([
                         'status'=>200,
                         'message'=>'The Tournament updated successfuly',
                         'Tournament'=>$tourn
-                    ],200);
+                    ],200)]);
                 }else{
-                    return response()->json([
+                    return redirect()->back()->with('error',[response()->json([
                         'status'=>404,
                         'errors'=>'The wanted Tournament doesnt exist'
-                    ],404);
+                    ],404)]);
                 }
         }
     }
@@ -154,15 +151,17 @@ class TournamentController extends Controller
         $tourn=Tournaments::find($id);
         if($tourn){
             $tourn->delete();
-            return response()->json([
+
+            return redirect('/tournament/mytourns')->with('response',[response()->json([
                 'status'=>200,
                 'message'=>'The Tournament deleted successfuly',
-            ],200);
+            ],200)]);
         }else{
-            return response()->json([
+
+            return redirect()->back()->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>'The wanted Tournament doesnt exist'
-            ],404);
+                'errors'=>'The wanted Tournament cant be  deleted'
+            ],404)]);
         }
     }
 
@@ -288,7 +287,12 @@ class TournamentController extends Controller
                         array_push($nubs,$data);
                     }
                 }
-                return $nubs;
+                
+                return redirect()->back()->with('response',[response()->json([
+                    'status'=>200,
+                    'message'=>"The Tournament's Games created successfuly",
+                    'matches'=>$nubs
+                ],200)]);
             }else{
                 return response()->json([
                     'status'=>404,

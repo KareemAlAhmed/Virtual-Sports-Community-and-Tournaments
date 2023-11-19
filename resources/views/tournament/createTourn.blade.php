@@ -1,3 +1,4 @@
+@props(['tourn','foredit'])
 @if(request()->session()->has('error'))
 
                     @auth   
@@ -91,68 +92,134 @@ select{
         <div class="mainContainer">
         
                 <div class="form-container-tournCr">
-                <form  method="POST" id="createTournForm" action="../api/tournament/user/{{auth()->user()->id}}">
-                  @csrf
-                    <h1>
-                    Create Tournament
-                    </h1>
-                    <br>
-                    <div class="nameInpt">   
-                        <span>Name:</span>
-                        <input type="text" name="name" value="" @readonly(auth()->user()== 'Kareem')>
-                    </div>
-                    <div>
-                        <span>Description:</span>
-                        <input type="text" name="description" value="">
-                    </div>
-                    <div>
-                        <span>Rewards:</span>
-                        <input type="text" name="rewards" value="">
-                    </div>
-                    <div>
-                        <span>Requirements:</span>
-                        <input type="text" name="requirements" value="">
-                    </div>
-                    <div>
-                        <span>Max Places:</span>
-                        <input type="number" name="maxPlaces" value="">
-                    </div>
-                    <div>
-                        <span>Sport Type:</span>
-                        <input type="text" name="sportType" value="">
-                    </div>
-                    <div>
-                        <span>Type:</span>
-                        <select name="type">
-                            <option value="Friendly">Friendly</option>
-                            <option value="Ranked">Ranked</option>
-                        </select>
-                    </div>
-                    <div>
-                        <span>Start Date:</span>
-                        <input type="date" name="startDate" value="">
-                    </div>
-                    <div>
-                        <span>End Date:</span>
-                        <input type="date" name="endDate" value="">
-                    </div>
-                    <div>
-                        <span>Duration:</span>
-                        <input type="time" name="duration" value="">
-                    </div>
-                    <div>
-                        <span>Time Left:</span>
-                        <input type="time" name="timeLeft" value="">
-                    </div>     
-                    @if(request()->session()->has('error'))  
-                        <div class="errorslist">
-                        
+                @if($foredit)
+                    <form  method="POST" id="createTournForm" action="../api/tournament/{{$tourn['id']}}/edit">
+                    @csrf
+                    @method('PUT')
+                        <h1>
+                        Create Tournament
+                        </h1>
+                        <br>
+                        <div class="nameInpt">   
+                            <span>Name:</span>
+                            <input type="text" name="name" value="{{$tourn['name']}}" @readonly(auth()->user()== 'Kareem')>
                         </div>
-                    @endif
+                        <div>
+                            <span>Description:</span>
+                            <input type="text" name="description" value="{{$tourn['description']}}">
+                        </div>
+                        <div>
+                            <span>Rewards:</span>
+                            <input type="text" name="rewards" value="{{$tourn['rewards']}}">
+                        </div>
+                        <div>
+                            <span>Requirements:</span>
+                            <input type="text" name="requirements" value="{{$tourn['requirements']}}">
+                        </div>
+                        <div>
+                            <span>Max Places:</span>
+                            <input type="number" name="maxPlaces" value="{{$tourn['maxPlaces']}}">
+                        </div>
+                        <div>
+                            <span>Sport Type:</span>
+                            <input type="text" name="sportType" value="{{$tourn['sportType']}}">
+                        </div>
+                        <div>
+                            <span>Type:</span>
+                            <select name="type">
+                                <option value="Friendly">Friendly</option>
+                                <option value="Ranked">Ranked</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Start Date:</span>
+                            <input type="date" name="startDate" value="{{$tourn['startDate']}}">
+                        </div>
+                        <div>
+                            <span>End Date:</span>
+                            <input type="date" name="endDate" value="{{$tourn['endDate']}}">
+                        </div>
+                        <div>
+                            <span>Duration:</span>
+                            <input type="time" name="duration" value="{{$tourn['duration']}}">
+                        </div>
+                        <div>
+                            <span>Time Left:</span>
+                            <input type="time" name="timeLeft" value="{{$tourn['timeLeft']}}">
+                        </div>     
+                        @if(request()->session()->has('error'))  
+                            <div class="errorslist">
+                            
+                            </div>
+                        @endif
 
 
-                    <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
-                </form>
+                        <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
+                    </form>
+                @else
+                    <form  method="POST" id="createTournForm" action="../api/tournament/user/{{auth()->user()->id}}">
+                    @csrf
+                        <h1>
+                        Create Tournament
+                        </h1>
+                        <br>
+                        <div class="nameInpt">   
+                            <span>Name:</span>
+                            <input type="text" name="name" value="" @readonly(auth()->user()== 'Kareem')>
+                        </div>
+                        <div>
+                            <span>Description:</span>
+                            <input type="text" name="description" value="">
+                        </div>
+                        <div>
+                            <span>Rewards:</span>
+                            <input type="text" name="rewards" value="">
+                        </div>
+                        <div>
+                            <span>Requirements:</span>
+                            <input type="text" name="requirements" value="">
+                        </div>
+                        <div>
+                            <span>Max Places:</span>
+                            <input type="number" name="maxPlaces" value="">
+                        </div>
+                        <div>
+                            <span>Sport Type:</span>
+                            <input type="text" name="sportType" value="">
+                        </div>
+                        <div>
+                            <span>Type:</span>
+                            <select name="type">
+                                <option value="Friendly">Friendly</option>
+                                <option value="Ranked">Ranked</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Start Date:</span>
+                            <input type="date" name="startDate" value="">
+                        </div>
+                        <div>
+                            <span>End Date:</span>
+                            <input type="date" name="endDate" value="">
+                        </div>
+                        <div>
+                            <span>Duration:</span>
+                            <input type="time" name="duration" value="">
+                        </div>
+                        <div>
+                            <span>Time Left:</span>
+                            <input type="time" name="timeLeft" value="">
+                        </div>     
+                        @if(request()->session()->has('error'))  
+                            <div class="errorslist">
+                            
+                            </div>
+                        @endif
+
+
+                        <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
+                    </form>
+                @endif
                 </div>
                
         
