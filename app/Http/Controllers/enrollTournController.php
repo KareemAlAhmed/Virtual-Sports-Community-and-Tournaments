@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\enrollTourn;
+use App\Models\Games;
 use App\Models\Tournaments;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -70,6 +71,12 @@ class enrollTournController extends Controller
                 $tourn->remainingPlaces +=1;
                 $tourn->update();
 
+                $playerGames=Games::where('firstUserName',$user->name)->orWhere('secondUserName',$user->name)->get();
+                    for($i = 0; $i< count($playerGames);$i++){
+                        Games::find($playerGames[$i]['id'])->delete();
+                    }
+
+                
                 return redirect()->back()->with('response',[response()->json([
                     'status'=>200,
                     'message'=>'The user has been kicked out of the tournament'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Games;
 use App\Models\Tournaments;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -283,7 +284,7 @@ class TournamentController extends Controller
                             'status'=>'Not Started',
                             'competetionType'=>'Tournament'
                         ];
-                         (new GameController)->createTournGame($data,$id);
+                        (new GameController)->createTournGame($data,$id);
                         array_push($nubs,$data);
                     }
                 }
@@ -293,6 +294,8 @@ class TournamentController extends Controller
                     'message'=>"The Tournament's Games created successfuly",
                     'matches'=>$nubs
                 ],200)]);
+
+
             }else{
                 return response()->json([
                     'status'=>404,

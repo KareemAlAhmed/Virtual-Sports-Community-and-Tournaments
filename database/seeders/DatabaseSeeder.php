@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         $users=User::all();
         for($i = 0; $i < 6;$i++){
            $tourn=new enrollTournController();
-           $tourn->enroll($users[$i]['id'],3);
+           $tourn->enroll($users[$i]['id'],5);
         }
     }
 }

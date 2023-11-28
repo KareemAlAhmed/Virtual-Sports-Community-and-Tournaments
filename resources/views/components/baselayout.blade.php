@@ -260,10 +260,10 @@
                                     </a>
 
                                     <div x-show="tournOpen" class="popup tournPop" @mouseover = "tournOpen = true" @mouseover.away = "tournOpen = (e)=> e.target.className.split(' ')[1] == 'tourn' ? null : tournOpen = false">                                     
-                                        <a href="/tournament/tops">Top Tournaments</a>  
+                                        <a href="../tournament/tops">Top Tournaments</a>  
                                         @auth
-                                            <a href="/tournament/mytourns">My Tournament</a>
-                                            <a href="/tournament/create">Create Tournament</a>
+                                            <a href="../tournament/mytourns">My Tournament</a>
+                                            <a href="../tournament/create">Create Tournament</a>
                                         @endauth
                                     </div>
                                 </div>
@@ -282,13 +282,13 @@
                                 </div>
 
                                 <div class="games">
-                                    <a href="register" @click="gameOpen = !open" @mouseover = "gameOpen = true" >
-                                    <button class="siteLink game">Games</button>
+                                    <a href="../games/tops" @click="gameOpen = !open" @mouseover = "gameOpen = true" >
+                                    <button class="siteLink gameNav">Games</button>
                                     </a>
 
-                                    <div x-show="gameOpen" class="popup gamePop" @mouseover = "gameOpen = true" @mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'game' ? null : gameOpen = false">                                     
-                                        <a href="#">Top Games</a>  
-                                        <a href="#">My Games</a>
+                                    <div x-show="gameOpen" class="popup gamePop" @mouseover = "gameOpen = true" @mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'gameNav' ? null : gameOpen = false">                                     
+                                        <a href="../games/tops">Top Games</a>  
+                                        <a href="../games/mine">My Games</a>
                                         <a href="#">Create Game</a>
                                     </div>
                                 </div>

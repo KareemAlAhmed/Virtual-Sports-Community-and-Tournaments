@@ -367,7 +367,7 @@ class GameController extends Controller
             'timeLeft'=>'required',
             'startTime'=>'required',
             'date'=>'required|date',
-            'sportType'=>'required|min:5',
+            'sportType'=>'required|min:3',
             'gameType'=>'required|min:5',
             'status'=>'required|min:5',
             'competetionType'=>'min:5|required'

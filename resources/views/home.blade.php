@@ -188,12 +188,60 @@ use App\Models\User;
     label{
         cursor: pointer;
     }
+    .sideContainer{
+    width: calc(100% - 755px);
+    height: fit-content;
+    padding: 20px 23px ;
+    background-color: #191919;
+}
+.sideContainer h4{
+    margin: -23px;
+    margin-bottom: 0;
+    padding: 23px;
+    font-size: 1.22rem;
+    text-transform: uppercase;
+    font-family: Montserrat, sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    position: relative;
+    z-index: 1;
+}
+.sideContainer h4 span{
+    display: inline-block;
+    padding-right: 18px;
+    background-color: #191919;
+}
+.sideContainer h4::after{
+    content: "";
+    position: absolute;
+    display: block;
+    top: 36px;
+    right: 1px;
+    left: 30px;
+    height: 3px;
+    background-color: #fff;
+    z-index: -1;
+}
 </style>
 
-@php
-$userPic= auth()->check() ? auth()->user()->image_url : 'images.jpeg';
-@endphp
 
+@php
+
+use App\Models\Tournaments;
+use App\Models\Posts;
+
+use App\Http\Controllers\TournamentController;
+
+$userPic= auth()->check() ? auth()->user()->image_url : 'images.jpeg';
+
+
+$firstSide=Posts::find(31);
+$secondSide=Posts::find(35);
+$thirdSide=Posts::find(36);
+
+@endphp
 
 <x-baselayout>
     <x-slot name="content">
@@ -305,7 +353,16 @@ $userPic= auth()->check() ? auth()->user()->image_url : 'images.jpeg';
 
 
             </div>
-            <div class="sideContainer"></div>
+            
+
+            <div class="sideContainer">
+                    <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>
+                    <ul>
+                        <x-sidePost :firstSide='$firstSide' ></x-sidePost>
+                        <x-sidePost :firstSide='$secondSide'></x-sidePost>
+                        <x-sidePost :firstSide='$thirdSide'></x-sidePost>
+                    </ul>
+                </div>
            
 
         </div>

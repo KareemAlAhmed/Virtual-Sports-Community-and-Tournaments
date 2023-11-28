@@ -267,7 +267,7 @@ h2 svg:hover{
             font-size: 18px;
         }
         
-.memberNames,.games{
+.memberNames,.gamesHead{
     display: flex;
     margin-top: 9px;
     margin-left: 0;
@@ -276,7 +276,7 @@ h2 svg:hover{
     margin-bottom: 20px;
 }
 
-.memberNames::after,.games::after{
+.memberNames::after,.gamesHead::after{
     content: "";
     display: block;
     -webkit-box-flex: 100;
@@ -288,7 +288,7 @@ h2 svg:hover{
     transform: translateY(-12px);
     margin-bottom: -3px;
 }
-.memberNames h1,.games h1{
+.memberNames h1,.gamesHead h1{
     font-size: 30px;
 }
 .tg svg{
@@ -307,6 +307,14 @@ h2 svg:hover{
     border: none;
     cursor: pointer;
 }
+.gamesList{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 </style>
 
 @php
@@ -330,7 +338,7 @@ $thirdSide=Posts::find(36);
 
 @endphp
 
-@dd($tournGames)
+
 <x-baselayout>
     <x-slot name="content">
         <div class="mainContainer">
@@ -445,7 +453,16 @@ $thirdSide=Posts::find(36);
 
 
                     <div class="tournGames">
-                        <div class="games"><span><h1>Games</h1></span></div>
+                        <div class="gamesHead"><span><h1>Games</h1></span></div>
+                        <div class="gamesList">
+
+
+                            
+                            @for($i = 0; $i<count($tournGames);$i++)
+                            <x-gameSummary :tournGame='$tournGames[$i]'></x-gameSummary>
+                            @endfor
+                        </div>
+
                     </div>
                 </div>
 

@@ -51,7 +51,15 @@ Route::get('/tournament/mytourns', function () {
 });
 Route::get('/tournament/{id}', function ( $id) {
     $num=(int)$id;
+
     return view('components.tournamentPage',['tourn'=>Tournaments::find($num)]);
+});
+
+Route::get('/games/tops', function () {
+    return view('games.topGames',['info'=>request()]);
+});
+Route::get('/games/mine', function () {
+    return view('games.myGames',['info'=>request()]);
 });
 
 // Route::post(s'register',[AuthController::class,'register']); // to register a user
