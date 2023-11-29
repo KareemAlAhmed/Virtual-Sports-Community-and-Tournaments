@@ -109,11 +109,12 @@ h4::after{
 }
 </style>
 @php
-use App\Models\Tournaments;
-use App\Models\Posts;
 
-$tourn=Tournaments::first();
-$allTourn=Tournaments::all();
+use App\Models\Posts;
+use App\Models\Leagues;
+
+$league=Leagues::first();
+$allLeague=Leagues::all();
 
 $firstSide=Posts::find(31);
 $secondSide=Posts::find(35);
@@ -128,18 +129,21 @@ $thirdSide=Posts::find(36);
             <ul class="nk-breadcrumbs">
                 <li><a rel="v:url" href="/">Home</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>
-                <li><span><h1>Tournaments</h1></span></li>
+                <li><span><h1>Leagues</h1></span></li>
             </ul>
             
             <div class="tournsInfo">
                 <ul class="tournsList">
                     
-                    <x-smallCardPost :data='$tourn'  nojoined='true' compType='tournament'></x-smallCardPost>
-                    @for( $i = 1; $i<count($allTourn);$i++)
-                        <x-smallCardPost :data='$allTourn[$i]'  nojoined='true' compType='tournament'></x-smallCardPost>
+                    <x-smallCardPost :data='$league'  nojoined='true' compType='league'></x-smallCardPost>
+                    @for( $i = 1; $i<count($allLeague);$i++)
+                        <x-smallCardPost :data='$allLeague[$i]'  nojoined='true' compType='league'></x-smallCardPost>
                     @endfor
                 </ul>
 
+
+
+                
                 <div class="sideContainer">
                     <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>
                     <ul>
@@ -152,8 +156,15 @@ $thirdSide=Posts::find(36);
            
             
         </div>
+
+
+
+
+
+
+
+
         @if(request()->session()->has('response'))
-                
                 <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                     <p   class="responseContent success">{{session('response')[0]->original['message']}}</p>   
                     @php

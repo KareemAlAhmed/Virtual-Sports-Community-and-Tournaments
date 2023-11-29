@@ -270,14 +270,14 @@
 
 
                                 <div class="leagues">
-                                    <a href="register" @click="leagOpen = !open" @mouseover = "leagOpen = true" >
+                                    <a href="../league/tops" @click="leagOpen = !open" @mouseover = "leagOpen = true" >
                                         <button class="siteLink league">Leagues</button>
                                     </a>
 
                                     <div x-show="leagOpen" class="popup leaguePop" @mouseover = "leagOpen = true" @mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
-                                        <a href="#">Top Leagues</a>  
+                                        <a href="../league/tops">Top Leagues</a>  
                                         <a href="#">My League</a>
-                                        <a href="#">Create League</a>
+                                        <a href="../league/create">Create League</a>
                                     </div>
                                 </div>
 
@@ -288,8 +288,10 @@
 
                                     <div x-show="gameOpen" class="popup gamePop" @mouseover = "gameOpen = true" @mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'gameNav' ? null : gameOpen = false">                                     
                                         <a href="../games/tops">Top Games</a>  
-                                        <a href="../games/mine">My Games</a>
-                                        <a href="#">Create Game</a>
+                                        @auth
+                                            <a href="../games/mine">My Games</a>
+                                            <!-- <a href="../games/create">Create Game</a> -->
+                                        @endauth
                                     </div>
                                 </div>
                                 

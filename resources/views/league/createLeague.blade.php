@@ -93,11 +93,11 @@ select{
         
                 <div class="form-container-tournCr">
                 @if($foredit)
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/{{$tourn['id']}}/edit">
+                    <form  method="POST" id="createTournForm" action="../api/tournament/{{$tourn['id']}}/edit">
                     @csrf
                     @method('PUT')
                         <h1>
-                        Create Tournament
+                        Create Tournament1
                         </h1>
                         <br>
                         <div class="nameInpt">   
@@ -157,15 +157,15 @@ select{
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @else
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/user/{{auth()->user()->id}}">
+                    <form  method="POST" id="createTournForm" action="../api/league/user/{{auth()->user()->id}}">
                     @csrf
                         <h1>
-                        Create Tournament
+                        Create League
                         </h1>
                         <br>
                         <div class="nameInpt">   
                             <span>Name:</span>
-                            <input type="text" name="name" value="" @readonly(auth()->user()== 'Kareem')>
+                            <input type="text" name="name" value="">
                         </div>
                         <div>
                             <span>Description:</span>
@@ -188,13 +188,6 @@ select{
                             <input type="text" name="sportType" value="">
                         </div>
                         <div>
-                            <span>Type:</span>
-                            <select name="type">
-                                <option value="Friendly">Friendly</option>
-                                <option value="Ranked">Ranked</option>
-                            </select>
-                        </div>
-                        <div>
                             <span>Start Date:</span>
                             <input type="date" name="startDate" value="">
                         </div>
@@ -202,14 +195,7 @@ select{
                             <span>End Date:</span>
                             <input type="date" name="endDate" value="">
                         </div>
-                        <div>
-                            <span>Duration:</span>
-                            <input type="time" name="duration" value="">
-                        </div>
-                        <div>
-                            <span>Time Left:</span>
-                            <input type="time" name="timeLeft" value="">
-                        </div>     
+     
                         @if(request()->session()->has('error'))
                             <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                                 <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 

@@ -93,11 +93,11 @@ select{
         
                 <div class="form-container-tournCr">
                 @if($foredit)
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/{{$tourn['id']}}/edit">
+                    <form  method="POST" id="createGameForm" action="../api/tournament/{{$tourn['id']}}/edit">
                     @csrf
                     @method('PUT')
                         <h1>
-                        Create Tournament
+                        Create Game
                         </h1>
                         <br>
                         <div class="nameInpt">   
@@ -157,50 +157,54 @@ select{
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @else
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/user/{{auth()->user()->id}}">
+                    <form  method="POST" id="createGameForm" action="../api/game/{tournOrLeagueId}/create">
                     @csrf
                         <h1>
-                        Create Tournament
+                        Create Game
                         </h1>
                         <br>
                         <div class="nameInpt">   
-                            <span>Name:</span>
-                            <input type="text" name="name" value="" @readonly(auth()->user()== 'Kareem')>
+                            <span>First Player:</span>
+                            <input type="text" name="firstUserName" value="">
                         </div>
                         <div>
-                            <span>Description:</span>
-                            <input type="text" name="description" value="">
+                            <span>Second Player:</span>
+                            <input type="text" name="secondUserName" value="">
                         </div>
                         <div>
-                            <span>Rewards:</span>
-                            <input type="text" name="rewards" value="">
+                            <span>First Player Score:</span>
+                            <input type="text" name="firstUserScore" value="">
                         </div>
                         <div>
-                            <span>Requirements:</span>
-                            <input type="text" name="requirements" value="">
+                            <span>Second Player Score:</span>
+                            <input type="text" name="secondUserScore" value="">
                         </div>
                         <div>
-                            <span>Max Places:</span>
-                            <input type="number" name="maxPlaces" value="">
+                            <span>Status:</span>
+                            <input type="text" name="status" value="">
+                        </div>
+                        <div>
+                            <span>Game Type:</span>
+                            <input type="number" name="gameType" value="">
                         </div>
                         <div>
                             <span>Sport Type:</span>
                             <input type="text" name="sportType" value="">
                         </div>
                         <div>
-                            <span>Type:</span>
-                            <select name="type">
+                            <span>Competetion Type:</span>
+                            <select name="competetionType">
                                 <option value="Friendly">Friendly</option>
                                 <option value="Ranked">Ranked</option>
                             </select>
                         </div>
                         <div>
-                            <span>Start Date:</span>
-                            <input type="date" name="startDate" value="">
+                            <span>Date:</span>
+                            <input type="date" name="date" value="">
                         </div>
                         <div>
-                            <span>End Date:</span>
-                            <input type="date" name="endDate" value="">
+                            <span>Start Time:</span>
+                            <input type="time" name="startTime" value="">
                         </div>
                         <div>
                             <span>Duration:</span>
@@ -210,12 +214,9 @@ select{
                             <span>Time Left:</span>
                             <input type="time" name="timeLeft" value="">
                         </div>     
-                        @if(request()->session()->has('error'))
-                            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
-                                <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
-                                @php
-                                    session()->forget('error');
-                                @endphp
+                        @if(request()->session()->has('error'))  
+                            <div class="errorslist">
+                            
                             </div>
                         @endif
 

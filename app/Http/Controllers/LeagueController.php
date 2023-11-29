@@ -6,6 +6,7 @@ use App\Models\Games;
 use App\Models\Leagues;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class LeagueController extends Controller
@@ -16,7 +17,7 @@ class LeagueController extends Controller
             'name'=>'required|min:5|unique:leagues',
             'description'=>'required|min:15',
             'maxPlaces'=>'required',
-            'rewards'=>'required|min:15',
+            'rewards'=>'required|min:3',
             'requirements'=>'required|min:15',
             'sportType'=>'required|min:5',
             'startDate'=>'required|date',
@@ -24,10 +25,10 @@ class LeagueController extends Controller
         ]);
 
         if($val->fails()){
-            return response()->json([
+            return Redirect::back()->with('error',[response()->json([
                 'status'=>402,
-                'errors'=>$val->messages()
-            ],402); 
+                'errors'=>$val->messages()->toJson()
+            ],402)]);
         }else{
             if($user){
                 $league=new Leagues();
@@ -43,22 +44,22 @@ class LeagueController extends Controller
                 $league->organizer_id=$id;
                 $league->save();
             
-                return response()->json([
+
+                return redirect('/')->with('response',[response()->json([
                     'status'=>201,
                     'message'=>'The League created successfuly',
                     'league'=>$league
-                ],201);
+                ],201)]);
+
+
             }else{
-                return response()->json([
+                return Redirect::back()->with('error',[response()->json([
                     'status'=>404,
                     'errors'=>'The organizer doesnt exist'
-                ],404);
+                ],404)]);
             }
         }
-
        
-            
-        
     }
 
     function show( $id){

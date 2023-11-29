@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Models\Games;
+use App\Models\Leagues;
 use App\Models\Tournaments;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +46,9 @@ Route::get('/tournament/mytourns', function () {
 Route::get('/tournament/tops', function () {
     return view('tournament.topTourns',['info'=>request()]);
 });
+Route::get('/league/tops', function () {
+    return view('league.topLeagues',['info'=>request()]);
+});
 Route::get('/tournament/mytourns', function () {
     $joined=new AuthController();
     $created=Tournaments::where('organizer_id',Auth::user()->id)->get();
@@ -52,7 +57,12 @@ Route::get('/tournament/mytourns', function () {
 Route::get('/tournament/{id}', function ( $id) {
     $num=(int)$id;
 
-    return view('components.tournamentPage',['tourn'=>Tournaments::find($num)]);
+    return view('tournament.tournamentPage',['tourn'=>Tournaments::find($num)]);
+});
+Route::get('/league/{id}', function ( $id) {
+    $num=(int)$id;
+
+    return view('league.leaguePage',['league'=>Leagues::find($num)]);
 });
 
 Route::get('/games/tops', function () {
@@ -61,6 +71,19 @@ Route::get('/games/tops', function () {
 Route::get('/games/mine', function () {
     return view('games.myGames',['info'=>request()]);
 });
+// Route::get('/games/create', function () {
+//     $game=new Games;
+//     $foredit=false;
+
+//     return view('games.createGame',['info'=>request(),'game'=>$game,'foredit'=>$foredit]);
+// });
 
 // Route::post(s'register',[AuthController::class,'register']); // to register a user
 
+Route::get('/league/create', function () {
+    $league=new Leagues();
+    $foredit=false;
+
+    
+    return view('league.createLeague',['info'=>request(),'league'=>$league,'foredit'=>$foredit]);
+});
