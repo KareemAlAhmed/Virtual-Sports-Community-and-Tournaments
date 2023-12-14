@@ -459,7 +459,7 @@ $thirdSide=Posts::find(36);
 
                             
                             @for($i = 0; $i<count($tournGames);$i++)
-                            <x-gameSummary :tournGame='$tournGames[$i]'></x-gameSummary>
+                            <x-gameSummary :tournGame='$tournGames[$i]' :leagueGame="null"></x-gameSummary>
                             @endfor
                         </div>
 

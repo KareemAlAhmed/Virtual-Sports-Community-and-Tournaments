@@ -226,4 +226,11 @@ class AuthController extends Controller
         
         
     }
+
+
+    function delete(int $id){
+        User::find($id)->delete();
+        return redirect()->back()->with('response',[response()->json(['message'=>'The User is removed'],200)]);
+
+    }
 }

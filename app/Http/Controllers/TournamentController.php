@@ -297,16 +297,16 @@ class TournamentController extends Controller
 
 
             }else{
-                return response()->json([
+                return Redirect::back()->with('error',[response()->json([
                     'status'=>404,
-                    'error'=>'Not enough player to make a game'
-                ],404);
+                    'errors'=>'Not enough player to make a game'
+                ],404)]);
             }
         }else{
-            return response()->json([
+            return Redirect::back()->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>'The wanted Tournament doesnt exist'
-            ],404);
+                'errors'=>'The wanted League doesnt exist'
+            ],404)]);
         }
     }
 }

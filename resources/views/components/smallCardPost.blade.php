@@ -69,11 +69,17 @@ $startDate = strtotime($start);
         </li>
     </ul>             
    @auth
-
-   <form method="post" style="display: none;" id="userAdd{{$data['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$data['id']}}">
-        @csrf
-    
-    </form>
+                @if($compType == 'league')
+                <form method="post" style="display: none;" id="userAdd{{$data['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$data['id']}}">
+                        @csrf
+                    
+                </form>
+                @else
+                <form method="post" style="display: none;" id="userAdd{{$data['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$data['id']}}">
+                        @csrf
+                    
+                </form>
+                @endif
     @endauth
 </li><!-- #post-## -->
 

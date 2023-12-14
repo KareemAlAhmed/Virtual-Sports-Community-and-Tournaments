@@ -79,14 +79,17 @@ class LeagueController extends Controller
     function edit($id){
         $league=Leagues::find($id);
         if(!$league){
-            return response()->json([
-                'status'=>404,
-                'errors'=>'The wanted League doesnt exist'],404);
+
+                return Redirect::back()->with('error',[response()->json([
+                    'status'=>404,
+                    'errors'=>'The wanted League doesnt exist'
+                ],404)]);
         }else{
-            return response()->json([
-                'status'=>200,
-                'League'=>$league
-            ],200);
+
+            return redirect('/league/create')->with('response',[response()->json([
+                'status'=>201,
+                'league'=>$league
+            ],201)]);
         }
     }
 
@@ -96,17 +99,17 @@ class LeagueController extends Controller
             'name'=>'required|min:5',
             'description'=>'required|min:15',
             'maxPlaces'=>'required',
-            'rewards'=>'required|min:15',
+            'rewards'=>'required|min:3',
             'requirements'=>'required|min:15',
             'sportType'=>'required|min:5',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
         ]);
         if($val->fails()){
-            return response()->json([
-                'status'=>422,
-                'errors'=>$val->messages()
-            ],422);
+            return Redirect::back()->with('error',[response()->json([
+                'status'=>402,
+                'errors'=>$val->messages()->toJson()
+            ],402)]);
         }else{
                 if($league){
                     $league->name=$request->input('name');
@@ -120,16 +123,16 @@ class LeagueController extends Controller
                     $league->endDate=$request->input('endDate');
                     $league->update();
         
-                    return response()->json([
-                        'status'=>200,
-                        'message'=>'The League updated successfuly',
-                        'League'=>$league
-                    ],200);
+                    return redirect('/league/tops')->with('response',[response()->json([
+                        'status'=>201,
+                        'message'=>'The League created successfuly',
+                        'league'=>$league
+                    ],201)]);
                 }else{
-                    return response()->json([
+                    return Redirect::back()->with('error',[response()->json([
                         'status'=>404,
                         'errors'=>'The wanted League doesnt exist'
-                    ],404);
+                    ],404)]);
                 }
         }
     }
@@ -138,15 +141,16 @@ class LeagueController extends Controller
         $league=Leagues::find($id);
         if($league){
             $league->delete();
-            return response()->json([
+
+            return redirect('/league/tops')->with('response',[response()->json([
                 'status'=>200,
                 'message'=>'The League deleted successfuly',
-            ],200);
+            ],200)]);
         }else{
-            return response()->json([
+            return Redirect::back()->with('error',[response()->json([
                 'status'=>404,
                 'errors'=>'The wanted League doesnt exist'
-            ],404);
+            ],404)]);
         }
     }
 
@@ -274,21 +278,29 @@ class LeagueController extends Controller
                         array_push($nubs,$data);
                     }
                 }
-                return response()->json([
+                
+
+                return redirect()->back()->with('response',[response()->json([
                     'status'=>200,
-                    'message'=>'The Games created successfuly'
-                ],200);
+                    'message'=>"The League's Games created successfuly",
+                    'matches'=>$nubs
+                ],200)]);
             }else{
-                return response()->json([
+
+                return Redirect::back()->with('error',[response()->json([
                     'status'=>404,
-                    'error'=>'Not enough player to make a game'
-                ],404);
+                    'errors'=>'Not enough player to make a game'
+                ],404)]);
+
             }
         }else{
-            return response()->json([
+
+            return Redirect::back()->with('error',[response()->json([
                 'status'=>404,
                 'errors'=>'The wanted League doesnt exist'
-            ],404);
+            ],404)]);
+
+
         }
         
     }

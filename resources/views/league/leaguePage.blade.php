@@ -317,6 +317,8 @@ h2 svg:hover{
 
 </style>
 
+
+
 @php
 
 use App\Models\Leagues;
@@ -345,7 +347,7 @@ $thirdSide=Posts::find(36);
             <ul class="nk-breadcrumbs">
                 <li><a rel="v:url" href="/">Home</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
-                <li><a rel="v:url" href="../tournament/tops">Leagues</a></li>
+                <li><a rel="v:url" href="../league/tops">Leagues</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
                 <li><span><h1>{{$league['name']}}</h1></span></li>
             </ul>
@@ -369,7 +371,7 @@ $thirdSide=Posts::find(36);
                             </li>
                         </ul>  
                         @auth
-                            <form method="post" style="display: none;" id="userAdd{{$league['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$league['id']}}">
+                            <form method="post" style="display: none;" id="userAdd{{$league['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}">
                                 @csrf                       
                             </form>
                         @endauth
@@ -379,22 +381,22 @@ $thirdSide=Posts::find(36);
     
                     <div class="actions">
                         @can('admin')
-                            <form method="post" action="../api/tournament/{{$league['id']}}/createGames" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/league/{{$league['id']}}/createGames" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="Generate Matches">
                             </form>
-                            <form method="post" action="../api/tournament/delete/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/league/delete/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 @method('DELETE')
                                 <input type="submit" name="submit" class="sbt" value="DELETE">
                             </form>
-                            <form method="get" action="../api/tournament/{{$league['id']}}/edit" style="display: flex;justify-content: flex-end;">
+                            <form method="get" action="../api/league/{{$league['id']}}/edit" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="EDIT">
                             </form>
                         @endcan
                         @auth
-                            <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="JOIN">
                             </form>
@@ -406,7 +408,7 @@ $thirdSide=Posts::find(36);
 
 
                     <div class="userNames">
-                        <div class="memberNames"><span><h1>Tournament Members</h1></span></div>
+                        <div class="memberNames"><span><h1>League Members</h1></span></div>
                         <table class="tg">
                             <thead>
                                 <tr>
@@ -428,7 +430,7 @@ $thirdSide=Posts::find(36);
 
                                             @if(auth()->user()?->can('admin') || $league['organizer_id'] == auth()->user()?->id)
                                             <td class="tg-0lax">
-                                             <form method="post" action="../api/kick/user/{{$member['id']}}/tournament/{{$league['id']}}">
+                                             <form method="post" action="../api/kick/user/{{$member['id']}}/league/{{$league['id']}}">
                                                 @csrf   
                                                 @method('DELETE')
                                                 <button >
@@ -456,7 +458,7 @@ $thirdSide=Posts::find(36);
 
                             
                             @for($i = 0; $i<count($leagueGames);$i++)
-                            <x-gameSummary :tournGame='$leagueGames[$i]'></x-gameSummary>
+                            <x-gameSummary :leagueGame="$leagueGames[$i]" :tournGame='null'></x-gameSummary>
                             @endfor
                         </div>
 

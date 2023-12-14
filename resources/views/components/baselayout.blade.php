@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -276,7 +276,7 @@
 
                                     <div x-show="leagOpen" class="popup leaguePop" @mouseover = "leagOpen = true" @mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
                                         <a href="../league/tops">Top Leagues</a>  
-                                        <a href="#">My League</a>
+                                        <a href="../league/myleagues">My League</a>
                                         <a href="../league/create">Create League</a>
                                     </div>
                                 </div>
@@ -296,7 +296,7 @@
                                 </div>
                                 
                                 @guest
-                                <a href="../register"> <button class="siteLink">REGISTER</button></a>
+                                <a href="../register"> <button class="siteLink">Register</button></a>
                                 <a href="../login">   <button class=" siteLink">Login</button></a>
                                 @endguest
                                 @auth
@@ -310,7 +310,7 @@
 
                                     <div x-show="open" class="popup userOp" @mouseover = "open = true" @mouseover.away = "open = (e)=> e.target.className.split(' ')[1] == 'user' ? null : open = false">
                                         @can('admin')
-                                        <a href="#">Dashboard</a>
+                                        <a href="../dashboard/users">Dashboard</a>
                                         @endcan
                                         <a href="../" @click="(e)=> e.preventDefault();document.getElementById('logout').submit()">Logout</a>
                                     </div>

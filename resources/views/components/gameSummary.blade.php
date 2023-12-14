@@ -1,17 +1,33 @@
-@props(['tournGame'])
+@props(['tournGame','leagueGame'])
 
 @php
 use App\Models\User;
 use App\Models\Tournaments;
-$user1=User::where('name',$tournGame['firstUserName'])->get();
-$user1=$user1[0];
+use App\Models\Leagues;
 
-$user2=User::where('name',$tournGame['secondUserName'])->get();
-$user2=$user2[0];
+if($tournGame != null){
+    $user1=User::where('name',$tournGame['firstUserName'])->get();
+    $user1=$user1[0];
 
-$oldDate =  $tournGame['date'] . " " . $tournGame['startTime'];
-$timestamp = strtotime($oldDate);
-$newDate=date('F d,Y H:i a', $timestamp);
+    $user2=User::where('name',$tournGame['secondUserName'])->get();
+    $user2=$user2[0];
+
+    $oldDate =  $tournGame['date'] . " " . $tournGame['startTime'];
+    $timestamp = strtotime($oldDate);
+    $newDate=date('F d,Y H:i a', $timestamp);
+}
+
+if($leagueGame !=null){
+    $user1=User::where('name',$leagueGame['firstUserName'])->get();
+    $user1=$user1[0];
+
+    $user2=User::where('name',$leagueGame['secondUserName'])->get();
+    $user2=$user2[0];
+
+    $oldDate =  $leagueGame['date'] . " " . $leagueGame['startTime'];
+    $timestamp = strtotime($oldDate);
+    $newDate=date('F d,Y H:i a', $timestamp);
+}
 @endphp
 
 
@@ -82,7 +98,10 @@ $newDate=date('F d,Y H:i a', $timestamp);
 </style>
 
 <div class="game">
+@if($tournGame != null)
     <div class="gameInfo">
+
+        
         <div class="firstUser">
             <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>">
             <p class="playerName">{{$tournGame['firstUserName']}}</p>
@@ -109,6 +128,41 @@ $newDate=date('F d,Y H:i a', $timestamp);
                 {{ Tournaments::find($tournGame['tournaments_id'])->name   }}</a>                
         </li>
     </ul>
+@else
+
+
+<div class="gameInfo">
+
+        
+<div class="firstUser">
+    <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>">
+    <p class="playerName">{{$leagueGame['firstUserName']}}</p>
+</div>
+<div class="timeAndResult">
+    <a href="#" style="text-align: center;">
+      <span class="gameDate">  {{$newDate}} </span>
+      <span class="scores">{{ $leagueGame['firstUserScore'] == Null ? 'VS' : $leagueGame['firstUserScore'] . ' : ' . $leagueGame['secondUserScore']}}</span>
+    </a>
+
+</div>
+<div class="secondUser">
+    <p class="playerName">{{$leagueGame['secondUserName']}}</p>
+    <img src="<?php echo asset('storage/UserProfilePic/' . $user2['image_url']) ?>">
+</div>
+</div>
+<ul>
+<li>
+    <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="https://wp.nkdev.info/squadforce/wp-content/uploads/2019/10/game-dota-2.svg" class="attachment-medium size-medium" alt="" loading="lazy"> 
+        {{$leagueGame['sportType']}}</a>                
+</li>
+<li>
+    <strong>League</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"> 
+        {{ Leagues::find($leagueGame['leagues_id'])->name   }}</a>                
+</li>
+</ul>
+
+
+@endif
 </div>
 
 

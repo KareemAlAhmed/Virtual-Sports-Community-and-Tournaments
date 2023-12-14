@@ -84,6 +84,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::put('game/{gameId}/member/{userId}/winner','setWinner'); // to save that a user won a game
         Route::get('game/{gameId}/winner','getWinner'); // to get the user that won a specific game
     });
+    Route::delete('user/{id}/delete',[AuthController::class,'delete']); // to get the acheivements of a specific user
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
