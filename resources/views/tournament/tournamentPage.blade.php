@@ -85,7 +85,7 @@
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -122,7 +122,7 @@ h4::after{
 }
 
 .centerContainer{
-    width: 730px;
+    width: 65%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -314,7 +314,30 @@ h2 svg:hover{
     flex-wrap: wrap;
     gap: 20px;
 }
+li strong{
+    cursor: pointer;
+}
+li strong:hover{
+    text-decoration: underline;
+}
+.noresult{
+    text-align: center;
+    font-size: 22px !important;
+    font-weight: bold;
+}
+.nogame{
+    width: 100%;
+    height: 50px;
+    background-color: #121212;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
 
+}
 </style>
 
 @php
@@ -358,8 +381,8 @@ $thirdSide=Posts::find(36);
                                 <strong>Dates</strong>: {{date('F  j, Y', strtotime($tourn['startDate']))}}  -   {{date('F  j, Y', strtotime($tourn['endDate']))}}  
                             </li>
                             <li>
-                                <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="https://wp.nkdev.info/squadforce/wp-content/uploads/2019/10/game-dota-2.svg" class="attachment-medium size-medium" alt="" loading="lazy"> 
-                                    {{$tourn['sportType']}}</a>                
+                                <strong>Game</strong>: <img width="200" height="200" src="<?php echo asset("storage/gamesLogo/" . $tourn['sportType'].".png" )?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
+                                    {{$tourn['sportType']}}                
                             </li>
                             <li>
                                 <strong>Organizer</strong>: {{$organizerName}}  
@@ -422,6 +445,7 @@ $thirdSide=Posts::find(36);
                                 </tr>
                             </thead>
                             <tbody>
+                                    @if(count($tournMembers) > 0)
                                     @foreach($tournMembers as $member)
                                         <tr>
                                             <td class="tg-0lax">{{$member['id']}}<br></td>
@@ -447,6 +471,11 @@ $thirdSide=Posts::find(36);
 
                                         </tr>
                                     @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="noresult">There is No Member Participated Yet.</td>
+                                        </tr>
+                                    @endif
                             </tbody>
                         </table>
                     </div>
@@ -457,10 +486,14 @@ $thirdSide=Posts::find(36);
                         <div class="gamesList">
 
 
-                            
+                        @if(count($tournGames) > 0)        
                             @for($i = 0; $i<count($tournGames);$i++)
-                            <x-gameSummary :tournGame='$tournGames[$i]' :leagueGame="null"></x-gameSummary>
+                                <x-gameSummary :tournGame='$tournGames[$i]' :leagueGame="null"></x-gameSummary>
                             @endfor
+                        @else
+                            <p class="nogame">There Is No Game Yet.</p>
+                        @endif
+
                         </div>
 
                     </div>

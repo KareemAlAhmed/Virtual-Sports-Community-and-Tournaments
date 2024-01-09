@@ -31,10 +31,13 @@ $users=User::all()
             word-break:normal;
         }
         .tg .tg-0lax{
-            text-align: left;
+            text-align: center;
             vertical-align: top;
             font-size: 19px;
-
+            cursor: pointer;
+        }
+        .tg .tg-0lax:hover{
+            background-color: #1f1f1f;
         }
         .tg tbody tr{
             height: 50px;

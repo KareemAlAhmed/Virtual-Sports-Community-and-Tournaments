@@ -87,7 +87,7 @@ $joinedLeague=$joined->original['Leagues'];
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -131,7 +131,9 @@ h4::after{
     gap: 20px;
     list-style: none;
 }
-
+.centerContainer{
+    width: 65%;
+}
 .joined ,.created {
     display: flex;
     margin-top: 9px;

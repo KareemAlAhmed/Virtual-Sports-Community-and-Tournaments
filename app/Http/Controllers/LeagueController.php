@@ -19,7 +19,7 @@ class LeagueController extends Controller
             'maxPlaces'=>'required',
             'rewards'=>'required|min:3',
             'requirements'=>'required|min:15',
-            'sportType'=>'required|min:5',
+            'sportType'=>'required|min:2',
             'startDate'=>'required|date',
             'endDate'=>'required|date'
         ]);

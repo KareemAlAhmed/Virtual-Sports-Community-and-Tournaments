@@ -51,6 +51,8 @@ class GameController extends Controller
                         $game->competetionType=$request->input('competetionType');
                         $game->status=$request->input('status');
                         $game->tournaments_id=$id;
+                        $game->user_id=$user1->id;
+                        $game->user2_id=$user2->id;
                         if($request->input('status')=='finished'){
                             if($game->firstUserScore > $game->secondUserScore){
                                 $game->winner_id=$user1->id;
@@ -95,6 +97,8 @@ class GameController extends Controller
                             $game->competetionType=$request->input('competetionType');
                             $game->status=$request->input('status');
                             $game->leagues_id=$id;
+                            $game->user_id=$user1->id;
+                            $game->user2_id=$user2->id;
                             if($request->input('status')=='finished'){
                                 if($game->firstUserScore > $game->secondUserScore){
                                     $game->winner_id=$user1->id;
@@ -196,6 +200,8 @@ class GameController extends Controller
                             $games->status=$request->input('status');
                             $games->tournaments_id=(int)$tournLeagueId;
                             $games->leagues_id !='' ? $games->leagues_id=null :null;
+                            $games->user_id=$user1->id;
+                            $games->user2_id=$user2->id;
                             if($request->input('status')=='finished'){
                                 if($games->firstUserScore > $games->secondUserScore){
                                     $games->winner_id=$user1->id;
@@ -247,6 +253,8 @@ class GameController extends Controller
                                 $games->status=$request->input('status');
                                 $games->leagues_id=(int)$tournLeagueId;
                                  $games->tournaments_id !='' ? $games->tournaments_id=null :'success';
+                                 $games->user_id=$user1->id;
+                                 $games->user2_id=$user2->id;
                                 if($request->input('status')=='finished'){
                                     if($games->firstUserScore > $games->secondUserScore){
                                         $games->winner_id=$user1->id;
@@ -395,6 +403,8 @@ class GameController extends Controller
                         $game->competetionType=$request['competetionType'];
                         $game->status=$request['status'];
                         $game->tournaments_id=$id;
+                        $game->user_id=$user1->id;
+                        $game->user2_id=$user2->id;
                         $game->save();
                         return response()->json([
                             'status'=>201,
@@ -468,6 +478,8 @@ class GameController extends Controller
                         $game->competetionType=$request['competetionType'];
                         $game->status=$request['status'];
                         $game->leagues_id=$id;
+                        $game->user_id=$user1->id;
+                        $game->user2_id=$user2->id;
                         $game->save();
                         return response()->json([
                             'status'=>201,

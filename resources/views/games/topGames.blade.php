@@ -55,21 +55,26 @@
     display: flex;
     gap: 25px;
 }
-.gamesInfo .gamesList{
-    
-    width: 730px;
-    display: flex;
-    
+.gamesInfo .gamesList{ 
+    width: 65%;
+    display: flex; 
     flex-wrap: wrap;
     gap: 20px;
-
 }
 
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
+}
+.noGame{
+    width: 65%;
+}
+.noGame h3{
+    color: white;
+    font-size: 30px;
+    text-align: center;
 }
 h4{
     margin: -23px;
@@ -108,6 +113,7 @@ use App\Models\Posts;
 
 use App\Models\Games;
 
+$firstGame=Games::first();
 $allGames=Games::all();
 
 $firstSide=Posts::find(31);
@@ -127,11 +133,23 @@ $thirdSide=Posts::find(36);
             </ul>
             
             <div class="gamesInfo">
+
+            @if(empty($firstGame))
+                    <div class="noGame">
+                        <h3>There is no Games.</h3>
+                    </div>
+                @else
                 <div class="gamesList">                                                                 
                     @for($i = 0; $i<count($allGames);$i++)
-                        <x-gameSummary :tournGame='$allGames[$i]'></x-gameSummary>
-                     @endfor
+
+                        @if($allGames[$i]["competetionType"] == "Tournament")
+                            <x-gameSummary :tournGame='$allGames[$i]' :leagueGame="null"></x-gameSummary>
+                        @else
+                        <x-gameSummary :tournGame='null' :leagueGame="$allGames[$i]"></x-gameSummary>
+                        @endif
+                    @endfor
                 </div>
+                @endif
 
                 <div class="sideContainer">
                     <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>

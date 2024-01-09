@@ -32,7 +32,6 @@
 
     .dashBoardOptions li{
         cursor: pointer;
-        padding: 10px 15px;
     }
     .dashBoardOptions li:hover{
         background-color: #1f1f1f;
@@ -44,7 +43,7 @@
         width: 100%;
         height: 100%;
         display: block;
-
+        padding: 10px 15px;
     }
 </style>
 

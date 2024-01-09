@@ -75,7 +75,7 @@
 }
 .gamesInfo .gamesList{
     
-    width: 730px;
+    width: 65%;
     display: flex;
     
     flex-wrap: wrap;
@@ -84,7 +84,7 @@
 }
 
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -163,9 +163,14 @@ $thirdSide=Posts::find(36);
             </ul>
             <div class="gamesInfo">
                 <div class="gamesList">                                                                 
+
                     @for($i = 0; $i<count($games);$i++)
-                        <x-gameSummary :tournGame='$games[$i]'></x-gameSummary>
-                     @endfor
+                        @if($games[$i]["competetionType"] == "Tournament")
+                            <x-gameSummary :tournGame='$games[$i]' :leagueGame="null"></x-gameSummary>
+                        @else
+                        <x-gameSummary :tournGame='null' :leagueGame="$games[$i]"></x-gameSummary>
+                        @endif
+                    @endfor
                 </div>
 
                 <div class="sideContainer">

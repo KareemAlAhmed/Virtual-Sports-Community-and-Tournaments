@@ -91,31 +91,39 @@ Route::get('/games/tops', function () {
 Route::get('/games/mine', function () {
     return view('games.myGames',['info'=>request()]);
 });
-// Route::get('/games/create', function () {
-//     $game=new Games;
-//     $foredit=false;
-
-//     return view('games.createGame',['info'=>request(),'game'=>$game,'foredit'=>$foredit]);
-// });
-
-// Route::post(s'register',[AuthController::class,'register']); // to register a user
 
 
 Route::get('/dashboard/users', function(){
     $_SESSION['selected']='users';
-    return view('usersDash',['info'=>request()]);
+    return view('dashboards.usersDash',['info'=>request()]);
 });
 Route::get('/dashboard/tourns', function(){
     $_SESSION['selected']='tourns';
-    return view('tournDash',['info'=>request()]);
+    return view('dashboards.tournDash',['info'=>request()]);
 });
 Route::get('/dashboard/leagues', function(){
-    $_SESSION['selected']='leagues';
-    
-    return view('leagueDash',['info'=>request()]);
+    $_SESSION['selected']='leagues'; 
+    return view('dashboards.leagueDash',['info'=>request()]);
 });
 Route::get('/dashboard/games', function(){
     $_SESSION['selected']='games';
-    return view('gameDash',['info'=>request()]);
+    return view('dashboards.gameDash',['info'=>request()]);
+});
+
+
+
+Route::get('/user/{id}', function($id){
+
+    return view('components.userPage',['info'=>request(),'user'=>User::find($id),'opt'=>"tourn"]);
+});
+Route::get('/user/{id}/league', function($id){
+
+   
+    return view('components.userPage',['info'=>request(),'user'=>User::find($id),'opt'=>"league"]);
+});
+Route::get('/user/{id}/game', function($id){
+
+   
+    return view('components.userPage',['info'=>request(),'user'=>User::find($id),'opt'=>"game"]);
 });
 

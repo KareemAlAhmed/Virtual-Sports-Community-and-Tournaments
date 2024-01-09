@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("firstUserName");
             $table->string("secondUserName");
+            $table->foreignId("user_id")->constrained("users")->cascadeOnDelete();
+            $table->foreignId("user2_id")->constrained("users")->cascadeOnDelete();
             $table->integer("firstUserScore")->default(Null)->nullable();
             $table->integer("secondUserScore")->default(Null)->nullable();
             $table->time("duration");
@@ -27,7 +29,7 @@ return new class extends Migration
             $table->string("status")->default('not started');
             $table->foreignId("tournaments_id")->default(Null)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId("leagues_id")->default(Null)->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignId("winner_id")->default(Null)->nullable();
+            $table->foreignId("winner_id")->default(Null)->nullable()->constrained("users")->cascadeOnDelete();
             $table->timestamps();
         });
     }

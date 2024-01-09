@@ -57,7 +57,7 @@
 }
 .tournsInfo .tournsList{
     
-    width: 730px;
+    width: 74%;
     display: flex;
     
     flex-wrap: wrap;
@@ -72,10 +72,18 @@
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
+}
+.noTourn{
+    width: 65%;
+}
+.noTourn h3{
+    color: white;
+    font-size: 30px;
+    text-align: center;
 }
 h4{
     margin: -23px;
@@ -133,6 +141,12 @@ $thirdSide=Posts::find(36);
             </ul>
             
             <div class="tournsInfo">
+
+            @if(empty($league))
+                    <div class="noTourn">
+                        <h3>There is no Leagues.</h3>
+                    </div>
+                @else
                 <ul class="tournsList">
                     
                     <x-smallCardPost :data='$league'  nojoined='true' compType='league'></x-smallCardPost>
@@ -140,7 +154,7 @@ $thirdSide=Posts::find(36);
                         <x-smallCardPost :data='$allLeague[$i]'  nojoined='true' compType='league'></x-smallCardPost>
                     @endfor
                 </ul>
-
+            @endif
 
 
                 

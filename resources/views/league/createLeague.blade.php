@@ -109,7 +109,18 @@ select{
                         </div>
                         <div>
                             <span>Sport Type:</span>
-                            <input type="text" name="sportType" value="{{$league['sportType']}}">
+                            <select name="sportType">
+                                <option value="fortnite">Fortnite</option>
+                                <option value="dota">Dota</option>
+                                <option value="CS">Counter Strike</option>
+                                <option value="LOL">League Of Legends</option>
+                                <option value="PUBG">PUBG</option>
+                                <option value="apex">Apex Legend</option>
+                                <option value="football">Football</option>
+                                <option value="Overwatch">Overwatch</option>
+                                <option value="fifa">FIFA 24</option>
+
+                            </select>
                         </div>
                         <div>
                             <span>Type:</span>
@@ -172,7 +183,18 @@ select{
                         </div>
                         <div>
                             <span>Sport Type:</span>
-                            <input type="text" name="sportType" value="">
+                            <select name="sportType">
+                                <option value="fortnite">Fortnite</option>
+                                <option value="dota">Dota</option>
+                                <option value="CS">Counter Strike</option>
+                                <option value="LOL">League Of Legends</option>
+                                <option value="PUBG">PUBG</option>
+                                <option value="apex">Apex Legend</option>
+                                <option value="football">Football</option>
+                                <option value="Overwatch">Overwatch</option>
+                                <option value="fifa">FIFA 24</option>
+
+                            </select>
                         </div>
                         <div>
                             <span>Start Date:</span>

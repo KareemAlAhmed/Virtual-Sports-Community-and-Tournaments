@@ -87,7 +87,7 @@ $joinedTourn=$joined->original['Tournaments'];
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -130,6 +130,9 @@ h4::after{
     flex-wrap: wrap;
     gap: 20px;
     list-style: none;
+}
+.centerContainer{
+    width: 65%;
 }
 
 .joined ,.created {
