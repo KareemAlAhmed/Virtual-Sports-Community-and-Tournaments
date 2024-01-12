@@ -100,6 +100,7 @@ Route::get('acheivement/{id}/user',[acheiveController::class,'users']); // to ge
 Route::get('acheive/{id}',[acheiveController::class ,'show']); // to show an acheivement
 
 Route::get('post/{id}',[PostController::class,'show']);// to show a post
+Route::get('posts',[PostController::class,'all']);// to get all posts
 Route::get('user/{id}/posts',[AuthController::class,'posts']); // to get the posts  of a specific user
 
 Route::get('tournament/{id}',[TournamentController::class,'show']);// to show a tournament
