@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -186,6 +186,8 @@
             }
             .userOp{
                 top: 100%;
+                padding: 0 0 0 6px;
+                width: fit-content;
             }
             .listContainer{
                 position: relative;
@@ -262,22 +264,24 @@
                                     <div x-show="tournOpen" class="popup tournPop" @mouseover = "tournOpen = true" @mouseover.away = "tournOpen = (e)=> e.target.className.split(' ')[1] == 'tourn' ? null : tournOpen = false">                                     
                                         <a href="../tournament/tops">Top Tournaments</a>  
                                         @auth
-                                            <a href="../tournament/mytourns">My Tournament</a>
-                                            <a href="../tournament/create">Create Tournament</a>
+                                            <a href="./../tournament/mytourns">My Tournament</a>
+                                            <a href="./../tournament/create">Create Tournament</a>
                                         @endauth
                                     </div>
                                 </div>
 
 
                                 <div class="leagues">
-                                    <a href="register" @click="leagOpen = !open" @mouseover = "leagOpen = true" >
+                                    <a href="../league/tops" @click="leagOpen = !open" @mouseover = "leagOpen = true" >
                                         <button class="siteLink league">Leagues</button>
                                     </a>
 
                                     <div x-show="leagOpen" class="popup leaguePop" @mouseover = "leagOpen = true" @mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
-                                        <a href="#">Top Leagues</a>  
-                                        <a href="#">My League</a>
-                                        <a href="#">Create League</a>
+                                        <a href="../league/tops">Top Leagues</a>  
+                                        @auth
+                                            <a href="../league/myleagues">My League</a>
+                                            <a href="../league/create">Create League</a>
+                                        @endauth
                                     </div>
                                 </div>
 
@@ -288,18 +292,20 @@
 
                                     <div x-show="gameOpen" class="popup gamePop" @mouseover = "gameOpen = true" @mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'gameNav' ? null : gameOpen = false">                                     
                                         <a href="../games/tops">Top Games</a>  
-                                        <a href="../games/mine">My Games</a>
-                                        <a href="#">Create Game</a>
+                                        @auth
+                                            <a href="../games/mine">My Games</a>
+                                            <!-- <a href="../games/create">Create Game</a> -->
+                                        @endauth
                                     </div>
                                 </div>
                                 
                                 @guest
-                                <a href="../register"> <button class="siteLink">REGISTER</button></a>
+                                <a href="../register"> <button class="siteLink">Register</button></a>
                                 <a href="../login">   <button class=" siteLink">Login</button></a>
                                 @endguest
                                 @auth
                                 <div class="authen">
-                                    <a href="/ki" @click="(event)=> event.preventDefault();" @click="open = !open" @mouseover = "open = true" >   
+                                    <a href="../user/{{auth()->user()->id}}" @click="open = !open" @mouseover = "open = true" >   
                                         <button class="siteLink user">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
                                             {{ucfirst(auth()->user()->name)}}
@@ -308,7 +314,7 @@
 
                                     <div x-show="open" class="popup userOp" @mouseover = "open = true" @mouseover.away = "open = (e)=> e.target.className.split(' ')[1] == 'user' ? null : open = false">
                                         @can('admin')
-                                        <a href="#">Dashboard</a>
+                                        <a href="../dashboard/users">Dashboard</a>
                                         @endcan
                                         <a href="../" @click="(e)=> e.preventDefault();document.getElementById('logout').submit()">Logout</a>
                                     </div>

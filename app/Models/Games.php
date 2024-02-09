@@ -14,4 +14,5 @@ class Games extends Model
     function tournaments(){
         return $this->belongsTo(Tournaments::class);
     }
+    
 }

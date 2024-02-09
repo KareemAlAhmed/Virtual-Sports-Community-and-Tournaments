@@ -57,7 +57,7 @@
 }
 .tournsInfo .tournsList{
     
-    width: 730px;
+    width: 74%;
     display: flex;
     
     flex-wrap: wrap;
@@ -71,8 +71,16 @@
     gap: 20px;
     list-style: none;
 }
+.noTourn{
+    width: 65%;
+}
+.noTourn h3{
+    color: white;
+    font-size: 30px;
+    text-align: center;
+}
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -132,13 +140,19 @@ $thirdSide=Posts::find(36);
             </ul>
             
             <div class="tournsInfo">
+                @if(empty($tourn))
+                    <div class="noTourn">
+                        <h3>There is no Tournaments.</h3>
+                    </div>
+                @else
                 <ul class="tournsList">
                     
-                    <x-tournSmallPost :tourn='$tourn'  nojoined='true'></x-tournSmallPost>
+                    <x-smallCardPost :data='$tourn'  nojoined='true' compType='tournament'></x-smallCardPost>
                     @for( $i = 1; $i<count($allTourn);$i++)
-                        <x-tournSmallPost :tourn='$allTourn[$i]'  nojoined='true'></x-tournSmallPost>
+                        <x-smallCardPost :data='$allTourn[$i]'  nojoined='true' compType='tournament'></x-smallCardPost>
                     @endfor
                 </ul>
+                @endif
 
                 <div class="sideContainer">
                     <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>

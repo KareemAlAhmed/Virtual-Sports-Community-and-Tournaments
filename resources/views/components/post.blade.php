@@ -15,10 +15,10 @@ $userPic= User::find($post['user_id'])->image_url;
     <div class="post postCont">
         <div class="imageAndOtherOpt">
             <div class="userImage">
-                <img src="<?php echo asset("storage/UserProfilePic/" . $userPic )?>" alt="<?php echo asset("storage/images.jpeg")?>">
+                <a href="../user/{{$user->id}}"><img src="<?php echo asset("storage/UserProfilePic/" . $userPic )?>" alt="<?php echo asset("storage/images.jpeg")?>"></a>
             </div>
             <div class="otherOptions userName">
-                <p>{{$user->name}} <span>{{$date->diffForHumans()}}</span></p>
+            <a href="../user/{{$user->id}}">   <p>{{$user->name}} <span>{{$date->diffForHumans()}}</span></p></a>
             </div>
         </div>
         

@@ -49,29 +49,38 @@
     transform: translateY(-12px);
     margin-bottom: -3px;
 }
-.gamesInfo{
+.tournsInfo{
     width: 100%;
     min-height: 50vh;
     display: flex;
     gap: 25px;
 }
-.gamesInfo .gamesList{ 
-    width: 65%;
-    display: flex; 
+.tournsInfo .tournsList{
+    
+    width: 74%;
+    display: flex;
+    
     flex-wrap: wrap;
     gap: 20px;
+    list-style: none;
 }
-
+.tournsList ul{
+    display: flex;
+    
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+}
 .sideContainer{
     width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
 }
-.noGame{
+.noTourn{
     width: 65%;
 }
-.noGame h3{
+.noTourn h3{
     color: white;
     font-size: 30px;
     text-align: center;
@@ -110,11 +119,10 @@ h4::after{
 @php
 
 use App\Models\Posts;
+use App\Models\Leagues;
 
-use App\Models\Games;
-
-$firstGame=Games::first();
-$allGames=Games::all();
+$league=Leagues::first();
+$allLeague=Leagues::all();
 
 $firstSide=Posts::find(31);
 $secondSide=Posts::find(35);
@@ -129,28 +137,27 @@ $thirdSide=Posts::find(36);
             <ul class="nk-breadcrumbs">
                 <li><a rel="v:url" href="/">Home</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>
-                <li><span><h1>Games</h1></span></li>
+                <li><span><h1>Leagues</h1></span></li>
             </ul>
             
-            <div class="gamesInfo">
+            <div class="tournsInfo">
 
-            @if(empty($firstGame))
-                    <div class="noGame">
-                        <h3>There is no Games.</h3>
+            @if(empty($league))
+                    <div class="noTourn">
+                        <h3>There is no Leagues.</h3>
                     </div>
                 @else
-                <div class="gamesList">                                                                 
-                    @for($i = 0; $i<count($allGames);$i++)
-
-                        @if($allGames[$i]["competetionType"] == "Tournament")
-                            <x-gameSummary :tournGame='$allGames[$i]' :leagueGame="null"></x-gameSummary>
-                        @else
-                        <x-gameSummary :tournGame='null' :leagueGame="$allGames[$i]"></x-gameSummary>
-                        @endif
+                <ul class="tournsList">
+                    
+                    <x-smallCardPost :data='$league'  nojoined='true' compType='league'></x-smallCardPost>
+                    @for( $i = 1; $i<count($allLeague);$i++)
+                        <x-smallCardPost :data='$allLeague[$i]'  nojoined='true' compType='league'></x-smallCardPost>
                     @endfor
-                </div>
-                @endif
+                </ul>
+            @endif
 
+
+                
                 <div class="sideContainer">
                     <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>
                     <ul>
@@ -163,8 +170,15 @@ $thirdSide=Posts::find(36);
            
             
         </div>
+
+
+
+
+
+
+
+
         @if(request()->session()->has('response'))
-                
                 <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                     <p   class="responseContent success">{{session('response')[0]->original['message']}}</p>   
                     @php

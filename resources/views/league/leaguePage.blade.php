@@ -1,5 +1,5 @@
 
-@props(['tourn'])
+@props(['league'])
 
 
 
@@ -85,7 +85,7 @@
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -122,7 +122,7 @@ h4::after{
 }
 
 .centerContainer{
-    width: 730px;
+    width: 65%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -314,23 +314,48 @@ h2 svg:hover{
     flex-wrap: wrap;
     gap: 20px;
 }
+li strong{
+    cursor: pointer;
+}
+li strong:hover{
+    text-decoration: underline;
+}
+.noresult{
+    text-align: center;
+    font-size: 22px !important;
+    font-weight: bold;
+}
+.nogame{
+    width: 100%;
+    height: 50px;
+    background-color: #121212;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
 
+}
 </style>
+
+
 
 @php
 
-use App\Models\Tournaments;
+use App\Models\Leagues;
 use App\Models\Posts;
 use App\Models\User;
-use App\Http\Controllers\TournamentController;
+use App\Http\Controllers\LeagueController;
 
-$start = $tourn['startDate']; 
+$start = $league['startDate']; 
 $startDate = strtotime($start); 
-$organizerName=User::find($tourn['organizer_id'])->name;
+$organizerName=User::find($league['organizer_id'])->name;
 
-$tournController=new TournamentController();
-$tournMembers=$tournController->members($tourn['id']);
-$tournGames=Tournaments::find($tourn['id'])->games;
+$leagueController=new LeagueController();
+$leagueMembers=$leagueController->members($league['id']);
+$leagueGames=Leagues::find($league['id'])->games;
 
 $firstSide=Posts::find(31);
 $secondSide=Posts::find(35);
@@ -345,9 +370,9 @@ $thirdSide=Posts::find(36);
             <ul class="nk-breadcrumbs">
                 <li><a rel="v:url" href="/">Home</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
-                <li><a rel="v:url" href="../tournament/tops">Tournaments</a></li>
+                <li><a rel="v:url" href="../league/tops">Leagues</a></li>
                 <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
-                <li><span><h1>{{$tourn['name']}}</h1></span></li>
+                <li><span><h1>{{$league['name']}}</h1></span></li>
             </ul>
                             
             <div class="tournsInfo">
@@ -355,49 +380,46 @@ $thirdSide=Posts::find(36);
                     <li id="post-762" class="post" x-data="{click: false}">
                         <ul class="cyberpress-tournament-info">
                             <li>
-                                <strong>Dates</strong>: {{date('F  j, Y', strtotime($tourn['startDate']))}}  -   {{date('F  j, Y', strtotime($tourn['endDate']))}}  
+                                <strong>Dates</strong>: {{date('F  j, Y', strtotime($league['startDate']))}}  -   {{date('F  j, Y', strtotime($league['endDate']))}}  
                             </li>
                             <li>
-                                <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="https://wp.nkdev.info/squadforce/wp-content/uploads/2019/10/game-dota-2.svg" class="attachment-medium size-medium" alt="" loading="lazy"> 
-                                    {{$tourn['sportType']}}</a>                
+                                <strong>Game</strong>: <img width="200" height="200" src="<?php echo asset("storage/gamesLogo/" . $league['sportType'].".png" )?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
+                                    {{$league['sportType']}}              
                             </li>
                             <li>
                                 <strong>Organizer</strong>: {{$organizerName}}  
                             </li>
                             <li>
-                                <strong>Type</strong>: {{$tourn['type']}}  
-                            </li>
-                            <li>
-                                <strong>Total Prize pool</strong>: {{$tourn['rewards']}}$            
+                                <strong>Total Prize pool</strong>: {{$league['rewards']}}$            
                             </li>
                         </ul>  
                         @auth
-                            <form method="post" style="display: none;" id="userAdd{{$tourn['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}">
+                            <form method="post" style="display: none;" id="userAdd{{$league['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}">
                                 @csrf                       
                             </form>
                         @endauth
                     </li><!-- #post-## -->
     
-                    <p style="margin-bottom: 1.5rem;padding: 0 20px;">{{$tourn['description']}}</p>  
+                    <p style="margin-bottom: 1.5rem;padding: 0 20px;">{{$league['description']}}</p>  
     
                     <div class="actions">
                         @can('admin')
-                            <form method="post" action="../api/tournament/{{$tourn['id']}}/createGames" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/league/{{$league['id']}}/createGames" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="Generate Matches">
                             </form>
-                            <form method="post" action="../api/tournament/delete/{{$tourn['id']}}" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/league/delete/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 @method('DELETE')
                                 <input type="submit" name="submit" class="sbt" value="DELETE">
                             </form>
-                            <form method="get" action="../api/tournament/{{$tourn['id']}}/edit" style="display: flex;justify-content: flex-end;">
+                            <form method="get" action="../api/league/{{$league['id']}}/edit" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="EDIT">
                             </form>
                         @endcan
                         @auth
-                            <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}" style="display: flex;justify-content: flex-end;">
+                            <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="JOIN">
                             </form>
@@ -409,29 +431,30 @@ $thirdSide=Posts::find(36);
 
 
                     <div class="userNames">
-                        <div class="memberNames"><span><h1>Tournament Members</h1></span></div>
+                        <div class="memberNames"><span><h1>League Members</h1></span></div>
                         <table class="tg">
                             <thead>
                                 <tr>
                                     <td class="tg-0lax">Id<br></td>
                                     <td class="tg-0lax">Username<br></td>
                                     <td class="tg-0lax">Email<br></td>
-                                    @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id)
+                                    @if(auth()->user()?->can('admin') || $league['organizer_id'] == auth()->user()?->id)
                                     <td class="tg-0lax">Actions<br></td>    
                                     @endif
                                 </tr>
                             </thead>
                             <tbody>
-                                    @foreach($tournMembers as $member)
+                                @if(count($leagueMembers) > 0)
+                                    @foreach($leagueMembers as $member)
                                         <tr>
                                             <td class="tg-0lax">{{$member['id']}}<br></td>
                                             <td class="tg-0lax">{{$member['name']}}<br></td>
                                             <td class="tg-0lax">{{$member['email']}}<br></td>
                                             
 
-                                            @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id)
+                                            @if(auth()->user()?->can('admin') || $league['organizer_id'] == auth()->user()?->id)
                                             <td class="tg-0lax">
-                                             <form method="post" action="../api/kick/user/{{$member['id']}}/tournament/{{$tourn['id']}}">
+                                             <form method="post" action="../api/kick/user/{{$member['id']}}/league/{{$league['id']}}">
                                                 @csrf   
                                                 @method('DELETE')
                                                 <button >
@@ -447,20 +470,30 @@ $thirdSide=Posts::find(36);
 
                                         </tr>
                                     @endforeach
+
+                                @else
+                                    <tr>
+                                        <td colspan="3" class="noresult">There is No Member Participated Yet.</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
 
 
-                    <div class="tournGames">
+                    <div class="leagueGames">
                         <div class="gamesHead"><span><h1>Games</h1></span></div>
                         <div class="gamesList">
 
 
-                            
-                            @for($i = 0; $i<count($tournGames);$i++)
-                            <x-gameSummary :tournGame='$tournGames[$i]'></x-gameSummary>
+                         @if(count($leagueGames) > 0)       
+                            @for($i = 0; $i<count($leagueGames);$i++)
+                            <x-gameSummary :leagueGame="$leagueGames[$i]" :tournGame='null'></x-gameSummary>
                             @endfor
+
+                        @else
+                            <p class="nogame">There Is No Game Yet.</p>
+                        @endif
                         </div>
 
                     </div>

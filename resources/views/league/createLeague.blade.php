@@ -1,5 +1,4 @@
-@props(['tourn','foredit'])
-
+@props(['league','foredit'])
 
 <style>
 .mainContainer{
@@ -88,38 +87,49 @@ select{
     <x-slot name="content">
         <div class="mainContainer">
         
-                <div class="form-container-tournCr">
+        <div class="form-container-tournCr">
                 @if($foredit)
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/{{$tourn['id']}}/edit">
+                    <form  method="POST" id="createTournForm" action="../api/league/{{$league['id']}}/edit">
                     @csrf
                     @method('PUT')
                         <h1>
-                        Create Tournament
+                        Create League
                         </h1>
                         <br>
                         <div class="nameInpt">   
                             <span>Name:</span>
-                            <input type="text" name="name" value="{{$tourn['name']}}" @readonly(auth()->user()== 'Kareem')>
+                            <input type="text" name="name" value="{{$league['name']}}" >
                         </div>
                         <div>
                             <span>Description:</span>
-                            <input type="text" name="description" value="{{$tourn['description']}}">
+                            <input type="text" name="description" value="{{$league['description']}}">
                         </div>
                         <div>
                             <span>Rewards:</span>
-                            <input type="text" name="rewards" value="{{$tourn['rewards']}}">
+                            <input type="text" name="rewards" value="{{$league['rewards']}}">
                         </div>
                         <div>
                             <span>Requirements:</span>
-                            <input type="text" name="requirements" value="{{$tourn['requirements']}}">
+                            <input type="text" name="requirements" value="{{$league['requirements']}}">
                         </div>
                         <div>
                             <span>Max Places:</span>
-                            <input type="number" name="maxPlaces" value="{{$tourn['maxPlaces']}}">
+                            <input type="number" name="maxPlaces" value="{{$league['maxPlaces']}}">
                         </div>
                         <div>
                             <span>Sport Type:</span>
-                            <input type="text" name="sportType" value="{{$tourn['sportType']}}">
+                            <select name="sportType">
+                                <option value="fortnite">Fortnite</option>
+                                <option value="dota">Dota</option>
+                                <option value="CS">Counter Strike</option>
+                                <option value="LOL">League Of Legends</option>
+                                <option value="PUBG">PUBG</option>
+                                <option value="apex">Apex Legend</option>
+                                <option value="football">Football</option>
+                                <option value="Overwatch">Overwatch</option>
+                                <option value="fifa">FIFA 24</option>
+
+                            </select>
                         </div>
                         <div>
                             <span>Type:</span>
@@ -130,56 +140,60 @@ select{
                         </div>
                         <div>
                             <span>Start Date:</span>
-                            <input type="date" name="startDate" value="{{$tourn['startDate']}}">
+                            <input type="date" name="startDate" value="{{$league['startDate']}}">
                         </div>
                         <div>
                             <span>End Date:</span>
-                            <input type="date" name="endDate" value="{{$tourn['endDate']}}">
+                            <input type="date" name="endDate" value="{{$league['endDate']}}">
                         </div>
                         <div>
                             <span>Duration:</span>
-                            <input type="time" name="duration" value="{{$tourn['duration']}}">
+                            <input type="time" name="duration" value="{{$league['duration']}}">
                         </div>
                         <div>
                             <span>Time Left:</span>
-                            <input type="time" name="timeLeft" value="{{$tourn['timeLeft']}}">
+                            <input type="time" name="timeLeft" value="{{$league['timeLeft']}}">
                         </div>     
+                        @if(request()->session()->has('error'))  
+                            <div class="errorslist">
+                            
+                            </div>
+                        @endif
                         <div class="errors">
                       
-                        @if(request()->session()->has('error'))
+                      @if(request()->session()->has('error'))
 
-                            @auth   
-                                @php
+                          @auth   
+                              @php
 
-                                $errors=array(json_decode(session('error')[0]->original['errors']));
-                                $error=$errors[0];
-                                foreach($error as $er){
-                                    foreach($er as $e){
-                                    echo("<p>**$e</p>");}
-                                }
+                              $errors=array(json_decode(session('error')[0]->original['errors']));
+                              $error=$errors[0];
+                              foreach($error as $er){
+                                  foreach($er as $e){
+                                  echo("<p>**$e</p>");}
+                              }
 
-                                session()->forget('error');
-                                @endphp
+                              session()->forget('error');
+                              @endphp
 
 
-                            @endauth
-                        @endif
+                          @endauth
+                      @endif
 
-                    </div> 
-
+                  </div> 
 
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @else
-                    <form  method="POST" id="createLeagueForm" action="../api/tournament/user/{{auth()->user()->id}}">
+                    <form  method="POST" id="createTournForm" action="../api/league/user/{{auth()->user()->id}}">
                     @csrf
                         <h1>
-                        Create Tournament
+                        Create League
                         </h1>
                         <br>
                         <div class="nameInpt">   
                             <span>Name:</span>
-                            <input type="text" name="name" value="" @readonly(auth()->user()== 'Kareem')>
+                            <input type="text" name="name" value="">
                         </div>
                         <div>
                             <span>Description:</span>
@@ -213,13 +227,6 @@ select{
                             </select>
                         </div>
                         <div>
-                            <span>Type:</span>
-                            <select name="type">
-                                <option value="Friendly">Friendly</option>
-                                <option value="Ranked">Ranked</option>
-                            </select>
-                        </div>
-                        <div>
                             <span>Start Date:</span>
                             <input type="date" name="startDate" value="">
                         </div>
@@ -227,37 +234,30 @@ select{
                             <span>End Date:</span>
                             <input type="date" name="endDate" value="">
                         </div>
-                        <div>
-                            <span>Duration:</span>
-                            <input type="time" name="duration" value="">
-                        </div>
-                        <div>
-                            <span>Time Left:</span>
-                            <input type="time" name="timeLeft" value="">
-                        </div>     
-
-                    <div class="errors">
+     
+                        <div class="errors">
                       
-                        @if(request()->session()->has('error'))
+                      @if(request()->session()->has('error'))
 
-                            @auth   
-                                @php
+                          @auth   
+                              @php
 
-                                $errors=array(json_decode(session('error')[0]->original['errors']));
-                                $error=$errors[0];
-                                foreach($error as $er){
-                                    foreach($er as $e){
-                                    echo("<p>**$e</p>");}
-                                }
+                              $errors=array(json_decode(session('error')[0]->original['errors']));
+                              $error=$errors[0];
+                              foreach($error as $er){
+                                  foreach($er as $e){
+                                  echo("<p>**$e</p>");}
+                              }
 
-                                session()->forget('error');
-                                @endphp
+                              session()->forget('error');
+                              @endphp
 
 
-                            @endauth
-                        @endif
+                          @endauth
+                      @endif
 
-                    </div> 
+                  </div> 
+
                         <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @endif

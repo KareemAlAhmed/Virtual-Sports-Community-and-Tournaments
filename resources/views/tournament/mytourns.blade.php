@@ -87,7 +87,7 @@ $joinedTourn=$joined->original['Tournaments'];
     list-style: none;
 }
 .sideContainer{
-    width: calc(100% - 755px);
+    width: 35%;
     height: fit-content;
     padding: 20px 23px ;
     background-color: #121212;
@@ -130,6 +130,9 @@ h4::after{
     flex-wrap: wrap;
     gap: 20px;
     list-style: none;
+}
+.centerContainer{
+    width: 65%;
 }
 
 .joined ,.created {
@@ -189,7 +192,7 @@ $thirdSide=Posts::find(36);
                         </div>
                             <ul class="tournsList">
                                 @for( $i = 0; $i<count($joinedTourn);$i++)
-                                    <x-tournSmallPost :tourn='$joinedTourn[$i]' nojoined='false'></x-tournSmallPost>
+                                    <x-smallCardPost  :data='$joinedTourn[$i]' nojoined='false' compType='tournament' ></x-smallCardPost>
                                 @endfor
                             </ul>
                     </div>
@@ -201,7 +204,7 @@ $thirdSide=Posts::find(36);
 
                         <ul class="tournsList">
                                 @for( $i = 0; $i<count($created);$i++)
-                                    <x-tournSmallPost :tourn='$created[$i]' nojoined='false'></x-tournSmallPost>
+                                    <x-smallCardPost  :data='$created[$i]' nojoined='false' compType='tournament'></x-smallCardPost>
                                 @endfor
                             </ul>
                     </div>

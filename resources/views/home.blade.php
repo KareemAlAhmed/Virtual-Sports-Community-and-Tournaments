@@ -29,9 +29,42 @@ use App\Models\User;
         gap: 20px;
     }
     .sideContainer{
-        width: 35%;
+    width: 30%;
+    height: fit-content;
+    padding: 20px 23px ;
+    background-color: #191919;
+    }
+    .sideContainer h4{
+        margin: -23px;
+        margin-bottom: 0;
+        padding: 23px;
+        font-size: 1.22rem;
+        text-transform: uppercase;
+        font-family: Montserrat, sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.2;
+        position: relative;
+        z-index: 1;
+    }
+    .sideContainer h4 span{
+        display: inline-block;
+        padding-right: 18px;
         background-color: #191919;
     }
+    .sideContainer h4::after{
+        content: "";
+        position: absolute;
+        display: block;
+        top: 36px;
+        right: 1px;
+        left: 30px;
+        height: 3px;
+        background-color: #fff;
+        z-index: -1;
+    }
+
     .postCont{
         background-color: #191919;
     }
@@ -125,7 +158,8 @@ use App\Models\User;
     .content p{
         color: white;
         font-size: 21px;
-        font-weight: 600;
+        font-weight: 600;  
+        margin-bottom: 10px;
     }
     .reactions{
         display: flex;
@@ -172,8 +206,8 @@ use App\Models\User;
         color: white;
         width: 100%;
         height: 60px;
-        padding: 5px 25px 5px 10px;
-        font-size: 19px;
+
+        font-size: 20px;
         font-weight: 700;
         display: flex;
         align-items: center;
@@ -181,49 +215,16 @@ use App\Models\User;
         }
         .success{
             background-color: #4bb543;
+            padding: 10px 25px 10px 25px;
         }
         .error{
             background-color: red;
+            padding: 10px 25px 10px 25px;
         }
     label{
         cursor: pointer;
     }
-    .sideContainer{
-    width: calc(100% - 755px);
-    height: fit-content;
-    padding: 20px 23px ;
-    background-color: #191919;
-}
-.sideContainer h4{
-    margin: -23px;
-    margin-bottom: 0;
-    padding: 23px;
-    font-size: 1.22rem;
-    text-transform: uppercase;
-    font-family: Montserrat, sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-    position: relative;
-    z-index: 1;
-}
-.sideContainer h4 span{
-    display: inline-block;
-    padding-right: 18px;
-    background-color: #191919;
-}
-.sideContainer h4::after{
-    content: "";
-    position: absolute;
-    display: block;
-    top: 36px;
-    right: 1px;
-    left: 30px;
-    height: 3px;
-    background-color: #fff;
-    z-index: -1;
-}
+    
 </style>
 
 
@@ -236,7 +237,7 @@ use App\Http\Controllers\TournamentController;
 
 $userPic= auth()->check() ? auth()->user()->image_url : 'images.jpeg';
 
-
+unset($_SESSION["userPageOpt"]);
 $firstSide=Posts::find(31);
 $secondSide=Posts::find(35);
 $thirdSide=Posts::find(36);
@@ -251,7 +252,7 @@ $thirdSide=Posts::find(36);
                 <div class="post postCont">
                     <div class="imageAndOtherOpt">
                         <div class="userImage">
-                            <img src="<?php echo asset("storage/UserProfilePic/" . $userPic )?>" alt="">
+                            <a href="./user/{{auth()->user()?->id}}"><img src="<?php echo asset("storage/UserProfilePic/" . $userPic )?>" alt=""></a>
                         </div>
                         <div class="otherOptions">
                             <ul>
@@ -344,7 +345,7 @@ $thirdSide=Posts::find(36);
                     @endfor
                @endif
 
-                @for ( $i = 0; $i<count($post1) ; $i++)
+               @for ( $i = 0; $i<5 ; $i++)
                     <x-post :post='$post1[$i]'></x-post>
                     <x-post :post='$post2[$i]'></x-post>
                     <x-post :post='$post3[$i]'></x-post>
@@ -369,8 +370,8 @@ $thirdSide=Posts::find(36);
        
         @if(request()->session()->has('response'))
                 
-            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
-                <p   class="responseContent">{{session('response')[0]->original['message']}}</p>   
+            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = true},3000)">
+                <p   class=" success">{{session('response')[0]->original['message']}}</p>   
             </div>
                 @php
                     session()->forget('response');
@@ -379,7 +380,7 @@ $thirdSide=Posts::find(36);
 
         @if(request()->session()->has('error'))
               <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
-                  <p   class="responseContent">{{session('error')[0]->original['errors'][0]}}</p> 
+                  <p  class=" error">{{session('error')[0]->original['errors']}}</p> 
             
                   @php
                     session()->forget('error');

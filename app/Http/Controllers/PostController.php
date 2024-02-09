@@ -168,4 +168,8 @@ class PostController extends Controller
             ],404)]);
         }
     }
+    function all(){
+        $posts=Posts::all();
+        return $posts;
+    }
 }
