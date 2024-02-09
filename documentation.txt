@@ -131,3 +131,7 @@ For Game:
     .put : 'api/game/{gameId}/member/{userId}/winner' : to save in the database that the user having id (userId) has won the game having id(gameId) . the request should contain the id of the user and of the game . the client should be auth and  admin can use it .
 
     .get : 'api/game/{gameId}/winner' : to get the winner of the game . the request should contain the id of the user and of the game . the client should be auth and  admin can use it .
+
+
+
+To See The Admin feature : karimahmad@gmail.com  , 81258136;

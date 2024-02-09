@@ -73,6 +73,15 @@ select{
     color: red;
     gap: 5px;
 }
+.errors{
+    background-color: transparent;
+    color: red;
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 25px;
+    flex-direction: column;
+    align-items: center;
+}
 </style>
 <x-baselayout>
     <x-slot name="content">
@@ -150,7 +159,28 @@ select{
                             
                             </div>
                         @endif
+                        <div class="errors">
+                      
+                      @if(request()->session()->has('error'))
 
+                          @auth   
+                              @php
+
+                              $errors=array(json_decode(session('error')[0]->original['errors']));
+                              $error=$errors[0];
+                              foreach($error as $er){
+                                  foreach($er as $e){
+                                  echo("<p>**$e</p>");}
+                              }
+
+                              session()->forget('error');
+                              @endphp
+
+
+                          @endauth
+                      @endif
+
+                  </div> 
 
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
@@ -205,15 +235,28 @@ select{
                             <input type="date" name="endDate" value="">
                         </div>
      
-                        @if(request()->session()->has('error'))
-                            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
-                                <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
-                                @php
-                                    session()->forget('error');
-                                @endphp
-                            </div>
-                        @endif
+                        <div class="errors">
+                      
+                      @if(request()->session()->has('error'))
 
+                          @auth   
+                              @php
+
+                              $errors=array(json_decode(session('error')[0]->original['errors']));
+                              $error=$errors[0];
+                              foreach($error as $er){
+                                  foreach($er as $e){
+                                  echo("<p>**$e</p>");}
+                              }
+
+                              session()->forget('error');
+                              @endphp
+
+
+                          @endauth
+                      @endif
+
+                  </div> 
 
                         <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
