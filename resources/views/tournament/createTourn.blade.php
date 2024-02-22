@@ -1,17 +1,5 @@
 @props(['tourn','foredit'])
-@if(request()->session()->has('error'))
 
-                    @auth   
-                        @php
-
-                        $errors=array(json_decode(session('error')[0]->original['errors']));
-                        $error=$errors[0];
-                        @dd($error)
-                        @endphp
-             
-             
-             @endauth
-            @endif
 
 <style>
 .mainContainer{
@@ -86,6 +74,15 @@ select{
     color: red;
     gap: 5px;
 }
+.errors{
+    background-color: transparent;
+    color: red;
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 25px;
+    flex-direction: column;
+    align-items: center;
+}
 </style>
 <x-baselayout>
     <x-slot name="content">
@@ -147,11 +144,28 @@ select{
                             <span>Time Left:</span>
                             <input type="time" name="timeLeft" value="{{$tourn['timeLeft']}}">
                         </div>     
-                        @if(request()->session()->has('error'))  
-                            <div class="errorslist">
-                            
-                            </div>
+                        <div class="errors">
+                      
+                        @if(request()->session()->has('error'))
+
+                            @auth   
+                                @php
+
+                                $errors=array(json_decode(session('error')[0]->original['errors']));
+                                $error=$errors[0];
+                                foreach($error as $er){
+                                    foreach($er as $e){
+                                    echo("<p>**$e</p>");}
+                                }
+
+                                session()->forget('error');
+                                @endphp
+
+
+                            @endauth
                         @endif
+
+                    </div> 
 
 
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
@@ -221,6 +235,7 @@ select{
                             <span>Time Left:</span>
                             <input type="time" name="timeLeft" value="">
                         </div>     
+<<<<<<< HEAD
                         @if(request()->session()->has('error'))
                             <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                                 <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
@@ -229,8 +244,31 @@ select{
                                 @endphp
                             </div>
                         @endif
+=======
+>>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
+
+                    <div class="errors">
+                      
+                        @if(request()->session()->has('error'))
+
+                            @auth   
+                                @php
+
+                                $errors=array(json_decode(session('error')[0]->original['errors']));
+                                $error=$errors[0];
+                                foreach($error as $er){
+                                    foreach($er as $e){
+                                    echo("<p>**$e</p>");}
+                                }
+
+                                session()->forget('error');
+                                @endphp
 
 
+                            @endauth
+                        @endif
+
+                    </div> 
                         <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @endif

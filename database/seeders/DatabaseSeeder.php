@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+<<<<<<< HEAD
        // User::factory(1)->create(['id'=>1]);
       //  User::factory(1)->create(['id'=>2]);
        //// User::factory(1)->create(['id'=>3]);
@@ -31,5 +32,20 @@ class DatabaseSeeder extends Seeder
            $tourn=new enrollLeagueController();
            $tourn->enroll($users[$i]['id'],1);
         }
+=======
+    //    User::factory(1)->create(['id'=>1]);
+    //    User::factory(1)->create(['id'=>2]);
+    //    User::factory(1)->create(['id'=>3]);
+    //    User::factory(1)->create(['id'=>4]);
+    //    Posts::factory(5)->create(['user_id'=>1,'image_url'=>'images.jpeg']);
+    //    Posts::factory(5)->create(['user_id'=>2,'image_url'=>'images.jpeg']);
+    //    Posts::factory(5)->create(['user_id'=>3,'image_url'=>'images.jpeg']);
+    //    Posts::factory(5)->create(['user_id'=>4,'image_url'=>'images.jpeg']);
+        // $users=User::all();
+        // for($i = 0; $i < 4;$i++){
+        //    $tourn=new enrollLeagueController();
+        //    $tourn->enroll($users[$i]['id'],1);
+        // }
+>>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
     }
 }
