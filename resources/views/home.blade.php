@@ -370,7 +370,7 @@ $thirdSide=Posts::find(36);
        
         @if(request()->session()->has('response'))
                 
-            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = true},3000)">
+            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                 <p   class=" success">{{session('response')[0]->original['message']}}</p>   
             </div>
                 @php

@@ -73,11 +73,7 @@ select{
     color: red;
     gap: 5px;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> acbdc491cdd32a167a70059c4779c6a79e7cc076
+
 .errors{
     background-color: transparent;
     color: red;
@@ -165,7 +161,7 @@ select{
                             </div>
                         <div class="errors">
                       
-                      @if(request()->session()->has('error'))
+                            @if(request()->session()->has('error'))
 
                           @auth   
                               @php

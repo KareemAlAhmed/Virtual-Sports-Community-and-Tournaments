@@ -60,8 +60,8 @@ Route::get('/league/create', function () {
 });
 Route::get('/league/{id}', function ( $id) {
     $num=(int)$id;
-    $check->checkLeague($id);
     $check=new CheckController();
+    $check->checkLeague($id);
     return view('league.leaguePage',['league'=>Leagues::find($num)]);
 });
 
@@ -91,12 +91,11 @@ Route::get('/tournament/mytourns', function () {
     $created=Tournaments::where('organizer_id',Auth::user()->id)->get();
     return view('tournament.myTourns',['joined'=>$joined->tournaments(auth()->user()->id),'created'=>$created]);
 });
-Route::get('/tournament/{id}', function ( $id) {
+Route::get('/tournament/{id}', function ($id) {
     $num=(int)$id;
     $check=new CheckController();
     $check->checkTourn($num);
-    $check=new CheckController();
-    $check->checkTourn($num);
+
     return view('tournament.tournamentPage',['tourn'=>Tournaments::find($num)]);
 });
 
