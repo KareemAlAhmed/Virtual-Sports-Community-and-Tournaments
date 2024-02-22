@@ -234,8 +234,6 @@ select{
                         <div>
                             <span>Time Left:</span>
                             <input type="time" name="timeLeft" value="">
-                        </div>     
-<<<<<<< HEAD
                         @if(request()->session()->has('error'))
                             <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                                 <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
@@ -244,8 +242,6 @@ select{
                                 @endphp
                             </div>
                         @endif
-=======
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
 
                     <div class="errors">
                       

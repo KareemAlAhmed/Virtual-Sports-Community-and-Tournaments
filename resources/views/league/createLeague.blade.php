@@ -74,7 +74,10 @@ select{
     gap: 5px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> acbdc491cdd32a167a70059c4779c6a79e7cc076
 .errors{
     background-color: transparent;
     color: red;
@@ -84,7 +87,6 @@ select{
     flex-direction: column;
     align-items: center;
 }
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
 </style>
 <x-baselayout>
     <x-slot name="content">
@@ -161,11 +163,6 @@ select{
                             <div class="errorslist">
                             
                             </div>
-                        @endif
-<<<<<<< HEAD
-
-
-=======
                         <div class="errors">
                       
                       @if(request()->session()->has('error'))
@@ -189,7 +186,6 @@ select{
 
                   </div> 
 
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
                         <input type="submit" value="UPDATE" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @else
@@ -243,7 +239,6 @@ select{
                             <input type="date" name="endDate" value="">
                         </div>
      
-<<<<<<< HEAD
                         @if(request()->session()->has('error'))
                             <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
                                 <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
@@ -253,7 +248,6 @@ select{
                             </div>
                         @endif
 
-=======
                         <div class="errors">
                       
                       @if(request()->session()->has('error'))
@@ -276,7 +270,6 @@ select{
                       @endif
 
                   </div> 
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
 
                         <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>

@@ -1,10 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-<<<<<<< HEAD
-use App\Models\Games;
-use App\Models\Leagues;
-=======
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\enrollLeagueController;
 use App\Http\Controllers\enrollTournController;
@@ -15,7 +11,6 @@ use App\Http\Controllers\TournamentController;
 use App\Models\Games;
 use App\Models\Leagues;
 use App\Models\Posts;
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
 use App\Models\Tournaments;
 use Illuminate\Support\Facades\Route;
 
@@ -65,12 +60,8 @@ Route::get('/league/create', function () {
 });
 Route::get('/league/{id}', function ( $id) {
     $num=(int)$id;
-<<<<<<< HEAD
-
-=======
-    $check=new CheckController();
     $check->checkLeague($id);
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
+    $check=new CheckController();
     return view('league.leaguePage',['league'=>Leagues::find($num)]);
 });
 
@@ -102,12 +93,10 @@ Route::get('/tournament/mytourns', function () {
 });
 Route::get('/tournament/{id}', function ( $id) {
     $num=(int)$id;
-<<<<<<< HEAD
-
-=======
     $check=new CheckController();
     $check->checkTourn($num);
->>>>>>> f7ada7da3a8c9a6e3034d3e15b24461962406d6e
+    $check=new CheckController();
+    $check->checkTourn($num);
     return view('tournament.tournamentPage',['tourn'=>Tournaments::find($num)]);
 });
 
