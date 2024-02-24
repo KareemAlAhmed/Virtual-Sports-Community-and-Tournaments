@@ -253,6 +253,7 @@ $thirdSide=Posts::find(36);
                     <div class="imageAndOtherOpt">
                         <div class="userImage">
                             <a href="./user/{{auth()->user()?->id}}"><img src="<?php echo asset("storage/UserProfilePic/" . $userPic )?>" alt=""></a>
+                           
                         </div>
                         <div class="otherOptions">
                             <ul>

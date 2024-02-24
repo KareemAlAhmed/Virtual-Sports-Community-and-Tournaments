@@ -14,17 +14,10 @@ use Illuminate\Support\Facades\Validator ;
 class CheckController extends Controller
 {
     function checkInfo(){
-        if(!User::where('name', 'karim')->exists()){
-            $user=new User;
-            $user->name='karim';
-            $user->password=bcrypt("81258136");
-            $user->bio="i am the admin";
-            $user->email="karimahmad@gmail.com";     
-            $user->save();
-        }
-        $userExists = User::where('id', 1)->exists();
+
+        $userExists = User::where("name", "Della Bosco Jr.")->exists();
         if(!$userExists){
-            User::factory(1)->create(['id'=>1,'image_url'=>'images.jpeg']);
+            User::factory(1)->create(['id'=>1,'image_url'=>'images.jpeg','name'=>'Della Bosco Jr.']);
             User::factory(1)->create(['id'=>2,'image_url'=>'images.jpeg']);
             User::factory(1)->create(['id'=>3,'image_url'=>'images.jpeg']);
             User::factory(1)->create(['id'=>4,'image_url'=>'images.jpeg']);
@@ -39,6 +32,16 @@ class CheckController extends Controller
             Posts::factory()->create(['user_id'=>1,'id'=>'35','content'=>'WE FOUND A WITCH! MAY WE BURN HER?','image_url'=>'post-31-300x169.jpg']);
             Posts::factory()->create(['user_id'=>1,'id'=>'36','content'=>'CREEPETH YOU’RE A BEHOLD HEAVEN','image_url'=>'post-51-300x188.jpg']);
         }
+        if(!User::where('name', 'karim')->exists()){
+            $user=new User;
+            $user->name='karim';
+            $user->password=bcrypt("81258136");
+            $user->bio="i am the admin";
+            $user->email="karimahmad@gmail.com";     
+            $user->image_url="images.jpeg";     
+            $user->save();
+        }
+       
     }
     function checkTourn(int $num){
         $tourn=Tournaments::find($num);
