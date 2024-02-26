@@ -19,7 +19,7 @@ class TournamentController extends Controller
             'maxPlaces'=>'required',
             'rewards'=>'required|min:2',
             'requirements'=>'required|min:15',
-            'sportType'=>'required|min:3',
+            'sportType'=>'required|min:2',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
             'duration'=>'required',
@@ -105,7 +105,7 @@ class TournamentController extends Controller
             'maxPlaces'=>'required',
             'rewards'=>'required|min:2',
             'requirements'=>'required|min:15',
-            'sportType'=>'required|min:3',
+            'sportType'=>'required|min:2',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
             'duration'=>'required',
@@ -291,7 +291,7 @@ class TournamentController extends Controller
                 
                 return redirect()->back()->with('response',[response()->json([
                     'status'=>200,
-                    'message'=>"The Tournament's Games created successfuly",
+                    'message'=>"New Games Added to the Tournament.",
                     'matches'=>$nubs
                 ],200)]);
 
@@ -305,7 +305,7 @@ class TournamentController extends Controller
         }else{
             return Redirect::back()->with('error',[response()->json([
                 'status'=>404,
-                'errors'=>'The wanted League doesnt exist'
+                'errors'=>'The wanted Tournament doesnt exist'
             ],404)]);
         }
     }

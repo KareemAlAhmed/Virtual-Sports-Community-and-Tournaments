@@ -158,13 +158,20 @@ h4::after{
     transform: translateY(23px);
     margin-bottom: -3px;
 }
-
+.noTourn{
+    width: 100%;
+}
+.noTourn h3{
+    color: white;
+    font-size: 28px;
+    text-align: center;
+}
 </style>
 @php
 use App\Models\Leagues;
 use App\Models\Posts;
 
-$league=Leagues::find(1);
+
 
 
 $firstSide=Posts::find(31);
@@ -189,23 +196,38 @@ $thirdSide=Posts::find(36);
                         <div class="joined">
                             <span><h1>Joined Leagues</h1></span>
                         </div>
+                        
+                        @if(empty($joinedLeague))
+                            <div class="noTourn">
+                                <h3>There is no  Joined Leagues.</h3>
+                            </div>
+
+                        @else
                             <ul class="tournsList">
                                 @for( $i = 0; $i<count($joinedLeague);$i++)
                                     <x-smallCardPost  :data='$joinedLeague[$i]' nojoined='false' compType='league' ></x-smallCardPost>
                                 @endfor
                             </ul>
+                        @endif
                     </div>
 
                     <div class="createdTourns">
                         <div class="created">
                             <span><h1>Created Leagues</h1></span>
                         </div>
+                     
+                        @if(count($created)==0)
+                            <div class="noTourn">
+                                <h3>There is no  Created Leagues.</h3>
+                            </div>
 
-                        <ul class="tournsList">
+                        @else
+                            <ul class="tournsList">
                                 @for( $i = 0; $i<count($created);$i++)
                                     <x-smallCardPost  :data='$created[$i]' nojoined='false' compType='league'></x-smallCardPost>
                                 @endfor
                             </ul>
+                        @endif
                     </div>
                 </div>
 

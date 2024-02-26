@@ -33,6 +33,9 @@ class enrollTournController extends Controller
                     $tourn->remainingPlaces -=1;
                     $tourn->update();
 
+                    
+                    $tourns=new TournamentController();
+                    $tourns->createGames($tournId);
                     return redirect()->back()->with('response',[response()->json([
                         'status'=>200,
                         'message'=>'You successefuly Join '. $tourn->name . ' tournament',
@@ -92,6 +95,39 @@ class enrollTournController extends Controller
                 'status'=>404,
                 'error'=>'The User doesnt exist'
             ],404)]);
+        }
+    }
+
+    function enrollF($userId,$tournId){
+        $user=User::find($userId);
+        $tourn=Tournaments::find($tournId);
+
+        if(enrollTourn::where("user_id",$userId)->where("tournament_id",$tournId)->exists()){
+            return false;
+        }
+        if($user){
+            if($tourn){
+                if($tourn->remainingPlaces > 0){
+                    $enrollement= new enrollTourn;
+                    $enrollement->user_id=$userId;
+                    $enrollement->tournament_id=$tournId;
+                    $enrollement->save();
+                    
+                    $tourn->takesPlaces +=1;
+                    $tourn->remainingPlaces -=1;
+                    $tourn->update();
+
+                    return true;
+                }else{
+                    return false;
+                }
+
+
+            }else{
+                return false;
+            }
+        }else{
+            return false;
         }
     }
 }

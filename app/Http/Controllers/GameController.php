@@ -360,11 +360,12 @@ class GameController extends Controller
 
     function createTournGame(array $request ,int $id){
         // return ['GAME'=>$request['firstUserName']];
+
         $user1=User::where('name',$request['firstUserName'])->first();
         $user2=User::where('name',$request['secondUserName'])->first();
         $result=Games::where('firstUserName',$user1->name)->where('secondUserName',$user2->name)->where('tournaments_id',$id)->first();
         if($result){
-            return null;
+            return false;
         }
         $attr=Validator::make($request,[
             'firstUserName'=>'min:3|required',
@@ -375,12 +376,13 @@ class GameController extends Controller
             'timeLeft'=>'required',
             'startTime'=>'required',
             'date'=>'required|date',
-            'sportType'=>'required|min:3',
+            'sportType'=>'required|min:2',
             'gameType'=>'required|min:5',
             'status'=>'required|min:5',
             'competetionType'=>'min:5|required'
         ]);
         if($attr->fails()){
+
             return response()->json([
                 'status'=>402,
                 'error'=>$attr->messages()
@@ -442,15 +444,15 @@ class GameController extends Controller
             return null;
         }
         $attr=Validator::make($request,[
-            'firstUserName'=>'min:5|required',
-            'secondUserName'=>'min:5|required',
+            'firstUserName'=>'min:3|required',
+            'secondUserName'=>'min:3|required',
             'firstUserScore'=>'required',
             'secondUserScore'=>'required',
             'duration'=>'required',
             'timeLeft'=>'required',
             'startTime'=>'required',
             'date'=>'required|date',
-            'sportType'=>'required|min:5',
+            'sportType'=>'required|min:2',
             'gameType'=>'required|min:5',
             'status'=>'required|min:5',
             'competetionType'=>'min:5|required'

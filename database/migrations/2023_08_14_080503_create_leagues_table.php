@@ -24,7 +24,7 @@ return new class extends Migration
             $table->date("startDate");
             $table->date("endDate");
             $table->foreignId("winner_id")->nullable();
-            $table->foreignId("organizer_id")->nullable();
+            $table->foreignId("organizer_id")->nullable()->constrained('users')->cascadeOnDelete();;
             $table->timestamps();
         });
     }

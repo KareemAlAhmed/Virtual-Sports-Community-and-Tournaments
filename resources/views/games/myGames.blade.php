@@ -119,6 +119,14 @@ h4::after{
     background-color: #fff;
     z-index: -1;
 }
+.noGame{
+    width: 65%;
+}
+.noGame h3{
+    color: white;
+    font-size: 30px;
+    text-align: center;
+}
 </style>
 @php
 
@@ -162,16 +170,21 @@ $thirdSide=Posts::find(36);
                 <li><span><h1>My Games</h1></span></li>
             </ul>
             <div class="gamesInfo">
-                <div class="gamesList">                                                                 
-
-                    @for($i = 0; $i<count($games);$i++)
-                        @if($games[$i]["competetionType"] == "Tournament")
-                            <x-gameSummary :tournGame='$games[$i]' :leagueGame="null"></x-gameSummary>
-                        @else
-                        <x-gameSummary :tournGame='null' :leagueGame="$games[$i]"></x-gameSummary>
-                        @endif
-                    @endfor
-                </div>
+                @if(count($games)==0)
+                    <div class="noGame">
+                        <h3>You Dont Have Any Games.</h3>
+                    </div>
+                @else   
+                    <div class="gamesList">                                                                 
+                        @for($i = 0; $i<count($games);$i++)
+                            @if($games[$i]["competetionType"] == "Tournament")
+                                <x-gameSummary :tournGame='$games[$i]' :leagueGame="null"></x-gameSummary>
+                            @else
+                            <x-gameSummary :tournGame='null' :leagueGame="$games[$i]"></x-gameSummary>
+                            @endif
+                        @endfor
+                    </div>
+                @endif
 
                 <div class="sideContainer">
                     <h4 class="nk-widget-title"><span>Top 3 Recent</span></h4>

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->time("duration");
             $table->time("timeLeft");
             $table->foreignId("winner_id")->default(Null)->nullable();
-            $table->foreignId("organizer_id");
+            $table->foreignId("organizer_id")->constrained('users')->cascadeOnDelete();
             $table->string("type");
             $table->timestamps();
         });

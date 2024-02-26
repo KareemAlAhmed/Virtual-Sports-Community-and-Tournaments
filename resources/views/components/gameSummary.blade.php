@@ -103,8 +103,10 @@ if($leagueGame !=null){
 
         
         <div class="firstUser">
-            <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>">
-            <p class="playerName">{{$tournGame['firstUserName']}}</p>
+            <a href="../user/{{$user1['id']}}">
+                <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>">
+            </a>
+            <a href="../user/{{$user1['id']}}" class="playerName">{{$tournGame['firstUserName']}}</a>
         </div>
         <div class="timeAndResult">
             <a href="#" style="text-align: center;">
@@ -114,8 +116,10 @@ if($leagueGame !=null){
 
         </div>
         <div class="secondUser">
-            <p class="playerName">{{$tournGame['secondUserName']}}</p>
-            <img src="<?php echo asset('storage/UserProfilePic/' . $user2['image_url']) ?>">
+            <a href="../user/{{$user2['id']}}" class="playerName">{{$tournGame['secondUserName']}}</a>
+            <a href="../user/{{$user2['id']}}">
+                <img src="<?php echo asset('storage/UserProfilePic/' . $user2['image_url']) ?>">
+            </a>
         </div>
     </div>
     <ul>
@@ -135,8 +139,9 @@ if($leagueGame !=null){
 
         
 <div class="firstUser">
-    <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>">
-    <p class="playerName">{{$leagueGame['firstUserName']}}</p>
+    <a href="../user/{{$user1['id']}}">
+    <img src="<?php echo asset('storage/UserProfilePic/' . $user1['image_url']) ?>"></a>
+    <a href="../user/{{$user1['id']}}" class="playerName">{{$leagueGame['firstUserName']}}</a>
 </div>
 <div class="timeAndResult">
     <a href="#" style="text-align: center;">
@@ -146,8 +151,9 @@ if($leagueGame !=null){
 
 </div>
 <div class="secondUser">
-    <p class="playerName">{{$leagueGame['secondUserName']}}</p>
-    <img src="<?php echo asset('storage/UserProfilePic/' . $user2['image_url']) ?>">
+    <a href="../user/{{$user2['id']}}" class="playerName">{{$leagueGame['secondUserName']}}</a>
+    <a href="../user/{{$user2['id']}}">
+    <img src="<?php echo asset('storage/UserProfilePic/' . $user2['image_url']) ?>"></a>
 </div>
 </div>
 <ul>

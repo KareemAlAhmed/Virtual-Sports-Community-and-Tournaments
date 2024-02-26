@@ -34,6 +34,9 @@ class enrollLeagueController extends Controller
                     $league->remainingPlaces -=1;
                     $league->update();
 
+                    $leagues=new LeagueController();
+                    $leagues->createGames($leagueId);
+
                     return redirect()->back()->with('response',[response()->json([
                         'status'=>200,
                         'message'=>'You successefuly Join '. $league->name . ' league',

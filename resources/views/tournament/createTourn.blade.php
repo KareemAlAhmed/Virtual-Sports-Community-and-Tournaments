@@ -83,6 +83,11 @@ select{
     flex-direction: column;
     align-items: center;
 }
+form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
 </style>
 <x-baselayout>
     <x-slot name="content">
@@ -234,37 +239,30 @@ select{
                         <div>
                             <span>Time Left:</span>
                             <input type="time" name="timeLeft" value="">
-                        @if(request()->session()->has('error'))
-                            <div class="responseMessage" x-data="{show :true}" x-show="show" x-init="setTimeout(()=> {show = false},3000)">
-                                <p   class="responseContent error">{{session('error')[0]->original['errors']}}</p> 
-                                @php
-                                    session()->forget('error');
-                                @endphp
-                            </div>
-                        @endif
+                        </div>
 
-                    <div class="errors">
+                        <div class="errors">
                       
-                        @if(request()->session()->has('error'))
+                            @if(request()->session()->has('error'))
 
-                            @auth   
-                                @php
+                                @auth   
+                                    @php
 
-                                $errors=array(json_decode(session('error')[0]->original['errors']));
-                                $error=$errors[0];
-                                foreach($error as $er){
-                                    foreach($er as $e){
-                                    echo("<p>**$e</p>");}
-                                }
+                                    $errors=array(json_decode(session('error')[0]->original['errors']));
+                                    $error=$errors[0];
+                                    foreach($error as $er){
+                                        foreach($er as $e){
+                                        echo("<p>**$e</p>");}
+                                    }
 
-                                session()->forget('error');
-                                @endphp
+                                    session()->forget('error');
+                                    @endphp
 
 
-                            @endauth
-                        @endif
+                                @endauth
+                            @endif
 
-                    </div> 
+                        </div> 
                         <input type="submit" value="SUBMIT" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
                     </form>
                 @endif

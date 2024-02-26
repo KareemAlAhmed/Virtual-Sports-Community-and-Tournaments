@@ -11,13 +11,7 @@
         margin: 45px 165px;
         padding: 15px 15px;
     }
-    /* .mainContainer{
-        width: 70%;
-        min-height: 80vh;
-        margin: 45px 15%;
-        background-color: #191919;
-        border-radius: 12px;
-    } */
+
     .nk-breadcrumbs{
         font-family: "Montserrat", sans-serif;
         font-style: normal;
@@ -131,7 +125,7 @@ h4::after{
 }
 .post {
     width: 100%;
-    height: 170px;
+    height: 200px;
     padding: 20px;
     font-size: 16px;
     color: white;
@@ -350,7 +344,11 @@ use App\Http\Controllers\TournamentController;
 $start = $tourn['startDate']; 
 $startDate = strtotime($start); 
 $organizerName=User::find($tourn['organizer_id'])->name;
+$userOrg=false;
 
+if($tourn['organizer_id']== auth()->user()?->id){
+$userOrg=true;
+}
 $tournController=new TournamentController();
 $tournMembers=$tournController->members($tourn['id']);
 $tournGames=Tournaments::find($tourn['id'])->games;
@@ -393,6 +391,9 @@ $thirdSide=Posts::find(36);
                             <li>
                                 <strong>Total Prize pool</strong>: {{$tourn['rewards']}}$            
                             </li>
+                            <li>
+                                <strong>Places</strong>: {{$tourn['takesPlaces']}}/{{$tourn['maxPlaces']}}            
+                            </li>
                         </ul>  
                         @auth
                             <form method="post" style="display: none;" id="userAdd{{$tourn['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}">
@@ -404,11 +405,13 @@ $thirdSide=Posts::find(36);
                     <p style="margin-bottom: 1.5rem;padding: 0 20px;">{{$tourn['description']}}</p>  
     
                     <div class="actions">
-                        @can('admin')
+                        @if($userOrg)
                             <form method="post" action="../api/tournament/{{$tourn['id']}}/createGames" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="Generate Matches">
                             </form>
+                        
+
                             <form method="post" action="../api/tournament/delete/{{$tourn['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 @method('DELETE')
@@ -418,7 +421,25 @@ $thirdSide=Posts::find(36);
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="EDIT">
                             </form>
-                        @endcan
+                        @else
+                            @can('admin')
+                                <form method="post" action="../api/tournament/{{$tourn['id']}}/createGames" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    <input type="submit" name="submit" class="sbt" value="Generate Matches">
+                                </form>
+                            
+
+                                <form method="post" action="../api/tournament/delete/{{$tourn['id']}}" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" name="submit" class="sbt" value="DELETE">
+                                </form>
+                                <form method="get" action="../api/tournament/{{$tourn['id']}}/edit" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    <input type="submit" name="submit" class="sbt" value="EDIT">
+                                </form>
+                            @endcan
+                        @endif
                         @auth
                             <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf

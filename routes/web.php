@@ -95,7 +95,7 @@ Route::get('/tournament/{id}', function ($id) {
     $num=(int)$id;
     $check=new CheckController();
     $check->checkTourn($num);
-
+    
     return view('tournament.tournamentPage',['tourn'=>Tournaments::find($num)]);
 });
 

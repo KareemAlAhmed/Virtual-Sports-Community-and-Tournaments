@@ -218,7 +218,7 @@
         border-radius: 10px;
     }
     .responseMessage{
-        position: sticky;
+        position: absolute;
         bottom: 0;
         left: 0;
         background-color: transparent;

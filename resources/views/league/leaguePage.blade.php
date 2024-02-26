@@ -352,7 +352,11 @@ use App\Http\Controllers\LeagueController;
 $start = $league['startDate']; 
 $startDate = strtotime($start); 
 $organizerName=User::find($league['organizer_id'])->name;
+$userOrg=false;
 
+if($league['organizer_id']== auth()->user()?->id){
+$userOrg=true;
+}
 $leagueController=new LeagueController();
 $leagueMembers=$leagueController->members($league['id']);
 $leagueGames=Leagues::find($league['id'])->games;
@@ -392,6 +396,9 @@ $thirdSide=Posts::find(36);
                             <li>
                                 <strong>Total Prize pool</strong>: {{$league['rewards']}}$            
                             </li>
+                            <li>
+                                <strong>Places</strong>: {{$league['takesPlaces']}}/{{$league['maxPlaces']}}            
+                            </li>
                         </ul>  
                         @auth
                             <form method="post" style="display: none;" id="userAdd{{$league['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}">
@@ -403,7 +410,8 @@ $thirdSide=Posts::find(36);
                     <p style="margin-bottom: 1.5rem;padding: 0 20px;">{{$league['description']}}</p>  
     
                     <div class="actions">
-                        @can('admin')
+
+                        @if($userOrg)
                             <form method="post" action="../api/league/{{$league['id']}}/createGames" style="display: flex;justify-content: flex-end;">
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="Generate Matches">
@@ -417,7 +425,27 @@ $thirdSide=Posts::find(36);
                                 @csrf
                                 <input type="submit" name="submit" class="sbt" value="EDIT">
                             </form>
-                        @endcan
+
+
+
+                        @else
+
+                            @can('admin')
+                                <form method="post" action="../api/league/{{$league['id']}}/createGames" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    <input type="submit" name="submit" class="sbt" value="Generate Matches">
+                                </form>
+                                <form method="post" action="../api/league/delete/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" name="submit" class="sbt" value="DELETE">
+                                </form>
+                                <form method="get" action="../api/league/{{$league['id']}}/edit" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    <input type="submit" name="submit" class="sbt" value="EDIT">
+                                </form>
+                            @endcan
+                        @endif    
                         @auth
                             <form method="post" action="../api/enroll/user/{{auth()->user()->id}}/league/{{$league['id']}}" style="display: flex;justify-content: flex-end;">
                                 @csrf
@@ -445,6 +473,7 @@ $thirdSide=Posts::find(36);
                             </thead>
                             <tbody>
                                 @if(count($leagueMembers) > 0)
+                                
                                     @foreach($leagueMembers as $member)
                                         <tr>
                                             <td class="tg-0lax">{{$member['id']}}<br></td>
