@@ -37,6 +37,18 @@ h2 svg{
 h2 svg:hover{
     fill: black;
 }
+ul li img{
+        width: 1em;
+        height: 1em;
+    }
+    ul ul li:nth-child(2){
+        display: flex;
+        gap: 5px;
+    }
+    ul ul li:nth-child(2) a{
+        display: flex;
+        gap: 3px;
+    }
 </style>
 @php
 $start = $data['startDate']; 

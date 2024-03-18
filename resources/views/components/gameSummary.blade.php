@@ -95,6 +95,14 @@ if($leagueGame !=null){
         width: 1em;
         height: 1em;
     }
+    .game ul li:first-child{
+        display: flex;
+        gap: 5px;
+    }
+    .game ul li:first-child a{
+        display: flex;
+        gap: 3px;
+    }
 </style>
 
 <div class="game">
@@ -124,11 +132,11 @@ if($leagueGame !=null){
     </div>
     <ul>
         <li>
-            <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $tournGame['sportType']) ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
+            <strong>Game:</strong> <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $tournGame['sportType'] .'.png') ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
                 {{$tournGame['sportType']}}</a>                
         </li>
         <li>
-            <strong>Tournament</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"> 
+            <strong>Tournament:</strong> <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"> 
                 {{ Tournaments::find($tournGame['tournaments_id'])->name   }}</a>                
         </li>
     </ul>
@@ -158,7 +166,7 @@ if($leagueGame !=null){
 </div>
 <ul>
 <li>
-    <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $leagueGame['sportType']) ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
+    <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $leagueGame['sportType'] . '.png') ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
         {{$leagueGame['sportType']}}</a>                
 </li>
 <li>
