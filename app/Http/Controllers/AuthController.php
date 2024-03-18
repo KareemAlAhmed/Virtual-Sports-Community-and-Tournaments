@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -23,26 +24,33 @@ class AuthController extends Controller
             'bio'=>"min:10 |required",
             'image_url'=>"min:5"
         ]);
-        $user=new User;
-        $user->name=$request->input("name");
-        $user->password=bcrypt($request->input("password"));
-        $user->bio=$request->input("bio");
-        $user->email=$request->input("email");
-        if($request->hasFile('image_url')){
-            $user->image_url=$request->image_url->getClientOriginalName();   
-            $request->image_url->storeAs('public/UserProfilePic',$user->image_url);
+        if($validator->fails()){
+            return Redirect::back()->with('errors',[response()->json([
+                'status'=>402,
+                'error'=>$validator->messages()->toJson()
+            ],402)]);
         }else{
-            $user->image_url='images.jpeg';
+            $user=new User;
+            $user->name=$request->input("name");
+            $user->password=bcrypt($request->input("password"));
+            $user->bio=$request->input("bio");
+            $user->email=$request->input("email");
+            if($request->hasFile('image_url')){
+                $user->image_url=$request->image_url->getClientOriginalName();   
+                $request->image_url->storeAs('public/UserProfilePic',$user->image_url);
+            }else{
+                $user->image_url='images.jpeg';
+            }
+            $user->save();
+            $token=$user->createToken('myapptoken')->plainTextToken;
+            $response=[
+                'user'=>$user,
+                'token'=>$token,
+                'message'=>'User Created Successfuly'
+            ];
+            Auth::login($user);
+            return redirect('/')->with('response',[response()->json($response,201)]);
         }
-        $user->save();
-        $token=$user->createToken('myapptoken')->plainTextToken;
-        $response=[
-            'user'=>$user,
-            'token'=>$token,
-            'message'=>'User Created Successfuly'
-        ];
-        Auth::login($user);
-        return redirect('/')->with('response',[response()->json($response,201)]);
     }
     function login(Request $request){
         //check the email
@@ -50,9 +58,9 @@ class AuthController extends Controller
         //check the the password
         if(!$user || !Hash::check($request->input('password'),$user->password)){
 
-           return redirect()->back()->with('error',[response()->json([
+           return redirect()->back()->with('errors',[response()->json([
             'status'=>404,
-            'errors'=>'the email or password doesnt exist!'
+            'error'=>'the email or password doesnt exist!'
         ],400)]);
         }
         

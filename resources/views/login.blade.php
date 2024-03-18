@@ -1,4 +1,14 @@
-
+<style>
+.errors{
+    background-color: transparent;
+    color: red;
+    font-weight: bold;
+    display: flex;
+    margin-bottom: 25px;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
 <x-baselayout>
     <x-slot name="content">
         <div class="flex-container">
@@ -22,6 +32,17 @@
                     <br>
                     <input type="submit" value="SUBMIT" class="submit-btn" style="margin-left: 50%;transform: translateX(-50%);">
                 </form>
+                <div class="errors">
+                      
+                        @if(request()->session()->has('errors'))            
+                                @php
+                                    echo("<p>**". session('errors')[0]->original['error'] ."</p>");
+                                    session()->forget('errors');
+                                @endphp
+                    
+                        @endif
+
+                  </div> 
                 </div>
             </div>
         </div>
