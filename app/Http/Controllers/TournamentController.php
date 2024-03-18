@@ -68,7 +68,7 @@ class TournamentController extends Controller
         }      
     }
 
-    function show( $id){
+    function show($id){
         $tourn=Tournaments::find($id);
         if(!$tourn){
             return response()->json([

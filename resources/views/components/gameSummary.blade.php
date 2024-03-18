@@ -124,7 +124,7 @@ if($leagueGame !=null){
     </div>
     <ul>
         <li>
-            <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="https://wp.nkdev.info/squadforce/wp-content/uploads/2019/10/game-dota-2.svg" class="attachment-medium size-medium" alt="" loading="lazy"> 
+            <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $tournGame['sportType']) ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
                 {{$tournGame['sportType']}}</a>                
         </li>
         <li>
@@ -158,7 +158,7 @@ if($leagueGame !=null){
 </div>
 <ul>
 <li>
-    <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="https://wp.nkdev.info/squadforce/wp-content/uploads/2019/10/game-dota-2.svg" class="attachment-medium size-medium" alt="" loading="lazy"> 
+    <strong>Game</strong>: <a href="https://wp.nkdev.info/squadforce/games/dota-2/" class="cyberpress-game-inline-link"><img width="200" height="200" src="<?php echo asset('storage/gamesLogo/' . $leagueGame['sportType']) ?>" class="attachment-medium size-medium" alt="" loading="lazy"> 
         {{$leagueGame['sportType']}}</a>                
 </li>
 <li>
