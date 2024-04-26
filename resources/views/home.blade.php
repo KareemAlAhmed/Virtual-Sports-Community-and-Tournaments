@@ -28,7 +28,7 @@ use App\Models\User;
         flex-direction: column;
         gap: 20px;
     }
-    .sideContainer{
+    /* .sideContainer{
     width: 30%;
     height: fit-content;
     padding: 20px 23px ;
@@ -63,7 +63,7 @@ use App\Models\User;
         height: 3px;
         background-color: #fff;
         z-index: -1;
-    }
+    } */
 
     .postCont{
         background-color: #191919;

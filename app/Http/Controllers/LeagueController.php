@@ -304,4 +304,10 @@ class LeagueController extends Controller
         }
         
     }
+    function all(){
+        $leagues=Leagues::all();
+        return response()->json([
+            'leagues'=>$leagues
+        ]);
+    }
 }

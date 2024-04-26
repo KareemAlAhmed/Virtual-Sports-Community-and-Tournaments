@@ -22,13 +22,13 @@ class AuthController extends Controller
             'email'=>'min:10|unique:users|required',
             'password'=>'min:5|required',
             'bio'=>"min:10 |required",
-            'image_url'=>"min:5"
+        
         ]);
         if($validator->fails()){
-            return Redirect::back()->with('errors',[response()->json([
+            return response()->json([
                 'status'=>402,
                 'error'=>$validator->messages()->toJson()
-            ],402)]);
+            ],402);
         }else{
             $user=new User;
             $user->name=$request->input("name");
@@ -45,11 +45,13 @@ class AuthController extends Controller
             $token=$user->createToken('myapptoken')->plainTextToken;
             $response=[
                 'user'=>$user,
+                'name'=>$user->name,
                 'token'=>$token,
                 'message'=>'User Created Successfuly'
             ];
             Auth::login($user);
-            return redirect('/')->with('response',[response()->json($response,201)]);
+
+            return response()->json($response,201);
         }
     }
     function login(Request $request){
@@ -67,11 +69,12 @@ class AuthController extends Controller
         $token=$user->createToken('myapptoken')->plainTextToken;
         $response=[
             'user'=>$user,
+            'name'=>$user->name,
             'token'=>$token,
             'message'=>'Welcome Back ' . $user->name
         ];
         Auth::login($user);
-       return redirect('/')->with('response',[response()->json($response,200)]);
+       return response()->json($response,200);
     }
     function logout(Request $request){
         auth()->guard('web')->logout();
@@ -79,6 +82,13 @@ class AuthController extends Controller
 
         return redirect('/')->with('response',[response()->json(['message'=>'logout succesfuly'],200)]);
 
+    }
+    function getUser(string $name){
+        $user=User::where("name",$name)->first();
+        // dd($user);
+        return response()->json([
+            'user'=>$user
+        ],200);
     }
     function acheivements($id){
         if(User::find($id)){

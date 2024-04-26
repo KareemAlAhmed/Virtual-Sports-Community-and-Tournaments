@@ -170,6 +170,8 @@ class PostController extends Controller
     }
     function all(){
         $posts=Posts::all();
-        return $posts;
+        return response()->json([
+            "posts"=>$posts
+        ],200);
     }
 }

@@ -309,4 +309,11 @@ class TournamentController extends Controller
             ],404)]);
         }
     }
+    function all_tourn(){
+        // return "hello";
+        $tourns=Tournaments::all();
+        return response()->json([
+            'tourns'=>$tourns
+        ]);
+    }
 }

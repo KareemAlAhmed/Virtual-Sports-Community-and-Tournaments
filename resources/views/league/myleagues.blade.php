@@ -64,7 +64,7 @@ $joinedLeague=$joined->original['Leagues'];
     margin-bottom: -3px;
 }
 .tournsInfo{
-    width: 100%;
+    width: 70%;
     min-height: 50vh;
     display: flex;
     gap: 25px;

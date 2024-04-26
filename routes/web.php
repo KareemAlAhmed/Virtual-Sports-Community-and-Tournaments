@@ -28,14 +28,22 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
-Route::get('/', function () {
-    $check= new  CheckController();
-    $check->checkInfo();
+// Route::get('/', function () {
+//     $check= new  CheckController();
+//     $check->checkInfo();
 
 
-    return view('home',['post1'=>User::find(1)->posts,'post2'=>User::find(2)->posts,'post3'=>User::find(3)->posts,'myposts'=>auth()->user()?->posts]);
+//     return view('home',['post1'=>User::find(1)->posts,'post2'=>User::find(2)->posts,'post3'=>User::find(3)->posts,'myposts'=>auth()->user()?->posts]);
 
-});
+// });
+// Route::get('/', function () {
+
+//     return view('welcome');
+
+// });
+Route::get('/{any}', function () {
+    return view('welcome');
+})->where('any', '.*');
 
 Route::get('/league/myleagues', function () {
     $joined=new AuthController();

@@ -11,6 +11,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
         <link href="../css/app.css" rel="stylesheet" />
+        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <meta name="csrf-token" content="{{ csrf_token() }}"> 
         <style>
             
             *{
@@ -85,47 +87,13 @@
             }
 
         </style>
+        @vite(['resources/js/app.js'])
     </head>
 
-    <body class="antialiased">
-
-                <!-- <div class='nav'>
-                       <a href="/"> <h1 style="color: white;">Kamkom</h1></a>
-                        @guest
-                            <ul>
-                                <li><a href="register">Register</a></li>
-                                <li><a href="login">Login</a></li>
-                            </ul>
-                        @endguest
-                        @auth
-                            <p class="userName">{{ucfirst(auth()->user()->name)}}</p>
-                        @endauth
-                </div> -->
-                <div  id="menuHolder">
-                    <div role="navigation" class="sticky-top border-bottom border-top" id="mainNavigation">
-                        <div class="flexMain">
-                            <a href="/"> <h1>Kamkom</h1></a>
-                        
-                    
-                            <div class="flex2 text-end d-none d-md-block">
-                                <a href="register"> <button class="siteLink">Home</button></a>
-                                <a href="register"> <button class="siteLink">Tournaments</button></a>
-                                <a href="register"> <button class="siteLink">Leagues</button></a>
-                                <a href="register"> <button class="siteLink">Games</button></a>
-                                @guest
-                                <a href="register"> <button class="siteLink">REGISTER</button></a>
-                                <a href="login">   <button class=" siteLink">Login</button></a>
-                                @endguest
-                                @auth
-                                    <a href="login">   <button class=" siteLink">{{ucfirst(auth()->user()->name)}}</button></a>
-                                @endauth
-                            </div> 
-                        </div>
-                    </div>
-                </div>        
-                @if(request()->session()->has('response'))
-                <p>{{session('response')}}</p>
-                @endif
+    <body >
+            <div id="app">
+                <router-view></router-view>
+            </div>
                 
     </body>
 </html>

@@ -510,4 +510,10 @@ class GameController extends Controller
             }
         }
     }
+    function all(){
+        $games=Games::all();
+        return response()->json([
+            'games'=>$games
+        ]);
+    }
 }
