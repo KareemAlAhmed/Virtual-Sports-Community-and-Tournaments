@@ -58,7 +58,7 @@
 
 .form-container-tournCr .submitTourn:hover {
     color: white;
-    background-color: #121212;
+    background-color: var(--background-color);
     box-shadow: none;
 }
 select{

@@ -7,6 +7,10 @@ import HomePage from "./components/mainComp/HomePage.vue"
 import TopsTourn from "./components/tournament/TopsTourn.vue"
 import TopsGame from "./components/game/TopsGame.vue"
 import TopsLeague from "./components/league/TopsLeague.vue"
+import LeaguePage from "./components/league/LeaguePage.vue"
+import LeagueDefaultLayout from "./components/league/LeagueDefaultLayout.vue"
+import CreateLeague from "./components/league/CreateLeague.vue"
+import MyLeagues from "./components/league/MyLeagues.vue"
 import store from "./store"
 const routes=[
 
@@ -34,33 +38,74 @@ const routes=[
                 meta:{isGuest:true}
             },
             {
-                path:"/tournaments/tops",
-                name: 'TopsTourn',
-                component:TopsTourn,
-                // redirect:"/tournament/tops",
-                children:[
-                    // {
-                    //     path:"tournaments/tops",
-                    //     name: 'TopsTourn',
-                    //     component:TopsTourn,
-                    //     meta:{isGuest:true}
-                    // },
+                path: '/tournaments', 
+                component: TopsTourn, 
+                children: [
+                  {
+                    path: ':id', 
+                    name: 'TournPage',
+                    component: TopsTourn,
+                  },
+
+                  {
+                    path: 'tops', 
+                    name: 'Tops',
+                    component: TopsTourn,
+                  },
+                 
                 ]
-            },
-
+              },
             {
-                path:"/leagues/tops",
-                name: 'TopsLeague',
-                component:TopsLeague,
-                // redirect:"/tournament/tops",
-            },
-            {
-                path:"/games/tops",
-                name: 'TopsGame',
-                component:TopsGame,
-                // redirect:"/tournament/tops",
+                path: '/games', 
+                component: TopsGame, 
+                children: [
+                  {
+                    path: ':id', 
+                    name: 'TopsGame',
+                    component: TopsGame,
+                  },
 
-            },
+                  {
+                    path: 'tops', 
+                    name: 'TopsGame1',
+                    component: TopsGame,
+                  },
+                 
+                ]
+              },
+            {
+                path: '/leagues',
+                component: LeagueDefaultLayout,
+                children: [
+                  {
+                    path: '',
+                    name: 'DefaultLeague',
+                    component: TopsLeague,
+                  },
+                  {
+                    path: ':id',
+                    name: 'LeaguePage',
+                    component: LeaguePage,
+                  },
+
+                  {
+                    path: 'tops',
+                    name: 'TopLeagues',
+                    component: TopsLeague,
+                  },
+                  {
+                    path: 'create',
+                    name: 'CreateLeague',
+                    component: CreateLeague,
+                  },
+                  
+                  {
+                    path: 'myleague',
+                    name: 'MyLeagues',
+                    component: MyLeagues
+                  },
+                ]
+              },
         ]
 
     }
@@ -72,13 +117,19 @@ const router=createRouter({
 })
 
 router.beforeEach((to,from,next)=>{
-    if(to.meta.requiresAuth && !store.state.user.token){
+
+    store.commit('updateCurrentRoute', { route: to })
+
+
+    if((to.meta.requiresAuth && !store.state.user.token) || (to.name === 'CreateLeague' && !store.state.user.token)){
         next({name:'Login'})
-    }else if(store.state.user.token && (to.name ==='Login' || to.name ==='Register')){
+    }else if(store.state.user.token && (to.name ==='Login' || to.name ==='Register' )){
         next({name:'HomePage'});
     }else{
         next();
     }
+
+  
 })
 
 export default router;

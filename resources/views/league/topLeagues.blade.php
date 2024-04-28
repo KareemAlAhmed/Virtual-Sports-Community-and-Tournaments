@@ -75,7 +75,7 @@
     width: 35%;
     height: fit-content;
     padding: 20px 23px ;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 .noTourn{
     width: 65%;
@@ -102,7 +102,7 @@ h4{
 h4 span{
     display: inline-block;
     padding-right: 18px;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h4::after{
     content: "";

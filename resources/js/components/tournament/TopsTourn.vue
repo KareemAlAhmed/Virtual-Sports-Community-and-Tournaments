@@ -54,13 +54,7 @@ import SmallCard from '../minicomponent/SmallCard.vue';
   }
   </script>
   <style scoped>
-       .mainContainer{
-        min-height: 80vh;
-
-        border-radius: 12px;
-        margin:  45px 70px 45px 165px;
-        padding: 0;
-    }
+      
     .nk-breadcrumbs{
         font-family: "Montserrat", sans-serif;
         font-style: normal;
@@ -111,7 +105,7 @@ import SmallCard from '../minicomponent/SmallCard.vue';
     flex-direction: column;
     gap: 25px;
     padding: 15px 15px;
-    background-color: #191919;
+    background-color: var(--post-color);
 }
 .tournsInfo .tournsList{
     
@@ -155,7 +149,7 @@ h4{
 h4 span{
     display: inline-block;
     padding-right: 18px;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h4::after{
     content: "";

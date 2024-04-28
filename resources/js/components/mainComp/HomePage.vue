@@ -5,7 +5,7 @@
                 <div class="post postCont">
                     <div class="imageAndOtherOpt">
                         <div class="userImage">
-                            <a href="./user/}}"><img src="" alt=""></a>
+                            <a href="./user/}}"><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+image_url" alt=""></a>
                            
                         </div>
                         <div class="otherOptions">
@@ -104,35 +104,65 @@
                     <x-post :post='$post2[$i]'></x-post>
                     <x-post :post='$post3[$i]'></x-post>
                 @endfor -->
-                        <div v-for="post in getPost" :key="post.id">
-                            <Post :post='post' :user="user"></Post>
+                <div v-if="!isLoading" class="loading">
+                        <p>
+                            Loading
+                        </p>
+                        <div class="col-3">
+                            <div class="snippet" data-title="dot-pulse">
+                            <div class="stage">
+                                <div class="dot-pulse"></div>
+                            </div>
+                            </div>
                         </div>
+                
+                    </div>
+                    
+                    <template v-else>
+                        <template v-for="post in getPost" :key="post.id">
+                            <Post :post='post' :user="user"></Post>
+                        </template>
 
-                    <Post :post='side1' :user="user"></Post>
-                    <Post :post='side2' :user="user"></Post>
-                    <Post :post='side3' :user="user"></Post>
+                        <!-- <Post :post='side1' :user="user"></Post>
+                        <Post :post='side2' :user="user"></Post>
+                        <Post :post='side3' :user="user"></Post> -->
+                    </template>
             </div>
             
 
             <SideContainer />
            
-
+           
         </div>
        
        
 </template>
 <script>
+
+
+
+
 import SideContainer from "../minicomponent/SideContainer.vue"
 import SidePost from "../minicomponent/SidePost.vue"
 import Post from "../minicomponent/Post.vue"
 import store from '../../store';
+
 export default {
     name:"HomePage",
     components: {
     'SidePost': SidePost,
     'Post': Post,
     'SideContainer':SideContainer
-    },
+    },mounted() {
+        
+        if(store.state.notification.show){
+          if(store.state.notification.type ==="error"){
+             store.dispatch("notifyError")
+          }else{
+             store.dispatch("notifySuccess")
+          }
+        }
+     },
     data() {
     return {
       side1: {
@@ -163,10 +193,17 @@ export default {
         },
         get_token() {
             return store.state.user.token;
+        },image_url() {
+            return store.state.user.token ? `${store.state.user.data.image_url}` :"images.jpeg";
         },
         getPost(){
-            return store.state.posts;
+            return store.state.posts.data;
+        },
+        isLoading(){
+            return store.state.posts.loading;
         }
+  },methods:{
+    
   }
 
 }
@@ -180,13 +217,7 @@ export default {
         color:  yellow !important;
         fill:  yellow !important;
     }
-    .mainContainer{
-        min-height: 90vh;
-        max-width: 100vw;
-        margin: 45px 70px 50px 165px;
-        display: flex;
-        gap: 20px;
-    }
+  
     .centerContainer{
         width: 70%;
         display: flex;
@@ -196,13 +227,14 @@ export default {
     
 
     .postCont{
-        background-color: #191919;
+        background-color: var(--post-color);
     }
     .centerContainer .post {
         padding: 30px 25px 25px;
         display: flex;
         flex-direction: column;
         gap: 25px;
+        width: 100%;
     }
     .imageAndOtherOpt{
         display: flex;
@@ -277,14 +309,7 @@ export default {
         font-weight: 600;
         font-size: 17px;
     }
-    .userName p{
-        font-size: 20px;
-    }
-    .userName span{
-        font-size: 14px;
-        color: #ffffff45;
-        margin-left: 9px;
-    }
+
     .content{
         width: 100%;
     }

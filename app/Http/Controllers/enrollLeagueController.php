@@ -8,6 +8,8 @@ use App\Models\Leagues;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class enrollLeagueController extends Controller
 {
     function enroll($userId,$leagueId){
@@ -15,10 +17,10 @@ class enrollLeagueController extends Controller
         $league=Leagues::find($leagueId);
 
         if(enrollLeague::where("user_id",$userId)->where("league_id",$leagueId)->exists()){
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'You Already Joined The League'
-            ],400)]);
+            ],400);
         }
 
 
@@ -37,32 +39,32 @@ class enrollLeagueController extends Controller
                     $leagues=new LeagueController();
                     $leagues->createGames($leagueId);
 
-                    return redirect()->back()->with('response',[response()->json([
+                    return response()->json([
                         'status'=>200,
                         'message'=>'You successefuly Join '. $league->name . ' league',
                         'Enrollement'=>$enrollement
-                    ],200)]);
+                    ],200);
 
                 }else{
-                    return redirect()->back()->with('error',[response()->json([
+                    return response()->json([
                         'status'=>404,
                         'errors'=>'No Remaining Places'
-                    ],404)]); 
+                    ],404); 
                 }
 
 
 
             }else{
-                return redirect()->back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The League doesnt exist'
-                ],404)]);
+                ],404);
             }
         }else{
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The User doesnt exist'
-            ],404)]);
+            ],404);
         }
     }
 
@@ -84,21 +86,31 @@ class enrollLeagueController extends Controller
 
 
 
-                return redirect()->back()->with('response',[response()->json([
+                return response()->json([
                     'status'=>200,
                     'message'=>'The user has been kicked out of the league'
-                ],200)]);
+                ],200);
             }else{
-                return redirect()->back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The League doesnt exist'
-                ],404)]);
+                ],404);
             }
         }else{
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'error'=>'The User doesnt exist'
-            ],404)]);
+            ],404);
+        }
+    }
+    function isenroll($userId,$leagueId){
+        
+        $enroll=enrollLeague::where("league_id",$leagueId)->where("user_id",$userId)->first();
+
+        if (count((array) $enroll) === 0){
+            return "false";
+        }else{
+            return "true";
         }
     }
 }

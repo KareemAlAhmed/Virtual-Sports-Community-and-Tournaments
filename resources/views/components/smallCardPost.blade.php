@@ -8,7 +8,7 @@
     font-size: 16px;
     color: white;
     border-radius: 8px;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h2{
     font-weight: 700;

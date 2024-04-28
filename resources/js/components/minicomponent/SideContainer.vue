@@ -46,12 +46,13 @@
   },
   }
 </script>
-<style>
+<style scoped>
 .sideContainer{
     width: 30%;
     height: fit-content;
     padding: 20px 23px ;
-    background-color: #191919;
+    background-color: var(--post-color);
+    
 
     }
     .sideContainer h4{
@@ -71,7 +72,7 @@
     .sideContainer h4 span{
         display: inline-block;
         padding-right: 18px;
-        background-color: #191919;
+        background-color: var(--post-color);
     }
     .sideContainer h4::after{
         content: "";

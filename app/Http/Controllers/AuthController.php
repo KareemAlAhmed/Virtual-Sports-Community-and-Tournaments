@@ -8,6 +8,8 @@ use App\Models\Acheivements;
 use App\Models\Leagues;
 use App\Models\Tournaments;
 use App\Models\User;
+use App\Services\FlashMessage;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +17,13 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
-{
+{ 
+    private FlashMessage $flashMessage;
+
+    public function __construct(FlashMessage $flashMessage)
+    {
+        $this->flashMessage = $flashMessage;
+    }
     function register(Request $request){
         $validator = Validator::make($request->all(), [
             'name'=>'min:3|unique:users|required',
@@ -47,7 +55,7 @@ class AuthController extends Controller
                 'user'=>$user,
                 'name'=>$user->name,
                 'token'=>$token,
-                'message'=>'User Created Successfuly'
+                'message'=>'Welcome '. $user->name . " !"
             ];
             Auth::login($user);
 
@@ -60,10 +68,10 @@ class AuthController extends Controller
         //check the the password
         if(!$user || !Hash::check($request->input('password'),$user->password)){
 
-           return redirect()->back()->with('errors',[response()->json([
+           return response()->json([
             'status'=>404,
             'error'=>'the email or password doesnt exist!'
-        ],400)]);
+            ],400);
         }
         
         $token=$user->createToken('myapptoken')->plainTextToken;
@@ -74,13 +82,15 @@ class AuthController extends Controller
             'message'=>'Welcome Back ' . $user->name
         ];
         Auth::login($user);
-       return response()->json($response,200);
+        return response()->json($response,200);
     }
     function logout(Request $request){
         auth()->guard('web')->logout();
         auth()->user()->tokens()->delete();
 
-        return redirect('/')->with('response',[response()->json(['message'=>'logout succesfuly'],200)]);
+        // $user=Auth::user();
+        // $user->currentAccessToken()->delete();
+        return response()->json(['message'=>'logout succesfuly'],200);
 
     }
     function getUser(string $name){
@@ -153,26 +163,30 @@ class AuthController extends Controller
         ],200);
     }
 
-    function leagues($id){
+    function user_leagues($id){
         if(User::find($id)){
             $league= User::find($id)->leagues->all();
+
             $leagues =array();
-        
+            $created=Leagues::where('organizer_id',$id)->get();
             for($i=0;$i < count($league); $i++)
             {
                 $get=Leagues::find($league[$i]->league_id);
                 array_push($leagues, $get);
             }      
             return response()->json([
-                "Leagues"=>$leagues
-            ]);
+                'status'=>200,
+                "joined_Leagues"=>$leagues,
+                "created_Leagues"=>$created
+            ],200);
         }else{
             return response()->json([
                 'status'=>404,
-                'error'=>'The tournament doesnt exists'
+                'error'=>'The User doesnt exists'
             ],404);
         }
     }
+   
     function winningLeague($id){
         return response()->json([
             'status'=>200,

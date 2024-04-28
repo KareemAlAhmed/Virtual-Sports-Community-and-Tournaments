@@ -14,11 +14,13 @@ import DefaultLayout from"./components/mainComp/DefaultLayout.vue"
 import TopsTourn from "./components/tournament/TopsTourn.vue"
 import TopsGame from "./components/game/TopsGame.vue"
 import TopsLeague from "./components/league/TopsLeague.vue"
+import GameSummary from "./components/game/GameSummary.vue"
 app.component("home-page",HomePage)
 app.component("nav-bar",NavBar)
 app.component("default-layout",DefaultLayout)
 app.component("tops-tourn",TopsTourn)
 app.component("tops-game",TopsGame)
 app.component("tops-league",TopsLeague)
+app.component("game-summary",GameSummary)
 // app.use(router).use(store).mount("#app")
 app.use(router).mount("#app")

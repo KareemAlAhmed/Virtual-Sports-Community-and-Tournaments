@@ -88,7 +88,7 @@
     width: 35%;
     height: fit-content;
     padding: 20px 23px ;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h4{
     margin: -23px;
@@ -107,7 +107,7 @@ h4{
 h4 span{
     display: inline-block;
     padding-right: 18px;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h4::after{
     content: "";
@@ -136,7 +136,7 @@ h4::after{
     font-size: 16px;
     color: white;
     border-radius: 8px;
-    background-color: #121212;
+    background-color: var(--background-color);
 }
 h2{
     font-weight: 700;
@@ -231,7 +231,7 @@ h2 svg:hover{
         .tg{
             border-collapse:collapse;
             border-spacing:0;
-            background-color: #121212;
+            background-color: var(--background-color);
             color: white;
             width: 100%;
         }
@@ -328,7 +328,7 @@ li strong:hover{
 .nogame{
     width: 100%;
     height: 50px;
-    background-color: #121212;
+    background-color: var(--background-color);
     text-align: center;
     color: #fff;
     display: flex;
@@ -351,6 +351,9 @@ use App\Http\Controllers\LeagueController;
 
 $start = $league['startDate']; 
 $startDate = strtotime($start); 
+
+
+
 $organizerName=User::find($league['organizer_id'])->name;
 $userOrg=false;
 

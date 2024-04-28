@@ -20,6 +20,10 @@
                 margin: 0;
                 padding: 0;
             }
+            :root{
+              --background-color:#121212 ;
+              --post-color:#191919;
+            }
             body{
                 max-width: 100vw;
                 min-height: 100vh;
@@ -33,6 +37,8 @@
                 -ms-user-select: none;
                 -o-user-select: none;
                 user-select: none;
+                background-color: var(--background-color);
+                
             }
             body:not(.user-is-tabbing) button:focus,
             body:not(.user-is-tabbing) input:focus,
@@ -45,6 +51,59 @@
                 text-decoration: none;
                 color: inherit;
             }
+            .mainContainer{
+                min-height: 80vh;
+                max-width: 100vw;
+        
+                border-radius: 12px;
+                margin: 45px 70px 45px 165px;
+                padding: 0;
+               
+                display: flex;
+                gap: 20px;
+            }
+            .nk-breadcrumbs{
+                font-family: "Montserrat", sans-serif;
+                font-style: normal;
+                font-weight: 700;
+                padding: 0;
+                margin: 0;
+                color: #fff;
+                text-transform: uppercase;
+                list-style-type: none;
+            }
+            .nk-breadcrumbs > li{
+        display: inline-block;
+    font-size: 1.07rem;
+    }
+    .nk-breadcrumbs > li + li {
+    margin-left: 6px;
+    }
+    .nk-breadcrumbs > li:last-of-type {
+    display: flex;
+    margin-top: 9px;
+    margin-left: 0;
+    font-size: 18px;
+    gap: 10px;
+}
+.svg-inline--fa {
+    display: var(--fa-display,inline-block);
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+}
+.nk-breadcrumbs > li:last-of-type::after {
+    content: "";
+    display: block;
+    -webkit-box-flex: 100;
+    -ms-flex: 100;
+    flex: 100;
+    border-bottom: 4px solid white;
+    -webkit-transform: translateY(-12px);
+    -ms-transform: translateY(-12px);
+    transform: translateY(-12px);
+    margin-bottom: -3px;
+}
             .userName{
                 color: white;
                 font-size: 23px;
@@ -85,14 +144,127 @@
             transition : transform 200ms linear;
             background : #fff;
             }
+            .loading{
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 15px;
+    color: white;
+}
+            .dot-pulse {
+  position: relative;
+  left: -9999px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: #ffffff;
+  box-shadow: 9999px 0 0 -5px;
+  animation: dot-pulse 1.5s infinite linear;
+  animation-delay: 0.25s;
+}
+.dot-pulse::before, .dot-pulse::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  color: white;
+}
+.dot-pulse::before {
+  box-shadow: 9984px 0 0 -5px;
+  animation: dot-pulse-before 1.5s infinite linear;
+  animation-delay: 0s;
+}
+.dot-pulse::after {
+  box-shadow: 10014px 0 0 -5px;
+  animation: dot-pulse-after 1.5s infinite linear;
+  animation-delay: 0.5s;
+}
 
+@keyframes dot-pulse-before {
+  0% {
+    box-shadow: 9984px 0 0 -5px;
+  }
+  30% {
+    box-shadow: 9984px 0 0 2px;
+  }
+  60%, 100% {
+    box-shadow: 9984px 0 0 -5px;
+  }
+}
+@keyframes dot-pulse {
+  0% {
+    box-shadow: 9999px 0 0 -5px;
+  }
+  30% {
+    box-shadow: 9999px 0 0 2px;
+  }
+  60%, 100% {
+    box-shadow: 9999px 0 0 -5px;
+  }
+}
+@keyframes dot-pulse-after {
+  0% {
+    box-shadow: 10014px 0 0 -5px;
+  }
+  30% {
+    box-shadow: 10014px 0 0 2px;
+  }
+  60%, 100% {
+    box-shadow: 10014px 0 0 -5px;
+  }
+}
+.disabledbtn{
+  color: #66666675 !important;
+}
         </style>
         @vite(['resources/js/app.js'])
+            <script>
+                const snippets = document.querySelectorAll('.snippet');
+
+for (let i = 0; i < snippets.length; i++) {
+  snippets[i].addEventListener('mouseleave', clearTooltip);
+  snippets[i].addEventListener('blur', clearTooltip);
+}
+
+function showTooltip(el, msg) {
+  el.setAttribute('class', 'snippet tooltip');
+  el.setAttribute('aria-label', msg);
+}
+
+function clearTooltip(e) {
+  e.currentTarget.setAttribute('class', 'snippet');
+  e.currentTarget.removeAttribute('aria-label');
+}
+
+const clipboardSnippets = new ClipboardJS('.snippet', {
+  text: trigger => trigger.getAttribute('data-title')
+});
+
+clipboardSnippets.on('success', e => {
+  e.clearSelection();
+  showTooltip(e.trigger, 'Copied!');
+});
+
+clipboardSnippets.on('error', e => {
+  showTooltip(e.trigger, 'Copy failed!');
+});
+
+            </script>
     </head>
 
     <body >
             <div id="app">
+                
                 <router-view></router-view>
+
             </div>
                 
     </body>

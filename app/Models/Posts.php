@@ -9,6 +9,8 @@ class Posts extends Model
 {
     use HasFactory;
     function user(){
-        return $this->belongsTo(User::class,'user_id');
+        $user=$this->belongsTo(User::class,'user_id');
+        return $user;
     }
+    
 }

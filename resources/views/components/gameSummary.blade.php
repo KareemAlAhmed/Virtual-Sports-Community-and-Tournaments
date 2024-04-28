@@ -35,7 +35,7 @@ if($leagueGame !=null){
     .game{
         width: 100%;
         height: 200px;
-        background-color: #121212;
+        background-color: var(--background-color);
         padding: 20px;
         color: #fff;
     }

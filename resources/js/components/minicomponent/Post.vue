@@ -5,7 +5,8 @@
                 <a href="../user/{{user.id}}"><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+user.userPic " alt="http://127.0.0.1:8000/storage/images.jpeg"></a>
             </div>
             <div class="otherOptions userName">
-            <a href="../user/{{user.id}}">   <p>{{user.content}} <span>{{format_date(post.created_at)}}</span></p></a>
+            <a href="../user/{{user.id}}">   
+                <p>{{user.name}}</p> <span>{{format_date(post.created_at)}}</span></a>
             </div>
         </div>
         
@@ -78,5 +79,17 @@ export default {
     .sidePost p:last-child{
         font-size: 16px;
         color: white;
+    }
+    .userName a{
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    .userName p{
+        font-size: 20px;
+    }
+    .userName span{
+        font-size: 14px;
+        color: #ffffff45;
     }
 </style>

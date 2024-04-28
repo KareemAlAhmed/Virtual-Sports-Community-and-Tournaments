@@ -90,10 +90,10 @@ export default {
     },methods:{
         logout(e){
             e.preventDefault();
-            store.dispatch()
+            store.dispatch("logout")
         }
         },mounted() {
-            this.user=store.state.user.data
+            this.user=this.getUser
 
     },computed: {
         fullName() {
@@ -101,6 +101,8 @@ export default {
         },
         get_token() {
             return store.state.user.token;
+        },getUser(){
+            return store.state.user.data;        
         }
     }
 }
@@ -230,7 +232,7 @@ export default {
                 z-index: 8;
 
                 color: white;
-                background-color: #191919;
+                background-color: var(--post-color);
                 /* padding: 7px 13px; */
                 width: 130px;
                 display: flex;
