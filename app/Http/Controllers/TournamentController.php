@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Games;
 use App\Models\Tournaments;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -20,10 +21,8 @@ class TournamentController extends Controller
             'rewards'=>'required|min:2',
             'requirements'=>'required|min:15',
             'sportType'=>'required|min:2',
-            'startDate'=>'required|date',
-            'endDate'=>'required|date',
-            'duration'=>'required',
-            'timeLeft'=>'required',
+            'startDate'=>'required',
+            'endDate'=>'required',
             'type'=>'required|min:5'
         ]);
 
@@ -45,25 +44,27 @@ class TournamentController extends Controller
                 $tourn->sportType=$request->input('sportType');
                 $tourn->startDate=$request->input('startDate');
                 $tourn->endDate=$request->input('endDate');
-                $tourn->timeLeft=$request->input('timeLeft');
-                $tourn->duration=$request->input('duration');
                 $tourn->type=$request->input('type');
                 $tourn->organizer_id=$id;
+                
+
+                
                 $tourn->save();
+             
             
                 
 
-                return redirect('/')->with('response',[response()->json([
+                return response()->json([
                     'status'=>201,
                     'message'=>'The Tournament created successfuly',
                     'tournament'=>$tourn
-                ],201)]);
+                ],201);
 
             }else{              
-                return Redirect::back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The organizer doesnt exist'
-                ],404)]);
+                ],404);
             }
         }      
     }
@@ -75,6 +76,7 @@ class TournamentController extends Controller
                 'status'=>404,
                 'errors'=>'The wanted Tournament doesnt exist'],404);
         }else{
+            $tourn->owner=User::find($tourn->organizer_id);
             return response()->json([
                 'status'=>200,
                 'Tournament'=>$tourn
@@ -85,15 +87,15 @@ class TournamentController extends Controller
     function edit($id){
         $tourn=Tournaments::find($id);
         if(!$tourn){
-                return Redirect::back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The wanted Tournament doesnt exist'
-                ],404)]);
+                ],404);
         }else{
-            return redirect('/tournament/create')->with('response',[response()->json([
+            return response()->json([
                 'status'=>200,
                 'tournament'=>$tourn
-            ],200)]);
+            ],200);
         }
     }
 
@@ -108,15 +110,13 @@ class TournamentController extends Controller
             'sportType'=>'required|min:2',
             'startDate'=>'required|date',
             'endDate'=>'required|date',
-            'duration'=>'required',
-            'timeLeft'=>'required',
             'type'=>'required|min:5'
         ]);
         if($val->fails()){
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>422,
                 'errors'=>$val->messages()
-            ],422)]);
+            ],422);
         }else{
 
                 if($tourn){
@@ -129,21 +129,20 @@ class TournamentController extends Controller
                     $tourn->sportType=$request->input('sportType');
                     $tourn->startDate=$request->input('startDate');
                     $tourn->endDate=$request->input('endDate');
-                    $tourn->timeLeft=$request->input('timeLeft');
-                    $tourn->duration=$request->input('duration');
+
                     $tourn->type=$request->input('type');
                     $tourn->update();
 
-                    return redirect('/tournament/' . $id)->with('response',[response()->json([
+                    return response()->json([
                         'status'=>200,
                         'message'=>'The Tournament updated successfuly',
                         'Tournament'=>$tourn
-                    ],200)]);
+                    ],200);
                 }else{
-                    return redirect()->back()->with('error',[response()->json([
+                    return response()->json([
                         'status'=>404,
                         'errors'=>'The wanted Tournament doesnt exist'
-                    ],404)]);
+                    ],404);
                 }
         }
     }
@@ -153,16 +152,16 @@ class TournamentController extends Controller
         if($tourn){
             $tourn->delete();
 
-            return redirect('/tournament/mytourns')->with('response',[response()->json([
+            return response()->json([
                 'status'=>200,
                 'message'=>'The Tournament deleted successfuly',
-            ],200)]);
+            ],200);
         }else{
 
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The wanted Tournament cant be  deleted'
-            ],404)]);
+            ],404);
         }
     }
 
@@ -175,7 +174,10 @@ class TournamentController extends Controller
             $get=User::find($member[$i]->user_id);
             array_push($members, $get);
         }    
-        return $members;
+        return response()->json([
+            'status'=>200,
+            'members'=>$members
+        ],200);
     }
     function setWinner($tournId,$userId){
         $tourn=Tournaments::find($tournId);
@@ -282,31 +284,35 @@ class TournamentController extends Controller
                             'sportType'=>$tourn->sportType,
                             'gameType'=>$tourn->type,
                             'status'=>'Not Started',
-                            'competetionType'=>'Tournament'
+                            'competetionType'=>'Tournament',
+                            'user1'=>$firstUser,
+                            'user2'=>$secondtUser,
+                            'tournaments'=>$tourn
                         ];
                         (new GameController)->createTournGame($data,$id);
                         array_push($nubs,$data);
                     }
                 }
                 
-                return redirect()->back()->with('response',[response()->json([
+                
+                return response()->json([
                     'status'=>200,
                     'message'=>"New Games Added to the Tournament.",
                     'matches'=>$nubs
-                ],200)]);
+                ],200);
 
 
             }else{
-                return Redirect::back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'Not enough player to make a game'
-                ],404)]);
+                ],404);
             }
         }else{
-            return Redirect::back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The wanted Tournament doesnt exist'
-            ],404)]);
+            ],404);
         }
     }
     function all_tourn(){

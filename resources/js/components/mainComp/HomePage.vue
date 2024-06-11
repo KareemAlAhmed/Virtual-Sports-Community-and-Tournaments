@@ -189,7 +189,7 @@ export default {
     };
   },computed:{
         fullName() {
-            return store.state.user.token ? `${store.state.user.name}` :"Client";
+            return store.state.user.token ? `${store.state.user.name[0].toLocaleUpperCase() +store.state.user.name.slice(1)}` :"Client";
         },
         get_token() {
             return store.state.user.token;

@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //Protected route(should user be authenticated)
+
 Route::get('tournament/all',[TournamentController::class,'all_tourn']); // to get the games of a tournament
 Route::get('league/all',[LeagueController::class,'all']); // to get the games of a league
 Route::group(['middleware'=>['auth:sanctum']],function(){
@@ -95,9 +96,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('{id}/games',[GameController::class,'user_games']); // to show a league
+Route::get('game/all',[GameController::class,'all']); // to get all games
+
 Route::post('register',[AuthController::class,'register']); // to register a user
 Route::post('login',[AuthController::class,'login']); // to login a user
+Route::post('isAdmin/{userId}',[AuthController::class,'isAdmin']); // to register a user
 Route::post('isenroll/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'isenroll']);// to enroll a user in a specific league 
+Route::post('isenroll/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'isenroll']);// to enroll a user in a specific league 
 Route::get("user/{name:slug}",[AuthController::class,'getUser']);
 Route::get('user/{id}/acheivements',[AuthController::class,'acheivements']); // to get the acheivements of a specific user
 Route::get('acheivement/{id}/user',[acheiveController::class,'users']); // to get the users that have a specific acheivement
@@ -125,12 +131,16 @@ Route::get('league/{id}/members',[LeagueController::class,'members']); // to get
 Route::get('league/{leagueId}/organizer',[LeagueController::class,'organizer']); // to get the organizer of  a specific league
 Route::get('user/{id}/winningLeagues',[AuthController::class,'winningLeague']); // to get the league  that a user won
 Route::get('user/{id}/leagues',[AuthController::class,'user_leagues']);// to get the leagues that a user participate in.
+Route::get('user/{id}/tourns',[AuthController::class,'user_tourns']);// to get the leagues that a user participate in.
 
 
-Route::get('game/all',[GameController::class,'all']); // to show a league
+
 Route::get('game/{id}',[GameController::class,'show']); // to show a league
+
 
 Route::get('user/{id}/leagues/games',[AuthController::class,'leagueGames']); //to get the games of user in leagues
 Route::get('user/{id}/tournaments/games',[AuthController::class,'tournGames']); //to get the games of user in tournaments
 
-
+Route::get('users/all',[AuthController::class,'all_users']); // to get all users
+Route::get('tourns/all',[TournamentController::class,'all']); // to get all tourns
+Route::get('leagues/all',[LeagueController::class,'all']); // to get all leagues

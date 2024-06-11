@@ -187,6 +187,29 @@ class AuthController extends Controller
         }
     }
    
+    function user_tourns($id){
+        if(User::find($id)){
+            $tourn= User::find($id)->tournaments->all();
+            $tourns =array();
+            $created=Tournaments::where('organizer_id',$id)->get();
+            for($i=0;$i < count($tourn); $i++)
+            {
+                $get=Tournaments::find($tourn[$i]->tournament_id);
+                array_push($tourns, $get);
+            }      
+            return response()->json([
+                'status'=>200,
+                "joined_Tourns"=>$tourns,
+                "created_Tourns"=>$created
+            ],200);
+        }else{
+            return response()->json([
+                'status'=>404,
+                'error'=>'The User doesnt exists'
+            ],404);
+        }
+    }
+
     function winningLeague($id){
         return response()->json([
             'status'=>200,
@@ -264,7 +287,30 @@ class AuthController extends Controller
 
     function delete(int $id){
         User::find($id)->delete();
-        return redirect()->back()->with('response',[response()->json(['message'=>'The User is removed'],200)]);
+        return response()->json([
+            'message'=>'The User Removed Successfuly'],200);
 
+    }
+    function isAdmin($userId){
+        $user=User::find($userId);
+        if($user){
+            if($user->name ==="Kareem"){
+                return "true";
+            }else{
+                return "false";
+            }
+        }else{
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The User doesnt exist'
+            ],404);
+        }
+    }
+    function all_users(){
+        $users=User::all();
+        return response()->json([
+            "status"=>200,
+            "users"=>$users
+        ]);
     }
 }

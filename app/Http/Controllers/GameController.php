@@ -394,8 +394,8 @@ class GameController extends Controller
                         $game=new Games;
                         $game->firstUserName=$request['firstUserName'];
                         $game->secondUserName=$request['secondUserName'];
-                        $game->firstUserScore=null;
-                        $game->secondUserScore=null;
+                        $game->firstUserScore=Null;
+                        $game->secondUserScore=Null;
                         $game->duration=$request['duration'];
                         $game->timeLeft=$request['timeLeft'];
                         $game->startTime=$request['startTime'];
@@ -469,8 +469,8 @@ class GameController extends Controller
                         $game=new Games;
                         $game->firstUserName=$request['firstUserName'];
                         $game->secondUserName=$request['secondUserName'];
-                        $game->firstUserScore=null;
-                        $game->secondUserScore=null;
+                        $game->firstUserScore=Null;
+                        $game->secondUserScore=Null;
                         $game->duration=$request['duration'];
                         $game->timeLeft=$request['timeLeft'];
                         $game->startTime=$request['startTime'];
@@ -515,5 +515,10 @@ class GameController extends Controller
         return response()->json([
             'games'=>$games
         ]);
+    }
+    function user_games($id){
+        $userGamesP1=User::find($id)->gamesAsP1;
+        $userGamesP2=User::find($id)->gamesAsP2;
+        return [...$userGamesP1,...$userGamesP2];
     }
 }

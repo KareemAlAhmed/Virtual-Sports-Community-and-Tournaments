@@ -19,119 +19,124 @@
             </div>
             <template v-else>
                 <ul class="nk-breadcrumbs">
-                <li><RouterLink rel="v:url" :to="'/'">Home</RouterLink></li>
-                <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
-                <li><RouterLink rel="v:url" :to="'/leagues/tops'">Leagues</RouterLink></li>
-                <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
-                <li><span><h1>{{league.name}}</h1></span></li>
-            </ul>
-            <div class="centerContainer">
-                <li id="post-762" class="post" x-data="{click: false}">
-                    <ul class="cyberpress-tournament-info">
-                        <li>
-                            <strong>Dates</strong>: {{format_date(league.startDate)}}  -   {{format_date(league.endDate)}}  
-                        </li>
-                        <li>
-                            <strong>Game</strong>: <img width="200" height="200"  :src="'http://127.0.0.1:8000/storage/gamesLogo/'+league.sportType +'.png'" class="attachment-medium size-medium" alt="" loading="lazy"> 
-                                {{league.sportType}}                
-                        </li>
-                        <li>
-                            <strong>Organizer</strong>: {{league.owner.name}} 
-                        </li>
-                        <li>
-                            <strong>Type</strong>: Ranked  
-                        </li>
-                        <li>
-                            <strong>Total Prize pool</strong>: {{league.rewards}}$            
-                        </li>
-                        <li>
-                            <strong>Places</strong>: {{league.takesPlaces}}/{{league.maxPlaces}}            
-                        </li>
-                    </ul>  
-                    <!-- @auth
-                        <form method="post" style="display: none;" id="userAdd{{$tourn['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}">
-                            @csrf                       
-                        </form>
-                    @endauth -->
-                </li><!-- #post-## -->
-                <p style="margin-bottom: 1.5rem;padding: 0 20px;line-height: 1.5rem;">{{league.description}}</p>  
-                <div class="actions">
-                        <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="generateMatches(league.id);">Generate Matches</button>
-                        <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'" name="submit" class="sbt" @click="deleteLeague(league.id);">DELETE</button>
-               
-                        <!-- <form method="get" action="../api/tournament/{{$tourn['id']}}/edit" style="display: flex;justify-content: flex-end;">
-                            @csrf
-                            <input type="submit" name="submit" class="sbt" value="EDIT">
-                        </form> -->
-                              
-                        <button v-if="!isjoined" name="submit" class="sbt" @click="join(cuurentUserId,league.id);">JOIN</button>
-            
-                        <button v-else name="submit"  class="sbt disabledbtn" disabled>JOINED</button>
-                </div>
-            <div class="userNames">
-                <div class="memberNames"><span><h1>Tournament Members</h1></span></div>
-                <table class="tg">
-                    <thead>
-                        <tr>
-                            <td class="tg-0lax">Id<br></td>
-                            <td class="tg-0lax">Username<br></td>
-                            <td class="tg-0lax">Email<br></td>
-                            <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
-                            <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">Actions<br></td>    
-                            <!-- @endif -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                            <!-- @if(count($tournMembers) > 0)
-                            @foreach($tournMembers as $member) -->
-                                <template v-if="members.length != 0">
-                                    <tr v-for="member in members" :key="member.id">
-                                        <td class="tg-0lax">{{member.id}}<br></td>
-                                        <td class="tg-0lax">{{member.name}}<br></td>
-                                        <td class="tg-0lax">{{member.email}}<br></td>
-                                        
-                                        <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
-                                        <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">
-                                        <!-- <form method="post" action="../api/kick/user/{{$member['id']}}/tournament/{{$tourn['id']}}"> -->
-                                            <!-- @csrf   
-                                            @method('DELETE') -->
-                                            <button @click="kickUser(member.id,league.id)">                                        
-                                                <svg class="del" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
-                                            </button> 
-                                            
-                                            <button > 
-                                                <svg class="edt" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"> <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>
-                                            </button> 
-                                        <!-- </form> -->
-                                        </td>   
-                                        <!-- @endif -->
-                                    </tr>
+                    <li><RouterLink rel="v:url" :to="'/'">Home</RouterLink></li>
+                    <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
+                    <li><RouterLink rel="v:url" :to="'/leagues/tops'">Leagues</RouterLink></li>
+                    <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
+                    <li><span><h1>{{league.name}}</h1></span></li>
+                </ul>
+                    <div class="centerContainer">
+                        <li id="post-762" class="post" x-data="{click: false}">
+                            <ul class="cyberpress-tournament-info">
+                                <li>
+                                    <strong>Dates</strong>: {{format_date(league.startDate)}}  -   {{format_date(league.endDate)}}  
+                                </li>
+                                <li>
+                                    <strong>Game</strong>: <img width="200" height="200"  :src="'http://127.0.0.1:8000/storage/gamesLogo/'+league.sportType +'.png'" class="attachment-medium size-medium" alt="" loading="lazy"> 
+                                        {{league.sportType}}                
+                                </li>
+                                <li>
+                                    <strong>Organizer</strong>: {{league.owner.name}} 
+                                </li>
+                                <li>
+                                    <strong>Type</strong>: Ranked  
+                                </li>
+                                <li>
+                                    <strong>Total Prize pool</strong>: {{league.rewards}}$            
+                                </li>
+                                <li>
+                                    <strong>Places</strong>: {{league.takesPlaces}}/{{league.maxPlaces}}            
+                                </li>
+                            </ul>  
+                            <!-- @auth
+                                <form method="post" style="display: none;" id="userAdd{{$tourn['id']}}" action="../api/enroll/user/{{auth()->user()->id}}/tournament/{{$tourn['id']}}">
+                                    @csrf                       
+                                </form>
+                            @endauth -->
+                        </li><!-- #post-## -->
+                        <p style="margin-bottom: 1.5rem;padding: 0 20px;line-height: 1.5rem;">{{league.description}}</p>  
+                        <div class="actions">
+                                <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="generateMatches(league.id);">Generate Matches</button>
+                                <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'" name="submit" class="sbt" @click="deleteLeague(league.id);">DELETE</button>
+                    
+                                <!-- <form method="get" action="../api/tournament/{{$tourn['id']}}/edit" style="display: flex;justify-content: flex-end;">
+                                    @csrf
+                                    <input type="submit" name="submit" class="sbt" value="EDIT">
+                                </form> -->
+                               
+                                <template v-if="isGuest == false">
+                                    <button v-if="!isjoined" name="submit" class="sbt" @click="join(cuurentUserId,league.id);">JOIN</button>
+                    
+                                    <button v-else name="submit"  class="sbt disabledbtn" disabled>JOINED</button>
                                 </template>
                                 <template v-else>
-                                    <tr>
-                                        <td colspan="4" class="noresult">There is No Member Participated Yet.</td>
-                                    </tr>
+                                    <button  name="SignIn" class="sbt" @click="goSign()" >SIGNIN</button>
                                 </template>
-                            <!-- @endforeach -->
-                            <!-- @else
-                                
-                            @endif -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="tournGames">
-                <div class="gamesHead"><span><h1>Games</h1></span></div>
-                <div class="gamesList">
-                    <template v-if="games.length == 0">
-                        <p class="nogame">There Is No Game Yet.</p>
-                    </template>
-                    <template v-else>
-                        <GameSummary v-for="game in games" :key="game.id" compType="league" :game="game"/>
-                    </template>
-  
+                        </div>
+                    <div class="userNames">
+                        <div class="memberNames"><span><h1>League Members</h1></span></div>
+                        <table class="tg">
+                            <thead>
+                                <tr>
+                                    <td class="tg-0lax">Id<br></td>
+                                    <td class="tg-0lax">Username<br></td>
+                                    <td class="tg-0lax">Email<br></td>
+                                    <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
+                                    <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">Actions<br></td>    
+                                    <!-- @endif -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                    <!-- @if(count($tournMembers) > 0)
+                                    @foreach($tournMembers as $member) -->
+                                        <template v-if="members.length != 0">
+                                            <tr v-for="member in members" :key="member.id">
+                                                <td class="tg-0lax">{{member.id}}<br></td>
+                                                <td class="tg-0lax">{{member.name}}<br></td>
+                                                <td class="tg-0lax">{{member.email}}<br></td>
+                                                
+                                                <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
+                                                <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">
+                                                <!-- <form method="post" action="../api/kick/user/{{$member['id']}}/tournament/{{$tourn['id']}}"> -->
+                                                    <!-- @csrf   
+                                                    @method('DELETE') -->
+                                                    <button @click="kickUser(member.id,league.id)">                                        
+                                                        <svg class="del" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+                                                    </button> 
+                                                    
+                                                    <button > 
+                                                        <svg class="edt" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"> <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>
+                                                    </button> 
+                                                <!-- </form> -->
+                                                </td>   
+                                                <!-- @endif -->
+                                            </tr>
+                                        </template>
+                                        <template v-else>
+                                            <tr>
+                                                <td colspan="4" class="noresult">There is No Member Participated Yet.</td>
+                                            </tr>
+                                        </template>
+                                    <!-- @endforeach -->
+                                    <!-- @else
+                                        
+                                    @endif -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tournGames">
+                        <div class="gamesHead"><span><h1>Games</h1></span></div>
+                        <div class="gamesList">
+                            <template v-if="games.length == 0">
+                                <p class="nogame">There Is No Game Yet.</p>
+                            </template>
+                            <template v-else>
+                                <GameSummary v-for="game in games" :key="game.id" compType="league" :game="game"/>
+                            </template>
+        
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
             </template>
             
     
@@ -147,9 +152,10 @@
     import store from '../../store'  
     import SideContainer from '../minicomponent/SideContainer.vue'
     import moment from 'moment';
+    import router from "../../router";
 import GameSummary from '../game/GameSummary.vue';
     export default {
-        name:"DefaultLayout",
+        name:"LeaguePage",
         components: {
             SideContainer,
             RouterLink,
@@ -157,6 +163,8 @@ import GameSummary from '../game/GameSummary.vue';
         },data(){
             return{
                 posts:{}
+                ,games:{}
+                ,gamesUpdated:false
             }  
         },
         computed:{
@@ -165,7 +173,7 @@ import GameSummary from '../game/GameSummary.vue';
             },members(){
                 return store.state.currentLeague.members;
             },games(){
-                console.log(store.state.currentLeague.games)
+                this.games=store.state.currentLeague.games;
                 return store.state.currentLeague.games;
             },isLoading(){
                 return store.state.currentLeague.loading;
@@ -173,9 +181,17 @@ import GameSummary from '../game/GameSummary.vue';
                 return store.state.user.id;
             },isjoined(){
                 return store.state.currentLeague.isJoined;
+            },isGuest(){
+                return store.state.user.id == null ? true : false;
             }
             }
-         ,methods: { 
+         ,watch: {
+                gamesUpdated(newValue, oldValue) {
+                // This function will be called whenever myData changes
+                this.games();
+                // You can perform any actions here based on the new and old values
+                }
+            },methods: { 
             format_date(value){
                 if (value) {
                     return moment(String(value)).format('MMM DD,YYYY')
@@ -187,8 +203,12 @@ import GameSummary from '../game/GameSummary.vue';
                 store.dispatch("createLeagueGames",leagueId)      
             },deleteLeague(leagueId){
                 store.dispatch("deleteLeague",leagueId)
+                
             },kickUser(userId,leagueId){            
                 store.dispatch("kickUserFromLeague",{userId,leagueId})
+                this.gamesUpdated=true;
+            },goSign(){
+                router.push("/Login")
             }
         },created() {
             

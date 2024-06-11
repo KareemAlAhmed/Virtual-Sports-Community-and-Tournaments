@@ -28,19 +28,17 @@
                 
                     </div>
                     <template v-else>
-                        <ul class="tournsList">
-                        
-                        <template v-for="league in getLeagues" :key="league.id">
-                            
-                            <SmallCard :post="league" comptype="league" />
-                        </template>
-                        <!-- @for( $i = 1; $i<count($allTourn);$i++)
-                            <x-smallCardPost :data='$allTourn[$i]'  nojoined='true' compType='tournament'></x-smallCardPost>
-                        @endfor -->
+                        <ul class="tournsList">                       
+                            <template v-if="getLeagues.length === 0">
+                                <div class="noTourn">
+                                    <h3>There is no Leagues.</h3>
+                                </div> 
+                            </template>
+                            <template v-else v-for="league in getLeagues" :key="league.id">                              
+                                <SmallCard :post="league" comptype="league" />
+                            </template>
                         </ul>
-                        <!-- @endif -->
                     </template>
-    
                 </div>
                 <SideContainer />
                
@@ -68,6 +66,9 @@
             }
         },created(){
             store.dispatch("getLeagues")
+            if(sessionStorage.getItem("CurrentLeague") != ""){
+                sessionStorage.removeItem("CurrentLeague");
+            }
         },
         computed:{
             getLeagues(){
@@ -149,7 +150,7 @@
     list-style: none;
 }
 .noTourn{
-    width: 65%;
+    width: 100%;
 }
 .noTourn h3{
     color: white;

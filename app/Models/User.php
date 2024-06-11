@@ -62,4 +62,10 @@ class User extends Authenticatable
     function tournaments(){
         return $this->hasMany(enrollTourn::class);
     }
+    function gamesAsP1(){
+        return $this->hasMany(Games::class,'user_id');
+    }
+    function gamesAsP2(){
+        return $this->hasMany(Games::class,'user2_id');
+    }
 }

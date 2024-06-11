@@ -172,7 +172,7 @@
   
   export default {
       name:"CreateLeague",
-     data(){
+        data(){
           return{
                 league:{
                     name:"",

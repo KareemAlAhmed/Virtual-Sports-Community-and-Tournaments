@@ -16,10 +16,10 @@ class enrollTournController extends Controller
         // dd(auth()->guard('web'));
 
         if(enrollTourn::where("user_id",$userId)->where("tournament_id",$tournId)->exists()){
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'You Already Joined The Tournament'
-            ],400)]);
+            ],400);
         }
         if($user){
             if($tourn){
@@ -36,30 +36,30 @@ class enrollTournController extends Controller
                     
                     $tourns=new TournamentController();
                     $tourns->createGames($tournId);
-                    return redirect()->back()->with('response',[response()->json([
+                    return response()->json([
                         'status'=>200,
                         'message'=>'You successefuly Join '. $tourn->name . ' tournament',
                         'Enrollement'=>$enrollement
-                    ],200)]);
+                    ],200);
                 }else{
-                    return redirect()->back()->with('error',[response()->json([
+                    return response()->json([
                         'status'=>404,
                         'errors'=>'No Remaining Places'
-                    ],404)]);
+                    ],404);
                 }
 
 
             }else{
-                return redirect()->back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The Tournament doesnt exist'
-                ],404)]);
+                ],404);
             }
         }else{
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The User doesnt exist'
-            ],404)]);
+            ],404);
         }
     }
 
@@ -80,21 +80,21 @@ class enrollTournController extends Controller
                     }
 
                 
-                return redirect()->back()->with('response',[response()->json([
+                return response()->json([
                     'status'=>200,
                     'message'=>'The user has been kicked out of the tournament'
-                ],200)]);
+                ],200);
             }else{
-                return redirect()->back()->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'error'=>'The Tournament doesnt exist'
-                ],404)]);
+                ],404);
             }
         }else{
-            return redirect()->back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'error'=>'The User doesnt exist'
-            ],404)]);
+            ],404);
         }
     }
 
@@ -128,6 +128,16 @@ class enrollTournController extends Controller
             }
         }else{
             return false;
+        }
+    }
+    function isenroll($userId,$tournId){
+        
+        $enroll=enrollTourn::where("tournament_id",$tournId)->where("user_id",$userId)->first();
+
+        if (count((array) $enroll) === 0){
+            return "false";
+        }else{
+            return "true";
         }
     }
 }

@@ -1,33 +1,38 @@
 <template>   
 
 <div class="mainContainer">
-           
-            
+                 
             <div class="tournsInfo">
-                <!-- @if(empty($tourn))
-                    <div class="noTourn">
-                        <h3>There is no Tournaments.</h3>
-                    </div> -->
-                <!-- @else -->
                 <ul class="nk-breadcrumbs">
                     <li><a rel="v:url" href="/">Home</a></li>
                     <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>
                     <li><span><h1>Tournaments</h1></span></li>
                 </ul>
-                <ul class="tournsList">
-                    <template v-for="tourn in getTourns" :key="tourn.id">
-                    
-                        <SmallCard :post="tourn" comptype="Tourn" />
+                <div v-if="!isLoading" class="loading">
+                        <p>
+                            Loading
+                        </p>
+                        <div class="col-3">
+                            <div class="snippet" data-title="dot-pulse">
+                            <div class="stage">
+                                <div class="dot-pulse"></div>
+                            </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                    <template v-else>
+                        <ul class="tournsList">                       
+                            <template v-if="getTourns.length === 0">
+                                <div class="noTourn">
+                                    <h3>There is no Tournaments.</h3>
+                                </div> 
+                            </template>
+                            <template v-else v-for="tourn in getTourns" :key="tourn.id">                              
+                                <SmallCard :post="tourn" comptype="tournament" />
+                            </template>
+                        </ul>
                     </template>
-                    <!-- <x-smallCardPost :data='$tourn'  nojoined='true' compType='tournament'></x-smallCardPost>
-                    @for( $i = 1; $i<count($allTourn);$i++)
-                        <x-smallCardPost :data='$allTourn[$i]'  nojoined='true' compType='tournament'></x-smallCardPost>
-                    @endfor -->
-                    
-
-
-                </ul>
-                <!-- @endif -->
 
             </div>
             <SideContainer />
@@ -37,25 +42,41 @@
        
   </template>
   <script>
-  import store from '../../store'
-  import SideContainer from '../minicomponent/SideContainer.vue';
-import SmallCard from '../minicomponent/SmallCard.vue';
+    import store from '../../store'
+    import SideContainer from '../minicomponent/SideContainer.vue';
+    import SmallCard from '../minicomponent/SmallCard.vue';
   export default {
         name:"TopsTourn",
         components: {
-    'SideContainer': SideContainer,
-    SmallCard
-},
+            'SideContainer': SideContainer,
+            SmallCard
+        },mounted() {
+        
+            if(store.state.notification.show){
+                if(store.state.notification.type ==="error"){
+                    store.dispatch("notifyError")
+                }else{
+                    store.dispatch("notifySuccess")
+                }
+            }
+        },created(){
+            store.dispatch("getTourns")
+            if(sessionStorage.getItem("currentTourn") != ""){
+                sessionStorage.removeItem("currentTourn");
+            }
+        },
         computed:{
             getTourns(){
-                return store.state.tourns;
+                return store.state.tourns.data;
+            },isLoading(){
+                return store.state.tourns.loading;
             }
         }
   }
   </script>
   <style scoped>
       
-    .nk-breadcrumbs{
+      .nk-breadcrumbs{
         font-family: "Montserrat", sans-serif;
         font-style: normal;
         font-weight: 700;
@@ -124,7 +145,7 @@ import SmallCard from '../minicomponent/SmallCard.vue';
     list-style: none;
 }
 .noTourn{
-    width: 65%;
+    width: 100%;
 }
 .noTourn h3{
     color: white;

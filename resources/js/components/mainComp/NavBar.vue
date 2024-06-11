@@ -17,8 +17,11 @@
                         </router-link> 
                         <div x-show="tournOpen" class="popup tournPop" x-on:mouseover = "tournOpen = true" x-on:mouseover.away = "tournOpen = (e)=> e.target.className.split(' ')[1] == 'tourn' ? null : tournOpen = false">                                     
                             <router-link to="/tournaments/tops">Top Tournaments</router-link>                             
-                            <router-link to="/tournaments/mytourns">My Tournament</router-link>                             
-                            <router-link to="/tournaments/create">Create Tournament</router-link>                             
+                            <template v-if="!isGuest">
+                                <router-link to="/tournaments/mytourns">My Tournament</router-link>                             
+                                <router-link  to="/tournaments/create">Create Tournament</router-link>                             
+                            </template>
+     
                         </div>
                     </div>
                     <div class="leagues">
@@ -27,8 +30,10 @@
                         </router-link> 
                         <div x-show="leagOpen" class="popup leaguePop" x-on:mouseover = "leagOpen = true" x-on:mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
                             <router-link to="/leagues/tops">Top Leagues</router-link>                             
-                            <router-link to="/leagues/myleague">My Leagues</router-link>                             
-                            <router-link to="/leagues/create">Create League</router-link> 
+                            <template v-if="!isGuest">
+                                <router-link to="/leagues/myleague">My Leagues</router-link>                             
+                                <router-link to="/leagues/create">Create League</router-link> 
+                            </template>
                         </div>
                     </div>
                     <div class="games">
@@ -36,9 +41,11 @@
                             <button class="siteLink game">Games</button>
                         </router-link>
                         <div x-show="gameOpen" class="popup gamePop" x-on:mouseover = "gameOpen = true" x-on:mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'game' ? null : gameOpen = false">                                     
-                            <router-link to="/games/tops">Top Games</router-link>                             
-                            <router-link to="/games/mygame">My Games</router-link>                             
-                            <router-link to="/games/create">Create Games</router-link> 
+                            <router-link to="/games/tops">Top Games</router-link>  
+                            <template v-if="!isGuest">                       
+                                <router-link to="/games/mygames">My Games</router-link>
+                            </template>                              
+                            <!-- <router-link to="/games/create">Create Games</router-link>  -->
                         </div>
                     </div>
                     
@@ -52,7 +59,7 @@
                             <template v-if="get_token">
                                 <div class="authen" x-on:click.away="openMenu = false" x-on:mouseover = "openMenu = true">
                                     <a href="#"  x-on:click="(event)=>{  openMenu=true}" x-on:mouseover = "openMenu = true" id="opt"  class="use OPT">   
-                                        <button class="siteLink user" @click="console.log(user)" >
+                                        <button class="siteLink user" >
                                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
                                             {{fullName}} 
                                         </button>
@@ -61,7 +68,8 @@
                                         <!-- @can('admin') -->
                                     <div x-show="openMenu" class="popup other" x-on:mouseover = "openMenu = true"  x-on:mouseover.away = "(e)=> {e.target.className.split(' ')[1] == 'user' ?  openMenu = true :  openMenu = false}">
                                         <!-- "openMenu = (e)=> e.target.className.split(' ')[1] == 'user' ? null : openMenu = false" -->
-                                        <a href="#" x-on:mouseover = "openMenu = true" >Dashboard</a>
+                                        <!-- <a href="#" x-on:mouseover = "openMenu = true" >Dashboard</a> -->
+                                        <router-link to="/dashboard">Dashboard</router-link>  
                                         <!-- @endcan --> 
                                         <a href="#" x-on:mouseover = "openMenu = true"  @click="(e)=> logout(e)">Logout</a>
                                     </div>
@@ -97,13 +105,15 @@ export default {
 
     },computed: {
         fullName() {
-            return `${store.state.user.name}`;
+            return `${store.state.user.name[0].toLocaleUpperCase() +store.state.user.name.slice(1)}`;
         },
         get_token() {
             return store.state.user.token;
         },getUser(){
             return store.state.user.data;        
-        }
+        },isGuest(){
+                return store.state.user.id == null ? true : false;
+            }
     }
 }
 </script>

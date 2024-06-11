@@ -286,7 +286,7 @@ class LeagueController extends Controller
                         array_push($nubs,$data);
                     }
                 }
-                
+               
 
                 return response()->json([
                     'status'=>200,

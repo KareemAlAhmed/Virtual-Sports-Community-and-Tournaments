@@ -1,20 +1,14 @@
 <template>   
-
     <div class="mainContainer">
-               
-                
-                <div class="tournsInfo">
-                    <!-- @if(empty($tourn))
-                        <div class="noTourn">
-                            <h3>There is no Tournaments.</h3>
-                        </div> -->
-                    <!-- @else -->
-                    <ul class="nk-breadcrumbs">
-                        <li><a rel="v:url" href="/">Home</a></li>
-                        <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>
-                        <li><span><h1>Games</h1></span></li>
-                    </ul>
-                    <div v-if="!isLoading" class="loading">
+            
+            
+            <div class="tournsInfo">
+                <ul class="nk-breadcrumbs">
+                    <li><a rel="v:url" href="/">Home</a></li>
+                    <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>
+                    <li><span><h1>My Games</h1></span></li>
+                </ul>
+                <div v-if="!isLoading" class="loading">
                         <p>
                             Loading
                         </p>
@@ -28,12 +22,13 @@
                 
                     </div>
                     <template v-else>
+                        {{ console.log(getUserGames) }}
                         <ul class="tournsList">
-                            <template v-if="games.length == 0">
+                            <template v-if="getUserGames.length == 0">
                                 <p class="nogame">There Is No Game Yet.</p>
                             </template>
                             <template v-else>
-                                <GameSummary v-for="game in games" :key="game.id" compType="league" :game="game"/>
+                                <GameSummary v-for="game in getUserGames" :key="game.id" compType="league" :game="game"/>
                             </template>
                         <!-- <template v-for="game in getTourns" :key="game.id">
                             <SmallCard :post="game" comptype="Tourn" />
@@ -48,35 +43,49 @@
     
                 </div>
                 <SideContainer />
-               
-                
-            </div>
-           
-      </template>
-      <script>
-      import store from '../../store'
+        </div>
+
+</template>
+<script>
+ import store from '../../store'
       import SideContainer from '../minicomponent/SideContainer.vue';
       import GameSummary from '../game/GameSummary.vue';
-      export default {
-          name:"TopsGame",
-          components: {
+export default {
+    name:"MyGames",data(){
+        return{
+            user:store.state.user.data,
+            name:store.state.user.name,
+            token:store.state.user.token,
+            email:store.state.user.email,
+        }
+    },components: {
             'SideContainer': SideContainer,
             GameSummary
            
-        },created(){
-            store.dispatch("getAllGames");
-        },computed:{
-            games(){
-                return store.state.allGames.games;
-            },isLoading(){
-                return store.state.allGames.loading;
-            }
+    },methods:{
+        logout(e){
+            e.preventDefault();
+            store.dispatch("logout")
         }
-      }
-      </script>
-      <style scoped>
-          
-        .nk-breadcrumbs{
+        },mounted(){
+            this.user=this.getUser;
+        },created(){
+            store.dispatch("getUserGames",this.cuurentUserId);
+        },computed: {
+            isGuest(){
+                return store.state.user.id == null ? true : false;
+            },getUserGames(){
+                return store.state.currentUserGames.games;
+            },isLoading(){
+                return store.state.currentUserGames.loading;
+            },cuurentUserId(){
+                return store.state.user.id;
+            }
+    }
+}
+</script>
+<style scoped>
+.nk-breadcrumbs{
             font-family: "Montserrat", sans-serif;
             font-style: normal;
             font-weight: 700;
@@ -188,4 +197,4 @@
         background-color: #fff;
         z-index: -1;
     }
-      </style>
+</style>

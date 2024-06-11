@@ -2,11 +2,10 @@
   
   <div class="game">
   
-    
-    <template v-if="compType == 'tourn'">
+    {{ console.log(game) }}
+    <template v-if="compType == 'tourn' || game.competetionType == 'Tournament'">
         <div class="gameInfo">
 
-                    
             <div class="firstUser">
                 <a href="../user/{{$user1['id']}}">
                     <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user1.image_url">
@@ -16,7 +15,7 @@
             <div class="timeAndResult">
                 <a href="#" style="text-align: center;">
                 <span class="gameDate">  {{format_date(game.date + " " +game.startTime)}} </span>
-                <span class="scores">{{ game.firstUserScore == "Null" ? 'VS' : game.firstUserScore + ' : ' + game.secondUserScore}}</span>
+                <span class="scores">{{ game.firstUserScore == 'Null' || game.firstUserScore == Null ? 'VS' : game.firstUserScore + ' : ' + game.secondUserScore}}</span>
                 </a>
 
             </div>
@@ -43,16 +42,16 @@
 
     <template v-else >
         <div class="gameInfo">
-
             <div class="firstUser">
                 <a href="../user/{{$user1['id']}}">
+                   
                 <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user1.image_url"></a>
                 <a href="../user/{{$user1['id']}}" class="playerName">{{game.firstUserName}}</a>
             </div>
             <div class="timeAndResult">
                 <a href="#" style="text-align: center;">
                 <span class="gameDate">  {{format_date(game.date + " " +game.startTime)}}  </span>
-                <span class="scores">{{ game.firstUserScore == Null ? 'VS' : game.firstUserScore + ' : ' + game.secondUserScore}}</span>
+                <span class="scores">{{ game.firstUserScore == 'Null' || game.firstUserScore == Null ? 'VS' : game.firstUserScore + ' : ' + game.secondUserScore}}</span>
                 </a>
 
             </div>
@@ -103,6 +102,12 @@
     }
   </script>
   <style scoped>
+  .playerName{
+        color: white;
+        font-size: 22px;
+        font-weight: 700;
+        width: fit-content;
+    }
 .game{
         width: 100%;
         height: fit-content;
@@ -124,6 +129,13 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        width: 245px;
+    }
+    .secondUser {
+        justify-content: right;
+    }
+    .secondUser .playerName{
+        text-align: right;
     }
     .timeAndResult{
         display: flex;
@@ -149,12 +161,7 @@
     .gameDate{
         display: block;
     }
-    .playerName{
-        color: white;
-        font-size: 22px;
-        font-weight: 700;
-        width: fit-content;
-    }
+    
     .game ul{
         padding-top: 35px;
         font-size: 0.85em;
