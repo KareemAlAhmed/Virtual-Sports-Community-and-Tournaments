@@ -1,11 +1,11 @@
 <template>
     <div class="Opts">
-        {{ console.log(currentOpt.users === true) }}
         <router-link :class=" currentOpt.users === true ? 'dashboardLink selected' : null " to="/dashboard/users">Users</router-link>
         <router-link :class=" currentOpt.tourns === true ? 'dashboardLink selected' : null " to="/dashboard/tourns">Tournaments</router-link>
         <router-link :class=" currentOpt.leagues === true ? 'dashboardLink selected' : null " to="/dashboard/leagues">Leagues</router-link>
-        <router-link :class=" currentOpt.games === true ? 'dashboardLink selected' : null " to="/dashboard/leagues">Games</router-link>
-        <router-link class="dashboardLink" to="/dashboard/games">Create Tournament</router-link>
+        <router-link :class=" currentOpt.games === true ? 'dashboardLink selected' : null " to="/dashboard/games">Games</router-link>
+        <router-link :class=" currentOpt.createTourn === true ? 'dashboardLink selected' : null " to="/dashboard/createTourn">Create Tournament</router-link>
+        <router-link :class=" currentOpt.createLeague === true ? 'dashboardLink selected' : null " to="/dashboard/createLeague">Create League</router-link>
     </div>
 </template>
 

@@ -63,12 +63,10 @@ import store from '../../store'
           }
       },getTourn(e,userId,tournId){
           e.preventDefault();
-          console.log("tourn")
           store.dispatch("getCurrentTourn",tournId)
           store.dispatch("isJoinedLeague",{userId,tournId})
       },getLeague(e,userId,leagueId){
           e.preventDefault();
-          console.log("league")
           store.dispatch("getCurrentLeague",leagueId)
           store.dispatch("isJoinedLeague",{userId,leagueId})
           

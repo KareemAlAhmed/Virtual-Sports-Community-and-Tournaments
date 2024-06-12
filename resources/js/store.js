@@ -71,12 +71,20 @@ const store=createStore({
         },allGames:{
             loading:false,
             games:{}
+        },allTourns:{
+            loading:false,
+            tourns:{}
+        },allLeagues:{
+            loading:false,
+            leagues:{}
         },isGuest:sessionStorage.getItem("Id") == null ? true : false, 
         currentDash:{
             users:false,
             tourns:false,
             leagues:false,
             games:false,
+            createTourn:false,
+            createLeague:false,
         }
         
     },
@@ -103,7 +111,7 @@ const store=createStore({
             .catch(err=>console.log(err))
         
         },getLeagues({commit}){
-            axios.get("http://127.0.0.1:8000/api/league/all")
+            axios.get("http://127.0.0.1:8000/api/leagues/all")
             .then((res)=>{
                 commit("setLeagues",res.data)
                 })
@@ -207,8 +215,8 @@ const store=createStore({
         },createLeague({commit,state},leagueData){
                 axiosClient.post("league/user/"+state.user.data.id,leagueData)
                     .then((re)=>{                      
-                        commit("setNotify",re.data.message,"success")
-                        router.push({name:"TopLeagues"})
+                        state.notification.message=re.data.message
+                        this.dispatch("notifySuccess")
                     })
                     .catch(error=>{
                         state.errorMessages=JSON.parse(error.response.data.errors);
@@ -280,7 +288,6 @@ const store=createStore({
                 axios.get("http://127.0.0.1:8000/api/league/"+info.leagueId+"/members")
                     .then((re)=>{                    
                         state.currentLeague.members=re.data.members
-                        console.log(re)
                         axiosClient.post("league/" + info.leagueId +"/createGames")
                         .then((res)=>{    
                             state.notification.message=message
@@ -299,11 +306,12 @@ const store=createStore({
         },createTourn({commit,state},tournData){
             axiosClient.post("tournament/user/"+state.user.data.id,tournData)
                 .then((re)=>{       
-                    console.log(re.data)    ;        
-                    commit("setNotify",re.data.message,"success")
-                    router.push({name:"TopTourns"})
+                    state.notification.message=re.data.message
+                    this.dispatch("notifySuccess")  
+
                 })
                 .catch(error=>{
+                    console.log(error)
                     state.errorMessages=JSON.parse(error.response.data.errors);
                 })
 
@@ -354,8 +362,7 @@ const store=createStore({
             .catch(error=>{console.log(error)})
         },createTournGames({commit,state},tournId){
             axiosClient.post("tournament/" + tournId +"/createGames")
-            .then((re)=>{    
-                console.log(re.data)          
+            .then((re)=>{             
                 commit("updateCurrentTournamentsGames",re.data.matches)
                 
             })
@@ -382,7 +389,6 @@ const store=createStore({
                 axios.get("http://127.0.0.1:8000/api/tournament/"+info.tournId+"/members")
                     .then((re)=>{                    
                         state.currentTourn.members=re.data.members
-                        console.log(re)
                         axiosClient.post("tournament/" + info.tournId +"/createGames")
                         .then((res)=>{    
                             state.notification.message=message
@@ -407,7 +413,6 @@ const store=createStore({
         },getUserGames({state,commit},userId){
             axios.get("http://127.0.0.1:8000/api/"+userId+"/games")
             .then(re=>{
-                console.log(re)
                 commit("getUserGames",re.data);
             })
             .catch(err=>console.log(err))
@@ -418,6 +423,19 @@ const store=createStore({
                 commit("getAllUsers",re.data.users);
             })
             .catch(err=>console.log(err))
+        },getAllTourns({state,commit}){
+           
+            axios.get("http://127.0.0.1:8000/api/tourns/all")
+            .then(re=>{
+                commit("getAllTourns",re.data.tourns);
+            })
+            .catch(err=>console.log(err))
+        },getAllLeagues({state,commit}){         
+            axios.get("http://127.0.0.1:8000/api/leagues/all")
+            .then(re=>{
+                commit("getAllLeagues",re.data.leagues);
+            })
+            .catch(err=>console.log(err))
         },deleteUser({commit,dispatch,state},userId){
             axiosClient.delete('user/' + userId+'/delete')
             .then(res=>{                                      
@@ -426,6 +444,40 @@ const store=createStore({
                     this.dispatch("getAllUsers")         
             })
             .catch(err=>console.log(err))
+        },deleteTournament({commit,dispatch,state},tournId){
+            axiosClient.delete('tournament/delete/' + tournId)
+            .then(res=>{                                      
+                    state.notification.message=res.data.message
+                    this.dispatch("notifySuccess") 
+                    this.dispatch("getAllTourns")         
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+            })
+        },deleteLeagues({commit,dispatch,state},leagueId){
+            axiosClient.delete('league/delete/' + leagueId)
+            .then(res=>{                                      
+                    state.notification.message=res.data.message
+                    this.dispatch("notifySuccess") 
+                    this.dispatch("getAllLeagues")         
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+            })
+        },deleteGames({commit,dispatch,state},gamesId){
+            axiosClient.delete('game/'+gamesId+'/delete')
+            .then(res=>{                                      
+                    state.notification.message=res.data.message
+                    this.dispatch("notifySuccess") 
+                    this.dispatch("getAllGames")         
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+                console.log(err)
+            })
         }
     },
     mutations:{
@@ -512,6 +564,12 @@ const store=createStore({
         },getAllUsers(state,info){
             state.allUsers.loading=true;
             state.allUsers.users=info;
+        },getAllTourns(state,info){
+            state.allTourns.loading=true;
+            state.allTourns.tourns=info;
+        },getAllLeagues(state,info){
+            state.allLeagues.loading=true;
+            state.allLeagues.leagues=info;
         }
     },
     modules:{}

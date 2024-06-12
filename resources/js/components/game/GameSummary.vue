@@ -2,7 +2,6 @@
   
   <div class="game">
   
-    {{ console.log(game) }}
     <template v-if="compType == 'tourn' || game.competetionType == 'Tournament'">
         <div class="gameInfo">
 

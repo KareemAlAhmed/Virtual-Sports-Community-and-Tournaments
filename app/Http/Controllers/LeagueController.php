@@ -312,7 +312,7 @@ class LeagueController extends Controller
         }
         
     }
-    function all(){
+    function all_leagues(){
         $leagues=Leagues::all();
         return response()->json([
             'leagues'=>$leagues

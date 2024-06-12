@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(1)->create(['id'=>1,'image_url'=>'images.jpeg']);
-        User::factory(1)->create(['id'=>51,"name"=>"kareem",'image_url'=>'images.jpeg']);
+        // User::factory(1)->create(['id'=>51,"name"=>"kareem",'image_url'=>'images.jpeg']);
         User::factory(1)->create(['id'=>2,'image_url'=>'images.jpeg']);
         User::factory(1)->create(['id'=>3,'image_url'=>'images.jpeg']);
         User::factory(1)->create(['id'=>4,'image_url'=>'images.jpeg']);

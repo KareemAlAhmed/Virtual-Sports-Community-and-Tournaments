@@ -27,10 +27,10 @@ class TournamentController extends Controller
         ]);
 
         if($val->fails()){
-            return Redirect::back()->with('error',[response()->json([
+            return response()->json([
                 'status'=>402,
                 'errors'=>$val->messages()->toJson()
-            ],402)]);
+            ],402);
 
         }else{
             if($user){
@@ -316,7 +316,6 @@ class TournamentController extends Controller
         }
     }
     function all_tourn(){
-        // return "hello";
         $tourns=Tournaments::all();
         return response()->json([
             'tourns'=>$tourns

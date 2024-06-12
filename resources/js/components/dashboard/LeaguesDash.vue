@@ -4,19 +4,31 @@
             <table>
                 <thead>   
                         <td>Name</td>
-                        <td>Email</td>
-                        <td>Bio</td>
+                        <td>MaxPlaces</td>
+                        <td>RemPlaces</td>
+                        <td>Rewards</td>
+                        <td>SportType</td>
+                        <td>StartDate</td>
+                        <td>EndDate</td>
+                        <td>WinnerId</td>
+                        <td>OrganizerId</td>
                         <td>Action</td>
                   
                 </thead>
-          
-                <template v-for="user in getUsers" :key="user.id">
-                    <tr className="dashboardDesc"   >
-                        <td>{{user.name}}</td>
-                        <td>{{user.email}}</td>
-                        <td>{{user.bio.length <= 45 ? user.bio.slice(0, 45) : user.bio.slice(0, 45) +"..." }}</td>
-                        <td>
-                             <svg @click="deleteUser(user.id)" class="del" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
+             
+                <template v-for="league in getLeagues" :key="league.id">
+                    <tr className="dashboardDesc" @click="goToLeague($event,league.id,cuurentUserId)">
+                        <td>{{league.name.length <= 11 ? league.name : league.name.slice(0,11) + "..."}}</td>
+                        <td>{{league.maxPlaces}}</td>
+                        <td>{{league.remainingPlaces}}</td>
+                        <td>{{league.rewards}}</td>
+                        <td>{{league.sportType}}</td>
+                        <td>{{league.startDate}}</td>
+                        <td>{{league.endDate}}</td>
+                        <td>{{league.winner_id === null ? "---" : league.winner_id}}</td>
+                        <td>{{league.organizer_id}}</td>
+                        <td class="no-redirect">
+                             <svg  @click="deleteLeague(league.id)" class="del no-redirect" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
                         </td>
                     </tr>
                 </template>
@@ -63,20 +75,28 @@
 
 <script>
 import store from '../../store';
+import router from '../../router';
 
 export default {
-    name:"UsersDash",
+    name:"LeaguesDash",
     computed:{
-        getUsers(){
-            return store.state.allUsers.users;
+        getLeagues(){
+            return store.state.allLeagues.leagues;
         },isLoading(){
-            return store.state.allUsers.loading;
-        }
+            return store.state.allLeagues.loading;
+        },cuurentUserId(){
+                return store.state.user.id;
+        },
     },created(){
-        store.dispatch("getAllUsers");
+        store.dispatch("getAllLeagues");
     },methods:{
-        deleteUser(userId){
-            store.dispatch("deleteUser",userId)
+        deleteLeague(leagueId){
+            store.dispatch("deleteLeagues",leagueId)           
+        },goToLeague(event,leagueId,userId){
+            if (!event.target.classList.contains('no-redirect')) {
+                store.dispatch('isJoinedLeague',{userId,leagueId} )
+                store.dispatch('getCurrentLeague', leagueId)
+            }                 
         }
     }
 
@@ -95,12 +115,15 @@ export default {
 }
 thead td{
     font-weight: 600;
-    font-size: 22px;
+    font-size: 16px;
     padding: 5px 0 5px 10px;
     border-bottom: 1px solid white;
 }
+thead td:last-child{
+    padding-right: 5px;
+}
 .dashboardDesc td {
-    padding: 20px 10px;
+    padding: 20px 9px;
     font-size: 19px;
     border-bottom: 1px solid white;
 }

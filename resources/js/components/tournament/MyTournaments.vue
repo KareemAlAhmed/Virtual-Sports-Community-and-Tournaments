@@ -15,7 +15,6 @@
                         <div class="joined">
                             <span><h1>Joined Tournaments</h1></span>
                         </div>
-                        {{ console.log(getTourns.joined) }}
                         <div v-if="getTourns.joined.length == 0"  class="noTourn">
                             <h3>There is no  Joined Tournament.</h3>
                         </div>
@@ -66,7 +65,6 @@ export default {
         store.dispatch("getCurrentUserTournaments",this.getUserId) 
     }
     ,mounted(){
-        console.log(this.getTourns) 
     }
     ,methods:{
     },computed:{

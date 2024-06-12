@@ -162,7 +162,6 @@
             },members(){
                 return store.state.currentTourn.members;
             },games(){
-                console.log( store.state.currentTourn.games)
                 return store.state.currentTourn.games;
             },isLoading(){
                 return store.state.currentTourn.loading;
@@ -194,7 +193,6 @@
         },created() {
             
             if(!store.state.currentTourn.data.id && store.state.currentTourn.id){
-                console.log("true")
                 store.dispatch('getCurrentTourn',store.state.currentTourn.id)
             }else{
                 console.log("false")

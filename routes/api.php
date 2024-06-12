@@ -142,5 +142,5 @@ Route::get('user/{id}/leagues/games',[AuthController::class,'leagueGames']); //t
 Route::get('user/{id}/tournaments/games',[AuthController::class,'tournGames']); //to get the games of user in tournaments
 
 Route::get('users/all',[AuthController::class,'all_users']); // to get all users
-Route::get('tourns/all',[TournamentController::class,'all']); // to get all tourns
-Route::get('leagues/all',[LeagueController::class,'all']); // to get all leagues
+Route::get('tourns/all',[TournamentController::class,'all_tourn']); // to get all tourns
+Route::get('leagues/all',[LeagueController::class,'all_leagues']); // to get all leagues

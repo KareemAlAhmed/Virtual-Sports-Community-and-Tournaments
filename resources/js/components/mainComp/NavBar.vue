@@ -19,7 +19,7 @@
                             <router-link to="/tournaments/tops">Top Tournaments</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/tournaments/mytourns">My Tournament</router-link>                             
-                                <router-link  to="/tournaments/create">Create Tournament</router-link>                             
+                                <!-- <router-link  to="/tournaments/create">Create Tournament</router-link>                              -->
                             </template>
      
                         </div>
@@ -32,7 +32,7 @@
                             <router-link to="/leagues/tops">Top Leagues</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/leagues/myleague">My Leagues</router-link>                             
-                                <router-link to="/leagues/create">Create League</router-link> 
+                                <!-- <router-link to="/leagues/create">Create League</router-link>  -->
                             </template>
                         </div>
                     </div>

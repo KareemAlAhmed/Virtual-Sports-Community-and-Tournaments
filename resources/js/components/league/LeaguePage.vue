@@ -87,6 +87,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{ console.log(members) }}
                                     <!-- @if(count($tournMembers) > 0)
                                     @foreach($tournMembers as $member) -->
                                         <template v-if="members.length != 0">

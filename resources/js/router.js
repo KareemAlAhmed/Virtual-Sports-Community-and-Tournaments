@@ -18,6 +18,11 @@ import MyLeagues from "./components/league/MyLeagues.vue"
 import MyGames from "../js/components/game/MyGames.vue"
 import DashboardDefaultLayout from "./components/dashboard/DashboardDefaultLayout.vue"
 import UsersDash from "./components/dashboard/UsersDash.vue"
+import TournamentsDash from "./components/dashboard/TournamentsDash.vue"
+import LeaguesDash from "./components/dashboard/LeaguesDash.vue"
+import GamesDash from "./components/dashboard/GamesDash.vue"
+import CreateTournDash from "./components/dashboard/CreateTournDash.vue"
+import CreateLeagueDash from "./components/dashboard/CreateLeagueDash.vue"
 import store from "./store"
 const routes=[
 
@@ -135,7 +140,31 @@ const routes=[
                       name: 'UsersDash',
                       component: UsersDash,
                     },
-
+                    {
+                      path: 'tourns',
+                      name: 'TournamentsDash',
+                      component: TournamentsDash,
+                    },
+                    {
+                      path: 'leagues',
+                      name: 'LeaguesDash',
+                      component: LeaguesDash,
+                    },
+                    {
+                      path: 'games',
+                      name: 'GamesDash',
+                      component: GamesDash,
+                    },
+                    {
+                      path: 'createTourn',
+                      name: 'CreateTournDash',
+                      component: CreateTournDash,
+                    },
+                    {
+                      path: 'createLeague',
+                      name: 'CreateLeagueDash',
+                      component: CreateLeagueDash,
+                    },
                   ]
                 },
         ]
@@ -163,6 +192,51 @@ router.beforeEach((to,from,next)=>{
       }
       if(to.name ==='UsersDash'){
           store.state.currentDash.users=true;
+          store.state.currentDash.tourns=false;
+          store.state.currentDash.leagues=false;
+          store.state.currentDash.games=false;
+          store.state.currentDash.createTourn=false;
+          store.state.currentDash.createLeague=false;
+      }
+      if(to.name ==='TournamentsDash'){
+        store.state.currentDash.users=false;
+        store.state.currentDash.tourns=true;
+        store.state.currentDash.leagues=false;
+        store.state.currentDash.games=false;
+        store.state.currentDash.createTourn=false;
+        store.state.currentDash.createLeague=false;
+      }
+      if(to.name ==='LeaguesDash'){
+        store.state.currentDash.users=false;
+        store.state.currentDash.tourns=false;
+        store.state.currentDash.leagues=true;
+        store.state.currentDash.games=false;
+        store.state.currentDash.createTourn=false;
+        store.state.currentDash.createLeague=false;
+      }
+      if(to.name ==='GamesDash'){
+        store.state.currentDash.users=false;
+        store.state.currentDash.tourns=false;
+        store.state.currentDash.leagues=false;
+        store.state.currentDash.games=true;
+        store.state.currentDash.createTourn=false;
+        store.state.currentDash.createLeague=false;
+      }
+      if(to.name ==='CreateTournDash'){
+        store.state.currentDash.users=false;
+        store.state.currentDash.tourns=false;
+        store.state.currentDash.leagues=false;
+        store.state.currentDash.games=false;
+        store.state.currentDash.createTourn=true;
+        store.state.currentDash.createLeague=false;
+      }
+      if(to.name ==='CreateLeagueDash'){
+        store.state.currentDash.users=false;
+        store.state.currentDash.tourns=false;
+        store.state.currentDash.leagues=false;
+        store.state.currentDash.games=false;
+        store.state.currentDash.createTourn=false;
+        store.state.currentDash.createLeague=true;
       }
 
         next();

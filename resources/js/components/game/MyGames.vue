@@ -22,7 +22,6 @@
                 
                     </div>
                     <template v-else>
-                        {{ console.log(getUserGames) }}
                         <ul class="tournsList">
                             <template v-if="getUserGames.length == 0">
                                 <p class="nogame">There Is No Game Yet.</p>
