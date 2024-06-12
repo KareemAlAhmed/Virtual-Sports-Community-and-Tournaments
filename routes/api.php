@@ -104,7 +104,7 @@ Route::post('login',[AuthController::class,'login']); // to login a user
 Route::post('isAdmin/{userId}',[AuthController::class,'isAdmin']); // to register a user
 Route::post('isenroll/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'isenroll']);// to enroll a user in a specific league 
 Route::post('isenroll/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'isenroll']);// to enroll a user in a specific league 
-Route::get("user/{name:slug}",[AuthController::class,'getUser']);
+Route::get("user/{id}",[AuthController::class,'getUser']);
 Route::get('user/{id}/acheivements',[AuthController::class,'acheivements']); // to get the acheivements of a specific user
 Route::get('acheivement/{id}/user',[acheiveController::class,'users']); // to get the users that have a specific acheivement
 Route::get('acheive/{id}',[acheiveController::class ,'show']); // to show an acheivement
@@ -119,7 +119,6 @@ Route::get('tournament/{id}',[TournamentController::class,'show']);// to show a 
 Route::get('tournament/{id}/games',[TournamentController::class,'games']); // to get the games of a tournament
 Route::get('tournament/{id}/members',[TournamentController::class,'members']); // to get the members of a tournament
 Route::get('tournament/{tournId}/organizer',[TournamentController::class,'organizer']); // to get the organizer of a  specific tournament
-Route::get('user/{id}/winningTournaments',[AuthController::class,'winningTourn']); // to get the tournaments  that a user won
 Route::get('user/{id}/tournaments',[AuthController::class,'tournaments']);// to get the tournaments that a user participate in.
 
 
@@ -129,10 +128,13 @@ Route::get('league/{id}',[LeagueController::class,'show']); // to show a league
 Route::get('league/{id}/games',[LeagueController::class,'games']); // to get the games of a league
 Route::get('league/{id}/members',[LeagueController::class,'members']); // to get the members of a league
 Route::get('league/{leagueId}/organizer',[LeagueController::class,'organizer']); // to get the organizer of  a specific league
-Route::get('user/{id}/winningLeagues',[AuthController::class,'winningLeague']); // to get the league  that a user won
 Route::get('user/{id}/leagues',[AuthController::class,'user_leagues']);// to get the leagues that a user participate in.
 Route::get('user/{id}/tourns',[AuthController::class,'user_tourns']);// to get the leagues that a user participate in.
 
+
+Route::get('user/{id}/winningLeagues',[AuthController::class,'winningLeague']); // to get the leagues  that a user won
+Route::get('user/{id}/winningTournaments',[AuthController::class,'winningTourn']); // to get the tournaments  that a user won
+Route::get('user/{id}/winningGames',[AuthController::class,'winningGames']); // to get the Games  that a user won
 
 
 Route::get('game/{id}',[GameController::class,'show']); // to show a league

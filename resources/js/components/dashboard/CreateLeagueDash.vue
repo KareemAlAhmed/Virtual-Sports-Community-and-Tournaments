@@ -133,10 +133,11 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
+    height: 100%;
     /* margin-top: 5px; */
     padding: 20px;
     border-radius: 12px;
-    background: #1f1f1f;
+
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
 }
 .form-container-tournCr span{

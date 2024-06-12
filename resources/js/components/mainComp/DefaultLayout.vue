@@ -26,7 +26,7 @@ export default {
 
       store.dispatch("getGames")
       if(store.state.user.token){
-        store.dispatch("getCurrentUser",store.state.user.name)
+        store.dispatch("getCurrentUser",store.state.user.id)
         
      }
      

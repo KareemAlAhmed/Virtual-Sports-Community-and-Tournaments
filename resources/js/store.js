@@ -16,6 +16,12 @@ const store=createStore({
             name:sessionStorage.getItem("Name"),
             email:"",
             id:sessionStorage.getItem("Id"),
+            acheivements:{
+                tournsWon:{},
+                leaguesWon:{},
+                gamesWon:{},
+                loading:false
+            }
             
         },
         posts:{
@@ -56,6 +62,7 @@ const store=createStore({
             type:"",
             message:""
         },
+        selectedTab:"Tourns",
         currentRoute: null,
         errorMessages:{},
         currentUserLeagues:{
@@ -85,7 +92,7 @@ const store=createStore({
             games:false,
             createTourn:false,
             createLeague:false,
-        }
+        },userProfileData:{}
         
     },
     getters:{},
@@ -192,6 +199,14 @@ const store=createStore({
             .catch(err=>{
                     commit("setNotify","Credential Incorrect","error")
                     this.dispatch("notifyError")               
+                })
+        },getUserProf({commit},userId){
+            axios.get("http://127.0.0.1:8000/api/user/"+userId)
+            .then((res)=>{
+                this.commit("setUserProfileData",res.data.user)
+            })               
+            .catch(err=>{
+                    console.log(err)              
                 })
         },notifySuccess(){
             toast(this.state.notification.message, {
@@ -478,6 +493,23 @@ const store=createStore({
                 this.dispatch("notifyError")
                 console.log(err)
             })
+        },getUserAcheivements({commit,dispatch,state},userId){
+            axios.get("http://127.0.0.1:8000/api/user/"+userId+"/winningLeagues")
+            .then(re1=>{
+               let leagues=re1.data.Leagues;
+                axios.get("http://127.0.0.1:8000/api/user/"+userId+"/winningTournaments")
+                    .then(re2=>{
+                        let tourns=re2.data.Tournaments;
+                        axios.get("http://127.0.0.1:8000/api/user/"+userId+"/winningGames")
+                            .then(re3=>{
+                                let  games=re3.data.Games;
+                                commit("setUserAcheivements",{leagues,tourns,games});
+                            })
+                            .catch(err3=>console.log(err3))
+                    })
+                    .catch(err2=>console.log(err2))
+            })
+            .catch(err1=>console.log(err1))
         }
     },
     mutations:{
@@ -486,6 +518,8 @@ const store=createStore({
             state.user.data={},
             sessionStorage.removeItem("TOKEN");
             sessionStorage.removeItem("Name");
+            sessionStorage.removeItem("Id");
+            state.user.id=null;
         },
         setUser:(state,userData)=>{
             state.user.token=userData.token;
@@ -570,6 +604,15 @@ const store=createStore({
         },getAllLeagues(state,info){
             state.allLeagues.loading=true;
             state.allLeagues.leagues=info;
+        },setUserAcheivements(state,info){
+            state.user.acheivements.leaguesWon=info.leagues;
+            state.user.acheivements.tournsWon=info.tourns;
+            state.user.acheivements.gamesWon=info.games;
+            state.user.acheivements.loading=true;
+        },setSelectedTab(state,tab){
+            state.selectedTab=tab;
+        },setUserProfileData(state,info){
+            state.userProfileData=info;
         }
     },
     modules:{}

@@ -93,7 +93,7 @@
                                         <template v-if="members.length != 0">
                                             <tr v-for="member in members" :key="member.id">
                                                 <td class="tg-0lax">{{member.id}}<br></td>
-                                                <td class="tg-0lax">{{member.name}}<br></td>
+                                                <td class="tg-0lax memName"><router-link :to="/userProfile/+member.id ">{{member.name}}</router-link><br></td>
                                                 <td class="tg-0lax">{{member.email}}<br></td>
                                                 
                                                 <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
@@ -589,5 +589,10 @@ li strong:hover{
     box-shadow: 10014px 0 0 -5px;
   }
 }
-
+.memName a{
+    transition: all 0,3s ease;
+}
+.memName a:hover{
+    text-decoration: underline;
+}
       </style>

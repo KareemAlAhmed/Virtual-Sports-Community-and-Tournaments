@@ -1,12 +1,15 @@
 <template>   
    <div class="post postCont">
         <div class="imageAndOtherOpt">
-            <div class="userImage">
-                <a href="../user/{{user.id}}"><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+user.userPic " alt="http://127.0.0.1:8000/storage/images.jpeg"></a>
-            </div>
+            <router-link :to="/userProfile/+getUser.id ">
+                <div class="userImage">
+                    <a href="../user/{{user.id}}"><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+user.userPic " alt="http://127.0.0.1:8000/storage/images.jpeg"></a>
+                </div>
+            </router-link>
+           
             <div class="otherOptions userName">
             <a href="../user/{{user.id}}">   
-                <p>{{user.name}}</p> <span>{{format_date(post.created_at)}}</span></a>
+                <router-link :to="/userProfile/+getUser.id ">   <p>{{user.name}}</p></router-link> <span>{{format_date(post.created_at)}}</span></a>
             </div>
         </div>
         
@@ -39,6 +42,7 @@
 </template>
 <script>
 import moment from 'moment';
+import store from '../../store';
 export default {
     name:"Post",
     props: ['post','user'],
@@ -48,7 +52,11 @@ export default {
            return moment(String(value)).format('MMM DD,YYYY')
           }
       },
-   },
+   },computed: {
+        getUser(){
+            return store.state.user.data;        
+        }
+    }
 }
 </script>
 <style >
@@ -88,6 +96,10 @@ export default {
     .userName p{
         font-size: 20px;
     }
+    .userName p:hover{
+        text-decoration: underline;
+    }
+    
     .userName span{
         font-size: 14px;
         color: #ffffff45;

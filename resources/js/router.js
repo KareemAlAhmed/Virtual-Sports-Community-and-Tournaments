@@ -23,6 +23,7 @@ import LeaguesDash from "./components/dashboard/LeaguesDash.vue"
 import GamesDash from "./components/dashboard/GamesDash.vue"
 import CreateTournDash from "./components/dashboard/CreateTournDash.vue"
 import CreateLeagueDash from "./components/dashboard/CreateLeagueDash.vue"
+import UserPage from "./components/User/UserPage.vue"
 import store from "./store"
 const routes=[
 
@@ -48,6 +49,11 @@ const routes=[
                 name: 'Register',
                 component:Register,
                 meta:{isGuest:true}
+            },
+            {
+              path:"/userProfile/:id",
+              name: 'UserPage',
+              component:UserPage,              
             },
             {
                 path: '/tournaments', 
@@ -238,7 +244,9 @@ router.beforeEach((to,from,next)=>{
         store.state.currentDash.createTourn=false;
         store.state.currentDash.createLeague=true;
       }
-
+      if(to.name !=='UserPage'){
+          store.state.selectedTab="Tourns";
+      }
         next();
     }
 

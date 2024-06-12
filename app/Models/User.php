@@ -56,6 +56,9 @@ class User extends Authenticatable
     function winningLeague(){
         return $this->hasMany(Leagues::class,'winner_id');
     }
+    function winningGames(){
+        return $this->hasMany(Games::class,'winner_id');
+    }
     function leagues(){
         return $this->hasMany(enrollLeague::class);
     }

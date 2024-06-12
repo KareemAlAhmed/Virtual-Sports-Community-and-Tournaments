@@ -4,9 +4,13 @@
       
                 <div class="post postCont">
                     <div class="imageAndOtherOpt">
-                        <div class="userImage">
-                            <a href="./user/}}"><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+image_url" alt=""></a>
-                           
+                        {{ console.log(!isGuest) }}
+                        <div v-if="!isGuest" class="userImage">
+                            <router-link :to="/userProfile/+getUser.id "><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+getUser.image_url" alt=""></router-link>                         
+                        </div>
+
+                        <div v-else class="userImage">
+                            <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+image_url" alt="">
                         </div>
                         <div class="otherOptions">
                             <ul>
@@ -54,56 +58,6 @@
                     </div>
 
                 </div>
-                
-                <!-- <?php
-                    $date=date("Y-m-d");
-                    $time = date("h:i:sa");
-                    if ( str_contains($time, 'pm') ) {
-                        $time = str_replace('pm', '', $time);
-
-                    }else{
-                        $time = str_replace('am', '', $time);
-                    }
-
-                    // $finalTime = new DateTime(implode(" ", array($date,$time)));
-                    $finalTime=$date .' '.$time;
-                    $userposts=[];
-                    if( auth()->check()){
-                        $userposts=auth()->user()->posts->toArray();
-                    }
-                    rsort($userposts);
-
-                ?>
-               @if(auth()->check())
-               @for ($j = 0; $j<count($userposts) ; $j++)
-                    @php
-                    $newtime=date('Y-m-d h:i:s',strtotime($userposts[$j]['created_at']));
-                    $newtime=explode(' ',$newtime);
-
-                    $postDayNb=explode('-',$newtime[0])['2'];
-                    $postMonNb=explode('-',$newtime[0])['1'];
-                    $postHourNb=explode(':',$newtime[1])['0'];
-                    $postMinNb=explode(':',$newtime[1])['1'];
-
-                    $todyDayNb=explode( '-', $date )['2'];
-                    $todyMonNb=explode( '-', $date )['1'];
-                    $currentHour=explode( ':', $time )['0'];
-                    $currentMin=explode( ':', $time )['1'];
-
-                    @endphp
-                    
-                    
-                        @if($postDayNb == $todyDayNb && $postMonNb == $todyMonNb && $postHourNb == $currentHour && (int)$currentMin - (int)$postMinNb < 59)
-                            <x-post :post='$userposts[$j]'></x-post>
-                        @endif
-                    @endfor
-               @endif
-
-               @for ( $i = 0; $i<5 ; $i++)
-                    <x-post :post='$post1[$i]'></x-post>
-                    <x-post :post='$post2[$i]'></x-post>
-                    <x-post :post='$post3[$i]'></x-post>
-                @endfor -->
                 <div v-if="!isLoading" class="loading">
                         <p>
                             Loading
@@ -201,6 +155,10 @@ export default {
         },
         isLoading(){
             return store.state.posts.loading;
+        },isGuest(){
+                return store.state.user.id == null ? true : false;
+        },getUser(){
+            return store.state.user.token ? store.state.user.data : null;
         }
   },methods:{
     

@@ -93,8 +93,8 @@ class AuthController extends Controller
         return response()->json(['message'=>'logout succesfuly'],200);
 
     }
-    function getUser(string $name){
-        $user=User::where("name",$name)->first();
+    function getUser($id){
+        $user=User::find($id);
         // dd($user);
         return response()->json([
             'user'=>$user
@@ -216,6 +216,12 @@ class AuthController extends Controller
             'Leagues'=>User::find($id)->winningLeague->all()
         ],200);
     }
+    function winningGames($id){
+        return response()->json([
+            'status'=>200,
+            'Games'=>User::find($id)->winningGames->all()
+        ],200);
+    }
     function leagueGames($id){
         $league=(array)static::leagues($id);
         $leagues=$league['original']['Leagues'];
@@ -277,11 +283,7 @@ class AuthController extends Controller
                     'errors'=>'The User doesnt exist'
                 ],404);
             }
-        }
-
-
-        
-        
+        }     
     }
 
 
