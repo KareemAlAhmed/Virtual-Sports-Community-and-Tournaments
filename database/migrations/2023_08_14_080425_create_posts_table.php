@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->text("content")->default(Null)->nullable();
+            $table->integer("likes")->default(0);
+            $table->json("liked_users");
+            $table->integer("shared")->default(0);
+            $table->json("shared_users");
             $table->string("image_url")->default(Null)->nullable();
             $table->string("video_url")->default(Null)->nullable();
             $table->foreignId("user_id")->constrained()->cascadeOnDelete();

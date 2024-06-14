@@ -71,4 +71,7 @@ class User extends Authenticatable
     function gamesAsP2(){
         return $this->hasMany(Games::class,'user2_id');
     }
+    function comments(){
+        return $this->hasMany(Comment::class,"user_id");
+    }
 }

@@ -46,6 +46,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::put('post/{id}/edit/','update'); // to update the info of a post 
         Route::delete('post/{id}/delete','delete'); // to delete a post 
         Route::get('post/{id}/user','user'); // to get the user of a post 
+        Route::put('post/{id}/user/{userId}/like','postLike'); // to get the user of a post 
+        
     
     });
 
@@ -113,7 +115,7 @@ Route::get('post/{id}',[PostController::class,'show']);// to show a post
 Route::get('posts',[PostController::class,'all']);// to get all posts
 Route::get('user/{id}/posts',[AuthController::class,'posts']); // to get the posts  of a specific user
 
-
+Route::get('post/{id}/getLikes',[PostController::class,'getLikes']); // to get the user of a post 
 
 Route::get('tournament/{id}',[TournamentController::class,'show']);// to show a tournament
 Route::get('tournament/{id}/games',[TournamentController::class,'games']); // to get the games of a tournament

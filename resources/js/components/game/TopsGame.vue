@@ -47,7 +47,7 @@
                     <!-- @endif -->
     
                 </div>
-                <SideContainer />
+                <SideContainer  class="hide"/>
                
                 
             </div>
@@ -158,34 +158,23 @@
     list-style: none;
     flex-direction: column;
 }
-    h4{
-        margin: -23px;
-        margin-bottom: 0;
-        padding: 23px;
-        font-size: 1.22rem;
-        text-transform: uppercase;
-        font-family: Montserrat, sans-serif;
-        font-style: normal;
+@media screen and (max-width: 600px) {
+    .hide{
+        display: none;
+    }
+    .tournsInfo{
+        width: 100%;
+    }
+    .tournsInfo h1{
+        font-size: 30px;
+    }
+    .nogame {
+        font-size: 25px;
+        color: white;
+        width: 100%;
+        text-align: center;
         font-weight: 700;
-        color: #fff;
-        line-height: 1.2;
-        position: relative;
-        z-index: 1;
+        
     }
-    h4 span{
-        display: inline-block;
-        padding-right: 18px;
-        background-color: var(--background-color);
-    }
-    h4::after{
-        content: "";
-        position: absolute;
-        display: block;
-        top: 36px;
-        right: 1px;
-        left: 30px;
-        height: 3px;
-        background-color: #fff;
-        z-index: -1;
-    }
+}
       </style>

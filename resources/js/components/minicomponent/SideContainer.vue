@@ -56,9 +56,9 @@
 
     }
     .sideContainer h4{
-        margin: -23px;
-        margin-bottom: 0;
-        padding: 23px;
+        
+        margin-bottom: 10px;
+        
         font-size: 1.22rem;
         text-transform: uppercase;
         font-family: Montserrat, sans-serif;
@@ -78,11 +78,12 @@
         content: "";
         position: absolute;
         display: block;
-        top: 36px;
+        /* top: 36px; */
         right: 1px;
         left: 30px;
         height: 3px;
         background-color: #fff;
         z-index: -1;
+        bottom: 5px;
     }
 </style>

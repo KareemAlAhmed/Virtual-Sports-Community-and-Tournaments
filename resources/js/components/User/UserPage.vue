@@ -243,7 +243,10 @@
         margin-bottom: 3px;
     }
 
-
+    .listContainer{
+                position: relative;
+                display: flex;
+            }
    
     .wrapper .listContainer{
         gap: 20px;

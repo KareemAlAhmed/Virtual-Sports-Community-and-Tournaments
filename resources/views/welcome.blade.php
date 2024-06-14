@@ -20,9 +20,21 @@
                 margin: 0;
                 padding: 0;
             }
-            :root{
-              --background-color:#121212 ;
-              --post-color:#191919;
+
+            :root {
+                --light-color: #1a67f6;
+                --middle-color: #35363a;
+                --dark-color: #202124;
+                --effect-color: #3e76db;
+                --text-color: white;
+                --error-color: red;
+                --back-color: #202124;
+                --blue-color: #1a67f6;
+                --hover-blue: #3e76db;
+                --cart-color: #35363a;
+                --hover-cart: #44454b;
+                --background-color:#121212 ;
+                --post-color:#191919;
             }
             body{
                 max-width: 100vw;
@@ -61,6 +73,11 @@
                
                 display: flex;
                 gap: 20px;
+            }
+            @media screen and (max-width: 600px) {
+                .mainContainer{
+                  margin: 45px 20px 45px 20px;
+                }
             }
             .nk-breadcrumbs{
                 font-family: "Montserrat", sans-serif;
@@ -144,16 +161,43 @@
             transition : transform 200ms linear;
             background : #fff;
             }
+            .dashboardTable h4{    
+                margin-bottom: 0;             
+                font-size: 1.22rem;
+                text-transform: uppercase;
+                font-family: Montserrat, sans-serif;
+                font-style: normal;
+                font-weight: 700;
+                color: #fff;
+                line-height: 1.2;
+                position: relative;
+                z-index: 1;
+            }
+            .dashboardTable  h4 span{
+                display: inline-block;
+                padding-right: 18px;
+                background-color: var(--background-color);
+            }
+            .dashboardTable  h4::after{
+                content: "";
+                display: block;
+                top: 36px;
+                right: 1px;
+                left: 30px;
+                height: 3px;
+                background-color: #fff;
+                z-index: -1;
+            }
             .loading{
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 15px;
-    color: white;
-}
+                text-align: center;
+                font-size: 28px;
+                font-weight: 700;
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+                gap: 15px;
+                color: white;
+            }
             .dot-pulse {
   position: relative;
   left: -9999px;
@@ -224,6 +268,8 @@
 .disabledbtn{
   color: #66666675 !important;
 }
+  
+
         </style>
         @vite(['resources/js/app.js'])
             <script>

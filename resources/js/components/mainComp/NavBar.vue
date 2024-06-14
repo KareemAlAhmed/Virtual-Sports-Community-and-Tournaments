@@ -1,5 +1,5 @@
 <template>      
-    <div  id="menuHolder">
+    <div  id="menuHolder" style="position: relative;">
         <div role="navigation" class="sticky-top border-bottom border-top" id="mainNavigation">
             <div class="flexMain">
                 <router-link to="/"> 
@@ -19,7 +19,6 @@
                             <router-link to="/tournaments/tops">Top Tournaments</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/tournaments/mytourns">My Tournament</router-link>                             
-                                <!-- <router-link  to="/tournaments/create">Create Tournament</router-link>                              -->
                             </template>
      
                         </div>
@@ -32,7 +31,6 @@
                             <router-link to="/leagues/tops">Top Leagues</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/leagues/myleague">My Leagues</router-link>                             
-                                <!-- <router-link to="/leagues/create">Create League</router-link>  -->
                             </template>
                         </div>
                     </div>
@@ -45,7 +43,6 @@
                             <template v-if="!isGuest">                       
                                 <router-link to="/games/mygames">My Games</router-link>
                             </template>                              
-                            <!-- <router-link to="/games/create">Create Games</router-link>  -->
                         </div>
                     </div>
                     
@@ -57,15 +54,16 @@
                     </div>
                             <template v-if="get_token">
                                 <div class="authen" x-on:click.away="openMenu = false" x-on:mouseover = "openMenu = true">
-                                    <a href="#"  x-on:click="(event)=>{  openMenu=true}" x-on:mouseover = "openMenu = true" id="opt"  class="use OPT">   
-                                        <button class="siteLink user" >
-                                            <router-link :to="/userProfile/+getUser.id ">
+                                    <router-link :to="/userProfile/+getUser.id " x-on:mouseover = "openMenu = true" id="opt"  class="use OPT">
+                                         
+                                            <button class="siteLink user" >                          
                                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
-                                            {{fullName}} 
-                                            </router-link>
-                                        </button>
+                                                {{fullName}} 
+                                                
+                                            </button>
 
-                                    </a> 
+                                           
+                                    </router-link>
                                         <!-- @can('admin') -->
                                     <div x-show="openMenu" class="popup other" x-on:mouseover = "openMenu = true"  x-on:mouseover.away = "(e)=> {e.target.className.split(' ')[1] == 'user' ?  openMenu = true :  openMenu = false}">
                                         <!-- "openMenu = (e)=> e.target.className.split(' ')[1] == 'user' ? null : openMenu = false" -->
@@ -79,7 +77,82 @@
                             
                              
                 </div> 
+                
+                <svg class="ham hamRotate ham8 hide"  @click="displayMenu" viewBox="0 0 100 100" width="80" >
+                    <path
+                        class="line top"
+                        d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20" />
+                    <path
+                        class="line middle"
+                        d="m 30,50 h 40" />
+                    <path
+                        class="line bottom"
+                        d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20" />
+                </svg>
             </div>
+        </div>
+        <div class="mobileMenu">
+            
+            <div class="home">
+                <button class="navMenuOpt" @click="displayMenu"><router-link to="/" >Home</router-link></button>
+            </div>
+            <div class="tournOpt">
+                <button class="navMenuOpt" @click="activateTournPop(isGuest)">Tournaments</button>
+                <div class="mobilePopUp">                                     
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/tournaments/tops">Top Tournaments</router-link></button>                             
+                    <template v-if="!isGuest">
+                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/tournaments/mytourns">My Tournament</router-link></button>                                                           
+                    </template>
+                </div>
+            </div>
+            <div class="leagueOpt">
+                <button class="navMenuOpt" @click="activateLeaguePop(isGuest)">Leagues</button>
+                <div class="mobilePopUp">    
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/leagues/tops">Top Leagues</router-link></button>                                              
+                    <template v-if="!isGuest">                      
+                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/leagues/myleague">My Leagues</router-link>  </button>                          
+                    </template>
+                </div>
+            </div>
+            <div class="gameOpt">
+                <button class="navMenuOpt" @click="activateGamePop(isGuest)">Games</button>
+                <div   class="mobilePopUp">
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/games/tops">Top Games</router-link></button>
+                     
+                    <template v-if="!isGuest">   
+                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/games/mygames">My Games</router-link></button>                                           
+                    </template> 
+                </div>
+            </div>
+            <template v-if="!get_token">
+                <div class="auth">
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/register">Register</router-link></button>
+                </div>
+                <div class="auth">
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/Login">Login</router-link></button>
+                </div>
+            </template>
+
+            <template v-else>
+                <div class="auth">                        
+                            <button class="navMenuOpt" @click="displayMenu">                                                        
+                                <router-link :to="/userProfile/+getUser.id " x-on:mouseover = "openMenu = true" id="opt"  class="use OPT">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
+                                    {{fullName}} 
+                                </router-link>
+                            </button>                  
+                        <!-- @can('admin') -->
+                    
+                </div> 
+
+                <div  class="auth">
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/dashboard">Dashboard</router-link></button>                                       
+                </div>   
+                <div class="auth">
+                    <button class="navMenuOpt" @click="(e)=> {displayMenu();logout(e)}">Logout</button>
+                </div>
+            </template>
+
         </div>
     </div>
 
@@ -87,6 +160,7 @@
 </template>
 <script>
 import store from '../../store';
+import MobileNav from "./MobileNavBar.vue"
 export default {
     name:"NavBar",data(){
         return{
@@ -94,12 +168,107 @@ export default {
             name:store.state.user.name,
             token:store.state.user.token,
             email:store.state.user.email,
-            nameText:"hello"
+            nameText:"hello",
+            navMobille:false,
         }
     },methods:{
         logout(e){
             e.preventDefault();
             store.dispatch("logout")
+        },displayMenu(){
+            document.querySelector(".ham").classList.toggle('active')
+            document.querySelector(".mainPage").classList.toggle("stopScroll")
+            document.querySelector(".mobileMenu").classList.toggle("loadMenu")
+
+            if(document.querySelector(".tournOpt div").classList.contains("popUpActive")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".tournOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive2")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".gameOpt div").classList.contains("popUpActive")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".gameOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive2")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".leagueOpt div").classList.contains("popUpActive")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".leagueOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive2")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }
+        },activateTournPop(isGuest){
+
+            if(document.querySelector(".leagueOpt div").classList.contains("popUpActive")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".leagueOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive2")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".gameOpt div").classList.contains("popUpActive")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".gameOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive2")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }
+     
+            if(isGuest){
+                document.querySelector(".tournOpt div").classList.toggle("popUpActive")
+            }else{
+                document.querySelector(".tournOpt div").classList.toggle("popUpActive2")
+            }
+            document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")          
+        },activateLeaguePop(isGuest){
+            if(document.querySelector(".tournOpt div").classList.contains("popUpActive")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".tournOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive2")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".gameOpt div").classList.contains("popUpActive")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".gameOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive2")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }
+            
+            if(isGuest){
+                document.querySelector(".leagueOpt div").classList.toggle("popUpActive")
+            }else{
+                document.querySelector(".leagueOpt div").classList.toggle("popUpActive2")
+            }
+            document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")          
+        },activateGamePop(isGuest){
+            if(document.querySelector(".tournOpt div").classList.contains("popUpActive")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".tournOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive2")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".leagueOpt div").classList.contains("popUpActive")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".leagueOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive2")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }
+            
+
+            if(isGuest){
+                document.querySelector(".gameOpt div").classList.toggle("popUpActive")
+            }else{
+                document.querySelector(".gameOpt div").classList.toggle("popUpActive2")
+            }
+            document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")          
         }
         },mounted() {
             this.user=this.getUser
@@ -115,10 +284,12 @@ export default {
         },isGuest(){
                 return store.state.user.id == null ? true : false;
         }
+    },components:{
+        MobileNav
     }
 }
 </script>
-<style>
+<style scoped>
             .userName{
                 color: white;
                 font-size: 23px;
@@ -290,5 +461,230 @@ export default {
                 width: 100%;
                 display: block;
                 height: 100%;
+            }
+            .hide{
+                display: none;
+            }
+            .mobileMenu{
+                background-color: #121212;
+                position: absolute;
+                width: 0;
+                right: 0;
+                transition: all 0.3s ease;
+                height: calc(100vh - 80px);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                z-index: 9;
+            }
+            .loadMenu{
+                width: 100%;
+            }
+            .ham {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 400ms;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            }
+            .hamRotate.active {
+            transform: rotate(45deg);
+            }
+            .hamRotate180.active {
+            transform: rotate(180deg);
+            }
+            .line {
+            fill:none;
+            transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+            stroke:white;
+            stroke-width:5.5;
+            stroke-linecap:round;
+            }
+            .ham1 .top {
+            stroke-dasharray: 40 139;
+            }
+            .ham1 .bottom {
+            stroke-dasharray: 40 180;
+            }
+            .ham1.active .top {
+            stroke-dashoffset: -98px;
+            }
+            .ham1.active .bottom {
+            stroke-dashoffset: -138px;
+            }
+            .ham2 .top {
+            stroke-dasharray: 40 121;
+            }
+            .ham2 .bottom {
+            stroke-dasharray: 40 121;
+            }
+            .ham2.active .top {
+            stroke-dashoffset: -102px;
+            }
+            .ham2.active .bottom {
+            stroke-dashoffset: -102px;
+            }
+            .ham3 .top {
+            stroke-dasharray: 40 130;
+            }
+            .ham3 .middle {
+            stroke-dasharray: 40 140;
+            }
+            .ham3 .bottom {
+            stroke-dasharray: 40 205;
+            }
+            .ham3.active .top {
+            stroke-dasharray: 75 130;
+            stroke-dashoffset: -63px;
+            }
+            .ham3.active .middle {
+            stroke-dashoffset: -102px;
+            }
+            .ham3.active .bottom {
+            stroke-dasharray: 110 205;
+            stroke-dashoffset: -86px;
+            }
+            .ham4 .top {
+            stroke-dasharray: 40 121;
+            }
+            .ham4 .bottom {
+            stroke-dasharray: 40 121;
+            }
+            .ham4.active .top {
+            stroke-dashoffset: -68px;
+            }
+            .ham4.active .bottom {
+            stroke-dashoffset: -68px;
+            }
+            .ham5 .top {
+            stroke-dasharray: 40 82;
+            }
+            .ham5 .bottom {
+            stroke-dasharray: 40 82;
+            }
+            .ham5.active .top {
+            stroke-dasharray: 14 82;
+            stroke-dashoffset: -72px;
+            }
+            .ham5.active .bottom {
+            stroke-dasharray: 14 82;
+            stroke-dashoffset: -72px;
+            }
+            .ham6 .top {
+            stroke-dasharray: 40 172;
+            }
+            .ham6 .middle {
+            stroke-dasharray: 40 111;
+            }
+            .ham6 .bottom {
+            stroke-dasharray: 40 172;
+            }
+            .ham6.active .top {
+            stroke-dashoffset: -132px;
+            }
+            .ham6.active .middle {
+            stroke-dashoffset: -71px;
+            }
+            .ham6.active .bottom {
+            stroke-dashoffset: -132px;
+            }
+            .ham7 .top {
+            stroke-dasharray: 40 82;
+            }
+            .ham7 .middle {
+            stroke-dasharray: 40 111;
+            }
+            .ham7 .bottom {
+            stroke-dasharray: 40 161;
+            }
+            .ham7.active .top {
+            stroke-dasharray: 17 82;
+            stroke-dashoffset: -62px;
+            }
+            .ham7.active .middle {
+            stroke-dashoffset: 23px;
+            }
+            .ham7.active .bottom {
+            stroke-dashoffset: -83px;
+            }
+            .ham8 .top {
+            stroke-dasharray: 40 160;
+            }
+            .ham8 .middle {
+            stroke-dasharray: 40 142;
+            transform-origin: 50%;
+            transition: transform 400ms;
+            }
+            .ham8 .bottom {
+            stroke-dasharray: 40 85;
+            transform-origin: 50%;
+            transition: transform 400ms, stroke-dashoffset 400ms;
+            }
+            .ham8.active .top {
+            stroke-dashoffset: -64px;
+            }
+            .ham8.active .middle {
+            stroke-dashoffset: 0px;
+            transform: rotate(90deg);
+            }
+            .ham8.active .bottom {
+            stroke-dashoffset: -64px;
+            }
+            .stopScroll{
+                max-height: 100vh;
+                overflow: hidden;
+            }
+            .navMenuOpt{
+                border: none;
+                padding: 24px;
+                display: inline-block;
+                width: 100vw;
+                background-color: transparent;
+                color: white;
+                font-weight: 600;
+                font-size: 32px;
+                cursor: pointer;
+            }
+            .navMenuOpt a{
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+            .mobileMenu div{
+                width: 100%;
+            }
+            .mobilePopUp{
+                height: 0;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                background-color: #191919;
+            }
+            .mobilePopUp button{
+                height: fit-content;
+            }
+            .popUpActive{
+                height: 85px;
+            }
+            .popUpActive2{
+                height: 170px;
+            }
+            .activeMenuOpt{
+                background-color: #191919;
+            }
+            .auth svg{
+                fill: white;
+            }
+            @media screen and (max-width: 600px) {
+                .listContainer{
+                    display: none;
+                }
+                .hide{
+                    display: block;
+                }
+                .flexMain{
+                    padding: 0px 20px;
+                }
             }
 </style>

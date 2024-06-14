@@ -10,7 +10,7 @@
                   
                 </thead>
           
-                <template v-for="user in getUsers" :key="user.id">
+                <template v-for="user in displayUsers" :key="user.id">
                     <tr className="dashboardDesc"   >
                         <td>{{user.name}}</td>
                         <td>{{user.email}}</td>
@@ -21,43 +21,39 @@
                     </tr>
                 </template>
             </table>
-            <!-- <div className="lastRow">
+            <div className="lastRow">
                 <div className="lastRowPart">
                     <h4>show entries:</h4>
                     <div
-                        onClick={() => setEntries(10)}
-                        className={10 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(10)"
+                        :class="10 == getEntry ? 'selectedSlider' :'' "
                     >
                         10
                     </div>
                     <div
-                        onClick={() => setEntries(15)}
-                        className={15 == showEntries ? "selectedSlider" : ""}
+                         @click="setEntry(15)"
+                         :class="15 == getEntry ? 'selectedSlider' :'' "
                     >
                         15
                     </div>
                     <div
-                        onClick={() => setEntries(20)}
-                        className={20 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(20)"
+                        :class="20 == getEntry ? 'selectedSlider' :'' "
                     >
                         20
                     </div>
                 </div>
+
                 <div className="lastRowPart">
-                    {splitedArrays.map((part, index) => (
-                        <div
-                            onClick={() => {
-                                moveToIndex(index);
-                            }}
-                            className={`slider ${
-                                selectedIndex == index ? "selectedSlider" : ""
-                            }`}
-                        >
-                            {index + 1}
-                        </div>
-                    ))}
+                    <div v-for="x in getNb" :key="x"                   
+                        :class="getIndex == x ? 'slider selectedSlider' :'slider'"
+                        @click="selectedIndex =x">
+
+                            {{ x }}
+                    </div>
+ 
                 </div>
-            </div> -->
+            </div> 
         </div>
 </template>
 
@@ -66,17 +62,40 @@ import store from '../../store';
 
 export default {
     name:"UsersDash",
+    data(){
+        return{
+            entries:10,
+            selectedIndex:1,
+            tourns:[]
+        }
+    },
     computed:{
         getUsers(){
             return store.state.allUsers.users;
         },isLoading(){
             return store.state.allUsers.loading;
+        },displayUsers(){
+            let ent=this.getEntry
+            let tourns=  this.getUsers.length ==  undefined ?this.getUsers :this.getUsers.slice((this.getIndex -1) * ent, ent* this.getIndex)
+            return tourns;
+        },
+        getEntry(){
+            return this.entries;
+        },getNb(){
+            let len=this.getUsers.length ?? 0;
+            let page= len / this.getEntry;
+            return page <=1 ? 1 : Math.ceil(page);
+        },getIndex(){
+            return this.selectedIndex
         }
     },created(){
         store.dispatch("getAllUsers");
     },methods:{
         deleteUser(userId){
             store.dispatch("deleteUser",userId)
+        },setEntry(entry){
+            this.entries=entry,
+            this.selectedIndex=1;
         }
     }
 
@@ -87,6 +106,10 @@ export default {
 .dashboardTable {
     position: relative;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .dashboardTable table {
@@ -151,4 +174,5 @@ tr:hover {
     display: flex;
     width: 22px;
 }
+
 </style>

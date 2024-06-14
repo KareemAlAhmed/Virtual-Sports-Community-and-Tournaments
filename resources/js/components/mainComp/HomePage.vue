@@ -1,10 +1,9 @@
 <template>
-     <div class="mainContainer">
+     <div class="mainContainer" style="overflow-x: hidden;">
             <div class="centerContainer">
       
                 <div class="post postCont">
                     <div class="imageAndOtherOpt">
-                        {{ console.log(!isGuest) }}
                         <div v-if="!isGuest" class="userImage">
                             <router-link :to="/userProfile/+getUser.id "><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+getUser.image_url" alt=""></router-link>                         
                         </div>
@@ -20,7 +19,7 @@
                                     <label for="image_url">Photos</label>                              </li>
                                 <li>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9V168c0-8.7 4.7-16.7 12.3-20.9z"/></svg>    
-                                    Audios
+                                    <label>Audios</label>
                                 </li>
                                 <li>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M0 128C0 92.7 28.7 64 64 64H320c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2V384c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1V320 192 174.9l14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"/></svg>
@@ -28,7 +27,7 @@
                                 </li>
                                 <li>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM112 256H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
-                                    Documents
+                                    <label>Documents</label>
                                 </li>
                             </ul>
                         </div>
@@ -43,17 +42,16 @@
                             <!-- @php
                             $user= auth()->check() ? auth()->user()->name : 'Client';
                             @endphp -->
-                            <textarea name="content" :placeholder="'What is on your mind ,'+fullName+ '?'"></textarea>
+                            <textarea name="content" v-model="postContent" :placeholder="'What is on your mind ,'+fullName+ '?'"></textarea>
                         </form>
                     </div>
 
                     <div class="submiting">
                        <div v-if="get_token" >
-                            <button onclick="(e)=> e.preventDefault(); document.getElementById('posting').submit()">Submit</button>          
+                            <button @click="onSubmit">Submit</button>          
                         </div>
                         <div v-else>
-                            <a href="register"><button onclick="(e)=> e.preventDefault(); document.getElementById('posting').submit()">Signin</button></a>
-
+                            <router-link to="/register"><button>Signin</button></router-link>
                         </div>
                     </div>
 
@@ -74,17 +72,13 @@
                     
                     <template v-else>
                         <template v-for="post in getPost" :key="post.id">
-                            <Post :post='post' :user="user"></Post>
+                            <Post :post='post' :user="post.user"></Post>
                         </template>
-
-                        <!-- <Post :post='side1' :user="user"></Post>
-                        <Post :post='side2' :user="user"></Post>
-                        <Post :post='side3' :user="user"></Post> -->
                     </template>
             </div>
             
 
-            <SideContainer />
+            <SideContainer class="hideNav" />
            
            
         </div>
@@ -134,11 +128,7 @@ export default {
         image_url: 'post-51-300x188.jpg',
         created_at:"2024-02-26 11:37:43"
       },
-      user:{
-        id:1,
-        name:"Kareem",
-        userPic:"images.jpeg"
-      }
+      postContent:""
       
     };
   },computed:{
@@ -161,20 +151,22 @@ export default {
             return store.state.user.token ? store.state.user.data : null;
         }
   },methods:{
-    
-  }
+        onSubmit(){
+            let info={
+                id:this.getUser.id,
+                content:this.postContent
+            }
+
+            store.dispatch("createPost",info);
+            this.postContent=""        }
+  },created(){
+        store.dispatch("getPosts")
+    } 
 
 }
 </script>
 <style >
-        .liked{
-        color:  red !important;
-        fill:  red !important;
-    }
-    .shared{
-        color:  yellow !important;
-        fill:  yellow !important;
-    }
+       
   
     .centerContainer{
         width: 70%;
@@ -340,4 +332,26 @@ export default {
     label{
         cursor: pointer;
     }
+    .hideNav{
+        display: block;
+    }
+    @media screen and (max-width: 600px) {
+        .hideNav{
+            display: none;
+        }
+        .centerContainer{
+            width: 100%;
+        }
+        .userImage img{
+            width: 50px;
+        }   
+
+        .otherOptions ul{
+            gap: 25px;
+            font-size: 20px;
+        } 
+        .otherOptions label{
+            display: none;
+        }
+        }
 </style>

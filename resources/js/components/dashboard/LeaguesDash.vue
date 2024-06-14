@@ -16,7 +16,7 @@
                   
                 </thead>
              
-                <template v-for="league in getLeagues" :key="league.id">
+                <template v-for="league in displayLeagues" :key="league.id">
                     <tr className="dashboardDesc" @click="goToLeague($event,league.id,cuurentUserId)">
                         <td>{{league.name.length <= 11 ? league.name : league.name.slice(0,11) + "..."}}</td>
                         <td>{{league.maxPlaces}}</td>
@@ -33,43 +33,38 @@
                     </tr>
                 </template>
             </table>
-            <!-- <div className="lastRow">
+            <div className="lastRow">
                 <div className="lastRowPart">
                     <h4>show entries:</h4>
                     <div
-                        onClick={() => setEntries(10)}
-                        className={10 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(10)"
+                        :class="10 == getEntry ? 'selectedSlider' :'' "
                     >
                         10
                     </div>
                     <div
-                        onClick={() => setEntries(15)}
-                        className={15 == showEntries ? "selectedSlider" : ""}
+                         @click="setEntry(15)"
+                         :class="15 == getEntry ? 'selectedSlider' :'' "
                     >
                         15
                     </div>
                     <div
-                        onClick={() => setEntries(20)}
-                        className={20 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(20)"
+                        :class="20 == getEntry ? 'selectedSlider' :'' "
                     >
                         20
                     </div>
                 </div>
                 <div className="lastRowPart">
-                    {splitedArrays.map((part, index) => (
-                        <div
-                            onClick={() => {
-                                moveToIndex(index);
-                            }}
-                            className={`slider ${
-                                selectedIndex == index ? "selectedSlider" : ""
-                            }`}
-                        >
-                            {index + 1}
-                        </div>
-                    ))}
+                    <div v-for="x in getNb" :key="x"                   
+                        :class="getIndex == x ? 'slider selectedSlider' :'slider'"
+                        @click="selectedIndex =x">
+
+                            {{ x }}
+                    </div>
+ 
                 </div>
-            </div> -->
+            </div> 
         </div>
 </template>
 
@@ -79,6 +74,13 @@ import router from '../../router';
 
 export default {
     name:"LeaguesDash",
+    data(){
+        return{
+            entries:10,
+            selectedIndex:1,
+
+        }
+    },
     computed:{
         getLeagues(){
             return store.state.allLeagues.leagues;
@@ -86,7 +88,20 @@ export default {
             return store.state.allLeagues.loading;
         },cuurentUserId(){
                 return store.state.user.id;
+        },displayLeagues(){
+            let ent=this.getEntry
+            let tourns=  this.getLeagues.length ==  undefined ?this.getLeagues :this.getLeagues.slice((this.getIndex -1) * ent, ent* this.getIndex)
+            return tourns;
         },
+        getEntry(){
+            return this.entries;
+        },getNb(){
+            let len=this.getLeagues.length ?? 0;
+            let page= len / this.getEntry;
+            return page <=1 ? 1 : Math.ceil(page);
+        },getIndex(){
+            return this.selectedIndex
+        }
     },created(){
         store.dispatch("getAllLeagues");
     },methods:{
@@ -97,6 +112,9 @@ export default {
                 store.dispatch('isJoinedLeague',{userId,leagueId} )
                 store.dispatch('getCurrentLeague', leagueId)
             }                 
+        },setEntry(entry){
+            this.entries=entry,
+            this.selectedIndex=1;
         }
     }
 
@@ -107,6 +125,10 @@ export default {
 .dashboardTable {
     position: relative;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .dashboardTable table {
@@ -123,7 +145,7 @@ thead td:last-child{
     padding-right: 5px;
 }
 .dashboardDesc td {
-    padding: 20px 9px;
+    padding: 20px 6px;
     font-size: 19px;
     border-bottom: 1px solid white;
 }
@@ -174,4 +196,5 @@ tr:hover {
     display: flex;
     width: 22px;
 }
+
 </style>

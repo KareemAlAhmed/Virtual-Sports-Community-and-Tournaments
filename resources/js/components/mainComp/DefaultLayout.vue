@@ -1,7 +1,7 @@
 <template>   
 
   <div class="mainPage">
-    <NavBar/>
+    <NavBar  />
     <router-view></router-view> 
   </div> 
 </template>
@@ -21,7 +21,7 @@ export default {
           posts:{}
         }  
     },created(){
-      store.dispatch("getPosts")
+
       store.dispatch("getTourns")
 
       store.dispatch("getGames")
@@ -33,6 +33,12 @@ export default {
     }
 }
 </script>
-<style >
+<style scoped>
+  @media screen and (max-width: 600px) {
+    .mainPage{
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+  }
+</style> 
     
-</style>

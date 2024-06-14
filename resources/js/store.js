@@ -510,6 +510,27 @@ const store=createStore({
                     .catch(err2=>console.log(err2))
             })
             .catch(err1=>console.log(err1))
+        },createPost({commit,dispatch,state},info){
+            axiosClient.post("post/user/"+info.id,info)
+            .then(res=>{      
+                    console.log(res)                                
+                    state.notification.message=res.data.message
+                    this.dispatch("notifySuccess") 
+                    this.dispatch("getPosts")         
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+                console.log(err)
+            })
+        },likeOrUnlikePost({commit,dispatch,state},info){
+            axiosClient.put("post/"+info.postId+"/user/"+info.userId+"/like",info)
+            .then(res=>{      
+                               
+            })
+            .catch(err=>{
+                console.log(err)
+            })
         }
     },
     mutations:{

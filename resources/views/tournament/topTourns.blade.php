@@ -86,9 +86,9 @@
     background-color: var(--background-color);
 }
 h4{
-    margin: -23px;
+    
     margin-bottom: 0;
-    padding: 23px;
+    
     font-size: 1.22rem;
     text-transform: uppercase;
     font-family: Montserrat, sans-serif;
@@ -105,8 +105,7 @@ h4 span{
     background-color: var(--background-color);
 }
 h4::after{
-    content: "";
-    position: absolute;
+    
     display: block;
     top: 36px;
     right: 1px;

@@ -13,6 +13,7 @@ class PostController extends Controller
     function create(Request $request,int $id){
         $user=User::find($id);
         if($user){
+          
             if($request->input('content') || $request->hasFile('image_url') || $request->hasFile('video_url')){
                 $val=Validator::make($request->all(),[
                 'content'=>$request->input('content') != null ? 'sometimes|min:5' : '',
@@ -20,10 +21,10 @@ class PostController extends Controller
                 'video_url'=>$request->video_url != null ? 'sometimes|min:5' : '',
                 ]);
                 if($val->fails()){                    
-                        return redirect('/')->with('error',[response()->json([
+                        response()->json([
                             'status'=>422,
                             'errors'=>$val->messages()->toArray(),
-                        ],422)]);
+                        ],422);
                 }else{
                     $post= new Posts;
                     if($request->input('content') != null){
@@ -39,26 +40,28 @@ class PostController extends Controller
                         $post->video_url=$request->video_url->getClientOriginalName();              
                         $request->video_url->storeAs('public/postVideo',$post->video_url);
                     }
+                    $post->liked_users=json_encode([]);
+                    $post->shared_users=json_encode([]);
                     $post->save();
-                    return redirect('/')->with('response',[response()->json([
+                    return response()->json([
                         'message'=>'The Post created successfuly',
-                        'Post'=>$post],201)]);
+                        'Post'=>$post],201);
                     
                 }
             }else{
 
-                return redirect('/')->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'There is no content or image or video',
-                ],404)]);
+                ],404);
               
             }
            
         }
-        return redirect('/')->with('error',[response()->json([
+        return response()->json([
             'status'=>404,
             'errors'=>'user not found',
-        ],404)]);
+        ],404);
     }
     function show( $id){
         $post=Posts::find($id);
@@ -168,8 +171,44 @@ class PostController extends Controller
             ],404)]);
         }
     }
+
+    function postLike(Request $request,$postId,$userId){
+        $post=Posts::find($postId);
+        if($request->input('situation') == 'Liked'){
+            $post->likes +=1;
+            $liked_users=json_decode($post->liked_users);
+            
+            array_push($liked_users,$userId);
+            $post->liked_users=json_encode($liked_users);
+            $post->update();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Post Liked Successfuly'
+            ],200);
+        }else{
+            $post->likes -=1;
+            $liked_users=json_decode($post->liked_users);
+
+            for($i=0;$i<count($liked_users);$i++){
+                if($liked_users[$i] == $userId){
+                    unset($liked_users[$i]);
+                }
+            }
+            $post->liked_users=json_encode($liked_users);
+            $post->update();
+            return response()->json([
+                'status'=>200,
+                'message'=>'Post UnLiked Successfuly'
+            ],200);
+        }
+    }
+        function getLikes($id){
+            $post=Posts::find($id);
+            return $post->liked_users;
+        }
     function all(){
-        $posts=Posts::all();
+        // $posts=Posts::all();
+        $posts = Posts::orderBy('created_at', 'desc')->get();
         return response()->json([
             "posts"=>$posts
         ],200);

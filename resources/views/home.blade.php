@@ -35,9 +35,9 @@ use App\Models\User;
     background-color: #191919;
     }
     .sideContainer h4{
-        margin: -23px;
+        
         margin-bottom: 0;
-        padding: 23px;
+        
         font-size: 1.22rem;
         text-transform: uppercase;
         font-family: Montserrat, sans-serif;

@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Posts extends Model
 {
     use HasFactory;
+    protected $with=['user'];
     function user(){
         $user=$this->belongsTo(User::class,'user_id');
         return $user;
     }
-    
+    function comments(){
+        return $this->hasMany(Comment::class,'post_id');
+    }
 }

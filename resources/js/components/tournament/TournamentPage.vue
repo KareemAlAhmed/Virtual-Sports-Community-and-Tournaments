@@ -240,36 +240,7 @@
     list-style: none;
 }
 
-h4{
-    margin: -23px;
-    margin-bottom: 0;
-    padding: 23px;
-    font-size: 1.22rem;
-    text-transform: uppercase;
-    font-family: Montserrat, sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-    position: relative;
-    z-index: 1;
-}
-h4 span{
-    display: inline-block;
-    padding-right: 18px;
-    background-color: var(--background-color);
-}
-h4::after{
-    content: "";
-    position: absolute;
-    display: block;
-    top: 36px;
-    right: 1px;
-    left: 30px;
-    height: 3px;
-    background-color: #fff;
-    z-index: -1;
-}
+
 
 .centerContainer{
     width: 100%;

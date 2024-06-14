@@ -15,7 +15,7 @@
                         <td>Action</td>
                   
                 </thead>
-                <template v-for="game in getGames" :key="game.id">
+                <template v-for="game in displayGames" :key="game.id">
                     <tr className="dashboardDesc">
                         <td>{{game.firstUserName.length <= 11 ? game.firstUserName : game.firstUserName.slice(0,11) + "..."}}</td>
                         <td>{{game.secondUserName.length <= 11 ? game.secondUserName : game.secondUserName.slice(0,11) + "..."}}</td>
@@ -32,43 +32,38 @@
                     </tr>
                 </template>
             </table>
-            <!-- <div className="lastRow">
+            <div className="lastRow">
                 <div className="lastRowPart">
                     <h4>show entries:</h4>
                     <div
-                        onClick={() => setEntries(10)}
-                        className={10 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(10)"
+                        :class="10 == getEntry ? 'selectedSlider' :'' "
                     >
                         10
                     </div>
                     <div
-                        onClick={() => setEntries(15)}
-                        className={15 == showEntries ? "selectedSlider" : ""}
+                         @click="setEntry(15)"
+                         :class="15 == getEntry ? 'selectedSlider' :'' "
                     >
                         15
                     </div>
                     <div
-                        onClick={() => setEntries(20)}
-                        className={20 == showEntries ? "selectedSlider" : ""}
+                        @click="setEntry(20)"
+                        :class="20 == getEntry ? 'selectedSlider' :'' "
                     >
                         20
                     </div>
                 </div>
                 <div className="lastRowPart">
-                    {splitedArrays.map((part, index) => (
-                        <div
-                            onClick={() => {
-                                moveToIndex(index);
-                            }}
-                            className={`slider ${
-                                selectedIndex == index ? "selectedSlider" : ""
-                            }`}
-                        >
-                            {index + 1}
-                        </div>
-                    ))}
+                    <div v-for="x in getNb" :key="x"                   
+                        :class="getIndex == x ? 'slider selectedSlider' :'slider'"
+                        @click="selectedIndex =x">
+
+                            {{ x }}
+                    </div>
+ 
                 </div>
-            </div> -->
+            </div> 
         </div>
 </template>
 
@@ -78,19 +73,41 @@ import router from '../../router';
 
 export default {
     name:"GamesDash",
+    data(){
+        return{
+            entries:10,
+            selectedIndex:1,
+        }
+    },
     computed:{
         getGames(){
             return store.state.allGames.games;
         },isLoading(){
             return store.state.allGames.loading;
         },cuurentUserId(){
-                return store.state.user.id;
+            return store.state.user.id;
+        },displayGames(){
+            let ent=this.getEntry
+            let tourns=  this.getGames.length ==  undefined ? this.getGames :this.getGames.slice((this.getIndex -1) * ent, ent* this.getIndex)
+            return tourns;
         },
+        getEntry(){
+            return this.entries;
+        },getNb(){
+            let len=this.getGames.length ?? 0;
+            let page= len / this.getEntry;
+            return page <=1 ? 1 : Math.ceil(page);
+        },getIndex(){
+            return this.selectedIndex
+        }
     },created(){
         store.dispatch("getAllGames");
     },methods:{
         deleteGame(gameId){
             store.dispatch("deleteGames",gameId)           
+        },setEntry(entry){
+            this.entries=entry,
+            this.selectedIndex=1;
         }
     }
 
@@ -101,6 +118,11 @@ export default {
 .dashboardTable {
     position: relative;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+
 }
 
 .dashboardTable table {
@@ -168,4 +190,5 @@ tr:hover {
     display: flex;
     width: 22px;
 }
+
 </style>

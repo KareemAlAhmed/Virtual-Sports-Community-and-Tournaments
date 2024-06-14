@@ -114,6 +114,7 @@
         padding: 20px;
         color: #fff;
         cursor: pointer;
+        position: relative;
     }
     .gameInfo{
         display: flex;
@@ -180,6 +181,28 @@
     .game ul li:first-child a{
         display: flex;
         gap: 3px;
+    }
+    @media screen and (max-width: 600px) {
+        .game .gameInfo img{
+            height: 50px;
+            width: 50px;
+        }
+        .playerName{
+            font-size: 16px;
+        }
+        .scores{
+            width: fit-content;
+        }
+        .gameDate{
+            font-size: 14px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-weight: 700;
+        }
+        .gameInfo{
+            gap: 8px;
+        }
     }
   </style>
   
