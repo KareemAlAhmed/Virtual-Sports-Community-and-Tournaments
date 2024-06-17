@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('league_id')->constrained()->cascadeOnDelete();
+            $table->integer('scores')->default(0);
+            $table->integer('OwnScore_OppScore')->default(0);
             $table->timestamps();
         });
     }

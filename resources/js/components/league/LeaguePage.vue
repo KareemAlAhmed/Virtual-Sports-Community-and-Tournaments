@@ -17,7 +17,9 @@
                 </div>
           
             </div>
+            
             <template v-else>
+                {{ console.log(league) }}
                 <ul class="nk-breadcrumbs">
                     <li><RouterLink rel="v:url" :to="'/'">Home</RouterLink></li>
                     <li><svg class="svg-inline--fa fa-angle-right" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"></path></svg><!-- <span class="fa fa-angle-right"></span> Font Awesome fontawesome.com --></li>          
@@ -56,6 +58,7 @@
                         </li><!-- #post-## -->
                         <p style="margin-bottom: 1.5rem;padding: 0 20px;line-height: 1.5rem;">{{league.description}}</p>  
                         <div class="actions">
+                                <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="simulateLeague(league.id);">Simulate League</button>
                                 <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="generateMatches(league.id);">Generate Matches</button>
                                 <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'" name="submit" class="sbt" @click="deleteLeague(league.id);">DELETE</button>
                     
@@ -80,7 +83,7 @@
                                 <tr>
                                     <td class="tg-0lax">Id<br></td>
                                     <td class="tg-0lax">Username<br></td>
-                                    <td class="tg-0lax">Email<br></td>
+                                    <td class="tg-0lax mobVersion">Email<br></td>
                                     <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
                                     <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">Actions<br></td>    
                                     <!-- @endif -->
@@ -92,9 +95,9 @@
                                     @foreach($tournMembers as $member) -->
                                         <template v-if="members.length != 0">
                                             <tr v-for="member in members" :key="member.id">
-                                                <td class="tg-0lax">{{member.id}}<br></td>
-                                                <td class="tg-0lax memName"><router-link :to="/userProfile/+member.id ">{{member.name}}</router-link><br></td>
-                                                <td class="tg-0lax">{{member.email}}<br></td>
+                                                <td class="tg-0lax" :class="league.winner_id != null && member.id == league.winner_id ? 'winner' : null">{{member.id}}<br></td>
+                                                <td class="tg-0lax memName" :class="league.winner_id != null && member.id == league.winner_id ? 'winner' : null"><router-link :to="/userProfile/+member.id ">{{member.name}}</router-link><br></td>
+                                                <td class="tg-0lax mobVersion" :class="league.winner_id != null && member.id == league.winner_id ? 'winner' : null">{{member.email}}<br></td>
                                                 
                                                 <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
                                                 <td class="tg-0lax" v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'">
@@ -143,7 +146,7 @@
     
         </div>
             
-        <SideContainer />
+        <SideContainer class="hide"/>
                 
     </div>                   
 </template>
@@ -210,15 +213,19 @@ import GameSummary from '../game/GameSummary.vue';
                 this.gamesUpdated=true;
             },goSign(){
                 router.push("/Login")
+            },simulateLeague($id){
+                store.dispatch("simulateLeague",$id)
             }
         },created() {
             
             if(!store.state.currentLeague.data.id && store.state.currentLeague.id){
                 store.dispatch('getCurrentLeague',store.state.currentLeague.id)
+                
             }
             let userId=this.cuurentUserId;
             let leagueId=sessionStorage.getItem("CurrentLeague")
             store.dispatch("isJoinedLeague",{userId,leagueId})
+            
         }
 }
       </script>
@@ -565,5 +572,35 @@ li strong:hover{
 }
 .memName a:hover{
     text-decoration: underline;
+}
+.winner{
+    color: yellow;
+}
+@media screen and (max-width: 600px) {
+    .hide{
+        display: none;
+    }
+    .tournsInfo{
+        width: 100%;
+    }
+    .tournsInfo h1,.memberNames h1{
+        font-size: 27px;
+    }
+    .noTourn h3{
+        font-size: 25px;
+    }
+    .post ul{
+        font-size: 17px;
+    }
+    .actions,.userNames,.tournGames{
+        width: 100%;
+    }
+    .sbt{
+        font-size: 14px;
+    }
+    .mobVersion{
+        display: none;
+    }
+
 }
       </style>

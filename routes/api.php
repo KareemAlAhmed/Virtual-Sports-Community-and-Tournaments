@@ -81,7 +81,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     
     Route::post('enroll/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'enroll']);// to enroll a user in a specific league 
     Route::delete('kick/user/{userId}/league/{leagueId}',[enrollLeagueController::class, 'kick']);// to kick a user from a specific league
-
+    Route::post('league/{id}/simulate',[LeagueController::class,'simulate_games']);// to show a tournament
 
     Route::controller(GameController::class)->group(function () {
         Route::post('game/{tournOrLeagueId}/create','create'); // to create a game  (should competetionType be Tournament or League)
@@ -123,7 +123,8 @@ Route::get('tournament/{id}/members',[TournamentController::class,'members']); /
 Route::get('tournament/{tournId}/organizer',[TournamentController::class,'organizer']); // to get the organizer of a  specific tournament
 Route::get('user/{id}/tournaments',[AuthController::class,'tournaments']);// to get the tournaments that a user participate in.
 
-
+Route::post('tournament/{id}/simulate',[TournamentController::class,'simulate_games']);// to show a tournament
+// Route::post('tournament/{id}/simulateKnockout',[TournamentController::class,'simulate_games']);// to show a tournament
 
 
 Route::get('league/{id}',[LeagueController::class,'show']); // to show a league

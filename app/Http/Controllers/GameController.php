@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\enrollLeague;
+use App\Models\enrollTourn;
 use App\Models\Games;
 use App\Models\Leagues;
 use App\Models\Tournaments;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -520,5 +523,139 @@ class GameController extends Controller
         $userGamesP1=User::find($id)->gamesAsP1;
         $userGamesP2=User::find($id)->gamesAsP2;
         return [...$userGamesP1,...$userGamesP2];
+    }
+    function simulate_game($id){
+        $game=Games::find($id);
+        if(isset($game)){
+            if($game->status =="Not Started"){
+                $firstScore=rand(0,10);
+                $secondtScore=rand(0,10);
+                while($firstScore == $secondtScore){
+                    $firstScore=rand(0,10);
+                    $secondtScore=rand(0,10);
+                }
+                if($firstScore >  $secondtScore){
+                    $game->firstUserScore=$firstScore;
+                    $game->secondUserScore=$secondtScore;
+                    $dt = new DateTime();
+                    $dt->setTime(0, 0);
+                    $game->timeLeft=$dt;
+                    $game->status="finished";
+                    $game->winner_id=$game->user_id;
+                    if($game->tournaments_id != Null){
+                        $enroll=enrollTourn::where("tournament_id",$game->tournaments_id)->where("user_id",$game->user_id)->first();
+                        $enroll2=enrollTourn::where("tournament_id",$game->tournaments_id)->where("user_id",$game->user2_id)->first();
+                        $enroll->scores +=3;
+                        $enroll->OwnScore_OppScore += $firstScore - $secondtScore;
+                        $enroll2->OwnScore_OppScore += $secondtScore - $firstScore;
+                        $enroll->update();
+                        $enroll2->update();
+                    }else{
+                        $enroll=enrollLeague::where("league_id",$game->leagues_id)->where("user_id",$game->user_id)->first();
+                        $enroll2=enrollLeague::where("league_id",$game->leagues_id)->where("user_id",$game->user2_id)->first();
+                        $enroll->scores +=3;
+                        $enroll->OwnScore_OppScore += $firstScore - $secondtScore;
+                        $enroll2->OwnScore_OppScore += $secondtScore - $firstScore;
+                        $enroll->update();
+                        $enroll2->update();
+                    }
+                    $game->update();
+
+
+                }else{
+                    $game->firstUserScore=$firstScore;
+                    $game->secondUserScore=$secondtScore;
+                    $dt = new DateTime();
+                    $dt->setTime(0, 0);
+                    $game->timeLeft=$dt;
+                    $game->status="finished";
+                    $game->winner_id=$game->user2_id;
+                    if($game->tournaments_id != Null){
+                        $enroll=enrollTourn::where("tournament_id",$game->tournaments_id)->where("user_id",$game->user2_id)->first();
+                        $enroll2=enrollTourn::where("tournament_id",$game->tournaments_id)->where("user_id",$game->user_id)->first();
+                        $enroll2->OwnScore_OppScore += $firstScore - $secondtScore;
+                        $enroll->OwnScore_OppScore += $secondtScore - $firstScore;
+                        $enroll->scores +=3;
+                        $enroll->update();
+                        $enroll2->update();
+                    }else{
+                        $enroll=enrollLeague::where("league_id",$game->leagues_id)->where("user_id",$game->user2_id)->first();
+                        $enroll2=enrollLeague::where("league_id",$game->leagues_id)->where("user_id",$game->user_id)->first();
+                        $enroll2->OwnScore_OppScore += $firstScore - $secondtScore;
+                        $enroll->OwnScore_OppScore += $secondtScore - $firstScore;
+                        $enroll->scores +=3;
+                        $enroll->update();
+                        $enroll2->update();
+                    }
+                    $game->update();
+                }
+
+
+            }else{
+                return null;
+            }
+
+        }else{
+            return response()->json([
+                "status"=>404,
+                "error"=>"The Game Doesnt Exist!"
+            ]);
+        }
+    }
+    function simulate_knockout_game($id){
+        $game=Games::find($id);
+        if(isset($game)){
+            if($game->status =="Not Started"){
+                $firstScore=rand(0,10);
+                $secondtScore=rand(0,10);
+                while($firstScore == $secondtScore){
+                    $firstScore=rand(0,10);
+                    $secondtScore=rand(0,10);
+                }
+                if($firstScore >  $secondtScore){
+                    $game->firstUserScore=$firstScore;
+                    $game->secondUserScore=$secondtScore;
+                    $dt = new DateTime();
+                    $dt->setTime(0, 0);
+                    $game->timeLeft=$dt;
+                    $game->status="finished";
+                    $game->winner_id=$game->user_id;
+
+                    $game->update();
+                    return $game->user_id;
+
+                }else{
+                    $game->firstUserScore=$firstScore;
+                    $game->secondUserScore=$secondtScore;
+                    $dt = new DateTime();
+                    $dt->setTime(0, 0);
+                    $game->timeLeft=$dt;
+                    $game->status="finished";
+                    $game->winner_id=$game->user2_id;
+
+                    $game->update();
+                    return $game->user2_id;
+                }
+
+
+            }else{
+                return null;
+            }
+
+        }else{
+            return response()->json([
+                "status"=>404,
+                "error"=>"The Game Doesnt Exist!"
+            ]);
+        }
+    }
+
+    function get_bette_stat($id,$userId){
+        $game=Games::find($id);
+        if($userId == $game->user_id){
+            return $game->firstUserScore - $game->secondUserScore;
+        }else{
+            return $game->secondUserScore - $game->firstUserScore;
+        }
     }
 }

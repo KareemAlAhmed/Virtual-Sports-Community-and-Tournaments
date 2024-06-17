@@ -150,8 +150,11 @@ import store from '../../store.js';
                 .flex-container{
                     margin-left: 20px;
                     margin-right: 20px;
-                    
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    width: auto;
                 }
+            
                 .flex-container h1{
                     font-size: 35px;
                     font-weight: 800;

@@ -389,5 +389,35 @@
     box-shadow: 10014px 0 0 -5px;
   }
 }
-
+@media screen and (max-width: 600px) {
+   .mainContainer{
+        flex-direction: column;
+        padding: 0;
+   }
+   .centerContainer{
+        width: 100%;
+   }
+   .sideContainer{
+        width: 100%;
+        padding: 0;
+   }
+   .wrapper .listContainer{
+        gap: 8px;
+        width: 100%;
+   }
+   .wrapper button.siteLink{
+        padding: 15px 5px;
+        font-size: 15px;
+   }
+   .noWinning{
+    padding: 20px;
+    height: fit-content;
+   }
+   .wrapper .tournSum img,.wrapper .tournInfo{
+        width: calc(50% - 20px);
+   }
+   .wrapper .tournName{
+    font-size: 23px;
+   }
+}
       </style>

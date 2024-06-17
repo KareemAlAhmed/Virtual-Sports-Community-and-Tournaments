@@ -4,15 +4,15 @@
             <table>
                 <thead>   
                         <td>Name</td>
-                        <td>MaxPlaces</td>
+                        <td class="mobileDev">MaxPlaces</td>
                         <td>RemPlaces</td>
-                        <td>Rewards</td>
+                        <td class="mobileDev">Rewards</td>
                         <td>SportType</td>
-                        <td>Type</td>
-                        <td>StartDate</td>
-                        <td>EndDate</td>
+                        <td class="mobileDev">Type</td>
+                        <td class="mobileDev">StartDate</td>
+                        <td class="mobileDev">EndDate</td>
                         <td>WinnerId</td>
-                        <td>OrganizerId</td>
+                        <td class="mobileDev">OrganizerId</td>
                         <td>Action</td>
                   
                 </thead>
@@ -22,15 +22,15 @@
                 <template v-for="tourn in displayTourns" :key="tourn.id">
                     <tr className="dashboardDesc" @click="goToTourn($event,tourn.id,cuurentUserId)">
                         <td>{{tourn.name.length <= 11 ? tourn.name : tourn.name.slice(0,11) + "..."}}</td>
-                        <td>{{tourn.maxPlaces}}</td>
+                        <td class="mobileDev">{{tourn.maxPlaces}}</td>
                         <td>{{tourn.remainingPlaces}}</td>
-                        <td>{{tourn.rewards}}</td>
+                        <td class="mobileDev">{{tourn.rewards}}</td>
                         <td>{{tourn.sportType}}</td>
-                        <td>{{tourn.type}}</td>
-                        <td>{{tourn.startDate}}</td>
-                        <td>{{tourn.endDate}}</td>
+                        <td class="mobileDev">{{tourn.type}}</td>
+                        <td class="mobileDev">{{tourn.startDate}}</td>
+                        <td class="mobileDev">{{tourn.endDate}}</td>
                         <td>{{tourn.winner_id === null ? "---" : tourn.winner_id}}</td>
-                        <td>{{tourn.organizer_id}}</td>
+                        <td class="mobileDev">{{tourn.organizer_id}}</td>
                         <td class="no-redirect">
                              <svg  @click="deleteTourn(tourn.id)" class="del no-redirect" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg>
                         </td>
@@ -39,7 +39,7 @@
             </table>
             <div className="lastRow">
                 <div className="lastRowPart">
-                    <h4>show entries:</h4>
+                    <h4 class="hide">show entries:</h4>
                     <div
                         @click="setEntry(10)"
                         :class="10 == getEntry ? 'selectedSlider' :'' "
@@ -201,5 +201,22 @@ tr:hover {
     display: flex;
     width: 22px;
 }
-
+@media screen and (max-width: 600px) {
+        .mobileDev{
+            display: none;
+        }
+        .hide{
+            display: none;
+        }
+        .lastRowPart div{
+            padding: 10px 10px;
+            margin: 0 5px
+        }
+        thead td{
+            font-size: 12px;
+        }
+        .dashboardDesc td{
+            font-size: 14px;
+        }
+    }
 </style>

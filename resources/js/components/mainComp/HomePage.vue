@@ -353,5 +353,9 @@ export default {
         .otherOptions label{
             display: none;
         }
+        .disabl_scrolling{
+            height: 100%;
+            overflow: hidden;
+        }
         }
 </style>

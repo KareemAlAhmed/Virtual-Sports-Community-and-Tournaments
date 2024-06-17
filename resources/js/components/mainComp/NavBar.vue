@@ -11,11 +11,12 @@
                     <router-link to="/" >
                         <button class="siteLink" id="ins">Home</button>
                     </router-link> 
-                    <div class="tourns">
-                        <router-link to="/tournaments/tops" x-on:click="tournOpen = !open" x-on:mouseover = "tournOpen = true">
+                    <div class="tourns" @mouseenter="tournOpt= !tournOpt" @mouseleave="tournOpt= !tournOpt">
+                        <router-link to="/tournaments/tops">
                             <button class="siteLink tourn">Tournaments</button>
                         </router-link> 
-                        <div x-show="tournOpen" class="popup tournPop" x-on:mouseover = "tournOpen = true" x-on:mouseover.away = "tournOpen = (e)=> e.target.className.split(' ')[1] == 'tourn' ? null : tournOpen = false">                                     
+
+                        <div class="popup tournPop" v-if="tournOpt">                                     
                             <router-link to="/tournaments/tops">Top Tournaments</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/tournaments/mytourns">My Tournament</router-link>                             
@@ -23,22 +24,23 @@
      
                         </div>
                     </div>
-                    <div class="leagues">
-                        <router-link to="/leagues/tops" x-on:click="leagOpen = !open" x-on:mouseover = "leagOpen = true">
+
+                    <div class="leagues" @mouseenter="leagueOpt= !leagueOpt" @mouseleave="leagueOpt= !leagueOpt">
+                        <router-link to="/leagues/tops">
                             <button class="siteLink league">Leagues</button>
                         </router-link> 
-                        <div x-show="leagOpen" class="popup leaguePop" x-on:mouseover = "leagOpen = true" x-on:mouseover.away = "leagOpen = (e)=> e.target.className.split(' ')[1] == 'league' ? null : leagOpen = false">                                     
+                        <div v-if="leagueOpt" class="popup leaguePop">                                     
                             <router-link to="/leagues/tops">Top Leagues</router-link>                             
                             <template v-if="!isGuest">
                                 <router-link to="/leagues/myleague">My Leagues</router-link>                             
                             </template>
                         </div>
                     </div>
-                    <div class="games">
-                        <router-link to="/games/tops" x-on:click="gameOpen = !open" x-on:mouseover = "gameOpen = true">
+                    <div class="games" @mouseenter="gameOpt= !gameOpt" @mouseleave="gameOpt= !gameOpt"> 
+                        <router-link to="/games/tops">
                             <button class="siteLink game">Games</button>
                         </router-link>
-                        <div x-show="gameOpen" class="popup gamePop" x-on:mouseover = "gameOpen = true" x-on:mouseover.away = "gameOpen = (e)=> e.target.className.split(' ')[1] == 'game' ? null : gameOpen = false">                                     
+                        <div v-if="gameOpt" class="popup gamePop">                                     
                             <router-link to="/games/tops">Top Games</router-link>  
                             <template v-if="!isGuest">                       
                                 <router-link to="/games/mygames">My Games</router-link>
@@ -168,6 +170,9 @@ export default {
             name:store.state.user.name,
             token:store.state.user.token,
             email:store.state.user.email,
+            tournOpt:false,
+            leagueOpt:false,
+            gameOpt:false,
             nameText:"hello",
             navMobille:false,
         }
@@ -177,6 +182,7 @@ export default {
             store.dispatch("logout")
         },displayMenu(){
             document.querySelector(".ham").classList.toggle('active')
+            document.querySelector("body").classList.toggle('disabl_scrolling')
             document.querySelector(".mainPage").classList.toggle("stopScroll")
             document.querySelector(".mobileMenu").classList.toggle("loadMenu")
 
@@ -351,7 +357,10 @@ export default {
             width: 500px;
             height: auto;
             }
-
+            .disabl_scrolling{
+                height: 100%;
+                overflow: hidden;
+            }
             .form-container {
             display: flex;
             justify-content: center;
@@ -457,6 +466,12 @@ export default {
             .tourns,.leagues,.games,.authen{
                 position: relative;
             }
+            .tourns a,.leagues a,.games a,.authen a{
+                height: 100%;
+                width: 100%;
+                display: block;
+            }
+           
             #opt{
                 width: 100%;
                 display: block;

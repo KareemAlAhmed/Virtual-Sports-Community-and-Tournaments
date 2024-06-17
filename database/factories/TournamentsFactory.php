@@ -16,10 +16,15 @@ class TournamentsFactory extends Factory
      */
     public function definition(): array
     {
+        $number=rand(1,64);
+        while($number % 4 != 0){
+            $number=rand(1,64);
+        }
         return [
+            
             'name' => fake()->name(),
             'description' => fake()->text(),
-            'maxPlaces' => fake()->numberBetween(1,100),
+            'maxPlaces' => $number,
             'remainingPlaces' => fake()->numberBetween(1,100),
             'rewards' => fake()->numberBetween(1,100),
             'requirements'=>fake()->text(),

@@ -74,4 +74,7 @@ class User extends Authenticatable
     function comments(){
         return $this->hasMany(Comment::class,"user_id");
     }
+    function scores(){
+        return $this->hasMany(enrollLeague::class,"user_id");
+    }
 }

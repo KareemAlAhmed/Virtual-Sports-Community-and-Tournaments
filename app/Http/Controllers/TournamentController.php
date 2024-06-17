@@ -7,6 +7,7 @@ use App\Models\Tournaments;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +26,12 @@ class TournamentController extends Controller
             'endDate'=>'required',
             'type'=>'required|min:5'
         ]);
-
+        if(($request['maxPlaces'] % 4) != 0 && $request['type'] == "knockout"){
+            return response()->json([
+                'status'=>403,
+                'errors'=>"Max Places Number Should Be Multiple Of 4"
+            ],402);
+        }
         if($val->fails()){
             return response()->json([
                 'status'=>402,
@@ -265,48 +271,99 @@ class TournamentController extends Controller
     function createGames($id){
         $tourn=Tournaments::find($id);
         $members=$tourn->members;
+
+
+        
         $nubs=array();
-        if($tourn){
-            if(count($members) > 1){
-                for($i=0;$i < count($members) - 1;$i++){
-                    for($j=$i +1 ;$j < count($members);$j++){
-                        $firstUser=User::find($members[$i]->user_id);
-                        $secondtUser=User::find($members[$j]->user_id);
-                        $data=[
-                           'firstUserName'=>$firstUser->name,
-                            'secondUserName'=>$secondtUser->name,
-                            'firstUserScore'=>'Null',
-                            'secondUserScore'=>'Null',
-                            'duration'=>$tourn->sportType==='football' ? '01:30:00' : '02:00:00',
-                            'timeLeft'=>'01:30:00',
-                            'startTime'=>'05:00:00',
-                            'date'=>$tourn->startDate,
-                            'sportType'=>$tourn->sportType,
-                            'gameType'=>$tourn->type,
-                            'status'=>'Not Started',
-                            'competetionType'=>'Tournament',
-                            'user1'=>$firstUser,
-                            'user2'=>$secondtUser,
-                            'tournaments'=>$tourn
-                        ];
-                        (new GameController)->createTournGame($data,$id);
-                        array_push($nubs,$data);
+        if($tourn){ 
+            $memNb=count($members);
+            if($tourn->type != "knockout"){
+                if($memNb > 1){
+                    for($i=0;$i < $memNb - 1;$i++){
+                        for($j=$i +1 ;$j < $memNb;$j++){
+                            $firstUser=User::find($members[$i]->user_id);
+                            $secondtUser=User::find($members[$j]->user_id);
+                            $data=[
+                               'firstUserName'=>$firstUser->name,
+                                'secondUserName'=>$secondtUser->name,
+                                'firstUserScore'=>'Null',
+                                'secondUserScore'=>'Null',
+                                'duration'=>$tourn->sportType==='football' ? '01:30:00' : '02:00:00',
+                                'timeLeft'=>'01:30:00',
+                                'startTime'=>'05:00:00',
+                                'date'=>$tourn->startDate,
+                                'sportType'=>$tourn->sportType,
+                                'gameType'=>$tourn->type,
+                                'status'=>'Not Started',
+                                'competetionType'=>'Tournament',
+                                'user1'=>$firstUser,
+                                'user2'=>$secondtUser,
+                                'tournaments'=>$tourn
+                            ];
+                            (new GameController)->createTournGame($data,$id);
+                            array_push($nubs,$data);
+                        }
                     }
+                    
+                    
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>"New Games Added to the Tournament.",
+                        'matches'=>$nubs
+                    ],200);
+    
+    
+                }else{
+                    return response()->json([
+                        'status'=>404,
+                        'errors'=>'The Tournament Should Be Full To Start.'
+                    ],404);
                 }
-                
-                
-                return response()->json([
-                    'status'=>200,
-                    'message'=>"New Games Added to the Tournament.",
-                    'matches'=>$nubs
-                ],200);
-
-
             }else{
-                return response()->json([
-                    'status'=>404,
-                    'errors'=>'Not enough player to make a game'
-                ],404);
+                if($memNb == $tourn->maxPlaces){
+
+                    $firstPhaseNbMatches=$memNb/2;
+                        $j=0;
+                        for($i=0;$i < $firstPhaseNbMatches;$i++){
+                            $firstUser=User::find($members[$j]->user_id);
+                            $secondtUser=User::find($members[$j+1]->user_id);
+                            $data=[
+                               'firstUserName'=>$firstUser->name,
+                                'secondUserName'=>$secondtUser->name,
+                                'firstUserScore'=>'Null',
+                                'secondUserScore'=>'Null',
+                                'duration'=>$tourn->sportType==='football' ? '01:30:00' : '02:00:00',
+                                'timeLeft'=>'01:30:00',
+                                'startTime'=>'05:00:00',
+                                'date'=>$tourn->startDate,
+                                'sportType'=>$tourn->sportType,
+                                'gameType'=>$tourn->type,
+                                'status'=>'Not Started',
+                                'competetionType'=>'Tournament',
+                                'user1'=>$firstUser,
+                                'user2'=>$secondtUser,
+                                'tournaments'=>$tourn
+                            ];
+                            (new GameController)->createTournGame($data,$id);
+                            $j+=2;
+                            array_push($nubs,$data);
+                        }
+                    
+                    
+                    
+                    return response()->json([
+                        'status'=>200,
+                        'message'=>"New Games Added to the Tournament.",
+                        'matches'=>$nubs
+                    ],200);
+    
+    
+                }else{
+                    return response()->json([
+                        'status'=>404,
+                        'errors'=>'The Tournament Should Be Full To Start.'
+                    ],404);
+                }
             }
         }else{
             return response()->json([
@@ -320,5 +377,88 @@ class TournamentController extends Controller
         return response()->json([
             'tourns'=>$tourns
         ]);
+    }
+    function simulate_games($id){
+        $tourn=Tournaments::find($id);
+        $gameC= new GameController();   
+        $ids=[];
+        if($tourn->type !="knockout"){
+            $games=$tourn->games;
+            
+            foreach($games as $game){
+                $gameC->simulate_game($game->id);
+            }
+    
+            $db_tourn = DB::table('enroll_tourns');
+            $max_scores = $db_tourn->max('scores');
+
+            $playerWithMaxScores = $db_tourn->where("scores",$max_scores)->get();
+            if(count($playerWithMaxScores) > 1){
+                $max_ownop=$playerWithMaxScores[0]->OwnScore_OppScore;
+                $userOfMx=$playerWithMaxScores[0]->user_id;
+                for($i=1;$i<count($playerWithMaxScores);$i++){
+                    if($playerWithMaxScores[$i]->OwnScore_OppScore > $max_ownop){
+                        $max_ownop=$playerWithMaxScores[$i]->OwnScore_OppScore;
+                        $userOfMx=$playerWithMaxScores[$i]->user_id;
+                    }
+                }
+            }
+            $tourn->winner_id=$userOfMx;
+            $tourn->update();
+            return response()->json([
+                "status"=>200,
+                "message"=>"The Games Simulated Successfuly"
+            ]);
+        }else{
+            
+            
+            do{
+                $ids=[];
+                $games=Games::where("tournaments_id",$tourn->id)->where("status","Not Started")->get();
+                $nbGames=count($games); //4
+                foreach($games as $game){
+                    $winnerId=$gameC->simulate_knockout_game($game->id);
+                    array_push($ids,$winnerId);
+                }
+                $nbGames = $nbGames/2;
+                if($nbGames>=1){
+                        $j=0;
+                        for($i=0;$i < $nbGames;$i++){
+                            $firstUser=User::find($ids[$j]);
+                            $secondtUser=User::find($ids[$j+1]);
+                            $data=[
+                               'firstUserName'=>$firstUser->name,
+                                'secondUserName'=>$secondtUser->name,
+                                'firstUserScore'=>'Null',
+                                'secondUserScore'=>'Null',
+                                'duration'=>$tourn->sportType==='football' ? '01:30:00' : '02:00:00',
+                                'timeLeft'=>'01:30:00',
+                                'startTime'=>'05:00:00',
+                                'date'=>$tourn->startDate,
+                                'sportType'=>$tourn->sportType,
+                                'gameType'=>$tourn->type,
+                                'status'=>'Not Started',
+                                'competetionType'=>'Tournament',
+                                'user1'=>$firstUser,
+                                'user2'=>$secondtUser,
+                                'tournaments'=>$tourn
+                            ];
+                            (new GameController)->createTournGame($data,$id);
+                            $j+=2;
+                        }
+                }
+            } while($nbGames>=1);
+            
+            
+        
+            $tourn->winner_id=$ids[0];
+
+
+            $tourn->update();
+            return response()->json([
+                "status"=>200,
+                "message"=>"The Games Simulated Successfuly"
+            ]);
+        }
     }
 }

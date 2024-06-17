@@ -37,4 +37,14 @@
         background-color: #191919;
         padding: 5px 0px;
     }
+    @media screen and (max-width: 600px) {
+   .mainContainer{
+    max-width: 100%;
+    flex-direction: column;
+   }
+   .wrapped{
+    width: 100%;
+   }
+   
+}
 </style>

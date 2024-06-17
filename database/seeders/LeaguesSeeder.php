@@ -13,6 +13,7 @@ class LeaguesSeeder extends Seeder
      */
     public function run(): void
     {
-        Leagues::factory(10)->create();
+        $types=["fortnite","dota","CS","LOL","PUBG","apex","football","Overwatch","fifa"];
+        Leagues::factory(10)->create(["sportType"=>array_rand($types,1)]);
     }
 }

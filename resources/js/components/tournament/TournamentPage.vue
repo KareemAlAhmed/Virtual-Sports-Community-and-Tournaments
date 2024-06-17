@@ -53,9 +53,10 @@
                         </ul>  
                     </li>
     
-                    <p style="margin-bottom: 1.5rem;padding: 0 20px;">{{tourn.description}}</p>  
+                    <p  class="description">{{tourn.description}}</p>  
     
                     <div class="actions">
+                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="simulateTourn(tourn.id);">Simulate Tourn</button>
                         <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="generateMatches(tourn.id);">Generate Matches</button>
                         <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="deleteTourn(tourn.id);">DELETE</button>
                         <template v-if="isGuest == false">
@@ -76,16 +77,16 @@
                                 <tr>
                                     <td class="tg-0lax">Id<br></td>
                                     <td class="tg-0lax">Username<br></td>
-                                    <td class="tg-0lax">Email<br></td>
+                                    <td class="tg-0lax mobVersion">Email<br></td>
                                     <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'">Actions<br></td>    
                                 </tr>
                             </thead>
                             <tbody>
                                 <template v-if="members.length != 0">
                                             <tr v-for="member in members" :key="member.id">
-                                                <td class="tg-0lax">{{member.id}}<br></td>
-                                                <td class="tg-0lax memName"><router-link :to="/userProfile/+member.id ">{{member.name}}</router-link><br></td>
-                                                <td class="tg-0lax">{{member.email}}<br></td>
+                                                <td class="tg-0lax" :class="tourn.winner_id != null && member.id == tourn.winner_id ? 'winner' : null">{{member.id}}<br></td>
+                                                <td class="tg-0lax memName" :class="tourn.winner_id != null && member.id == tourn.winner_id ? 'winner' : null"><router-link :to="/userProfile/+member.id ">{{member.name}}</router-link><br></td>
+                                                <td class="tg-0lax mobVersion" :class="tourn.winner_id != null && member.id == tourn.winner_id ? 'winner' : null">{{member.email}}<br></td>
                                                 
                                                 <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
                                                 <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'">
@@ -131,7 +132,7 @@
                 </template>
 
             </div>
-            <SideContainer />
+            <SideContainer class="hide"/>
         
             
         </div>
@@ -189,6 +190,8 @@
                 store.dispatch("kickUserFromTourn",{userId,tournId})
             },goSign(){
                 router.push("/Login")
+            },simulateTourn(id){
+                store.dispatch("simulateTourn",id)
             }
         },created() {
             
@@ -391,7 +394,9 @@ h2 svg:hover{
             display: flex;
             gap: 5px;
         }
-        
+        .winner{
+    color: yellow;
+}
 .memberNames,.gamesHead{
     display: flex;
     margin-top: 9px;
@@ -478,5 +483,37 @@ li strong:hover{
     align-items: baseline;
     justify-content: center;
     gap: 15px;
+}
+.description{
+    margin-bottom: 1.5rem;
+    padding: 0px 20px;
+    width: 100%;
+}
+@media screen and (max-width: 600px) {
+    .hide{
+        display: none;
+    }
+    .tournsInfo{
+        width: 100%;
+    }
+    .tournsInfo h1,.memberNames h1{
+        font-size: 27px;
+    }
+    .noTourn h3{
+        font-size: 25px;
+    }
+    .post ul{
+        font-size: 17px;
+    }
+    .actions,.userNames,.tournGames{
+        width: 100%;
+    }
+    .sbt{
+        font-size: 14px;
+    }
+    .mobVersion{
+        display: none;
+    }
+
 }
   </style>

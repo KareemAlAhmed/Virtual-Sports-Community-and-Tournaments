@@ -47,7 +47,8 @@ const store=createStore({
             members:{},
             games:[],
             loading:false,
-            isJoined:false
+            isJoined:false,
+            winnerId:null
         },
         currentTourn:{
             id:sessionStorage.getItem("currentTourn"),
@@ -55,7 +56,8 @@ const store=createStore({
             members:{},
             games:[],
             loading:false,
-            isJoined:false
+            isJoined:false,
+            winnerId:null
         },
         notification:{
             show:false,
@@ -292,6 +294,7 @@ const store=createStore({
             .catch(error=>{
                  state.notification.message=error.response.data.errors
                  this.dispatch("notifyError")
+                 console.log(error)
               
                 
             })
@@ -327,7 +330,13 @@ const store=createStore({
                 })
                 .catch(error=>{
                     console.log(error)
+                    if(error.response.data.status == 403){
+                        state.notification.message=error.response.data.errors
+                
+                        this.dispatch("notifyError")
+                    }else{
                     state.errorMessages=JSON.parse(error.response.data.errors);
+                    }
                 })
 
         },deleteLeague({commit,state},leagueId){
@@ -512,8 +521,7 @@ const store=createStore({
             .catch(err1=>console.log(err1))
         },createPost({commit,dispatch,state},info){
             axiosClient.post("post/user/"+info.id,info)
-            .then(res=>{      
-                    console.log(res)                                
+            .then(res=>{                                     
                     state.notification.message=res.data.message
                     this.dispatch("notifySuccess") 
                     this.dispatch("getPosts")         
@@ -527,6 +535,26 @@ const store=createStore({
             axiosClient.put("post/"+info.postId+"/user/"+info.userId+"/like",info)
             .then(res=>{      
                                
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },simulateLeague({commit,dispatch,state},leagueId){
+            axiosClient.post("league/"+leagueId+"/simulate")
+            .then(res=>{      
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+                this.dispatch("getCurrentLeague",leagueId)   
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },simulateTourn({commit,dispatch,state},id){
+            axiosClient.post("tournament/"+id+"/simulate")
+            .then(res=>{      
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+                this.dispatch("getCurrentTourn",id)   
             })
             .catch(err=>{
                 console.log(err)

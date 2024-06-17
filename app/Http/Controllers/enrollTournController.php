@@ -13,7 +13,6 @@ class enrollTournController extends Controller
     function enroll($userId,$tournId){
         $user=User::find($userId);
         $tourn=Tournaments::find($tournId);
-        // dd(auth()->guard('web'));
 
         if(enrollTourn::where("user_id",$userId)->where("tournament_id",$tournId)->exists()){
             return response()->json([

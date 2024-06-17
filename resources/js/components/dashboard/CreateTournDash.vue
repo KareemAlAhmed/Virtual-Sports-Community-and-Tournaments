@@ -30,23 +30,24 @@
            <div>
                <span>Sport Type:</span>
                <select name="sportType" required v-model="tourn.sportType">
-                   <option value="fortnite">Fortnite</option>
-                   <option value="dota">Dota</option>
-                   <option value="CS">Counter Strike</option>
-                   <option value="LOL">tourn Of Legends</option>
-                   <option value="PUBG">PUBG</option>
-                   <option value="apex">Apex Legend</option>
-                   <option value="football">Football</option>
-                   <option value="Overwatch">Overwatch</option>
-                   <option value="fifa">FIFA 24</option>
+                    <option v-if="tourn.type != 'knockout'" value="fortnite">Fortnite</option>
+                    <option value="dota">Dota</option>
+                    <option value="CS">Counter Strike</option>
+                    <option value="LOL">League Of Legends</option>
+                    <option  v-if="tourn.type != 'knockout'" value="PUBG">PUBG</option>
+                    <option v-if="tourn.type != 'knockout'" value="apex">Apex Legend</option>
+                    <option value="football">Football</option>
+                    <option value="Overwatch">Overwatch</option>
+                    <option value="fifa">FIFA 24</option>
 
                </select>
            </div>
            <div>
                <span>Type:</span>
                <select name="type" v-model="tourn.type"> 
-                   <option value="Friendly">Friendly</option>
-                   <option value="Ranked">Ranked</option>
+                    <option value="Friendly">Friendly</option>
+                    <option value="bypoints">By Points</option>
+                    <option value="knockout">Knock out</option>
                </select>
            </div>
            <div>
@@ -201,5 +202,19 @@ select{
     margin-bottom: 25px;
     flex-direction: column;
     align-items: center;
+}
+@media screen and (max-width: 600px) {
+   .form-container-tournCr form{
+    width: 100%;
+   }
+   .form-container-tournCr h1{
+    font-size: 32px;
+   }
+   .form-container-tournCr div{
+    flex-direction: column;
+   }
+   .form-container-tournCr input,.form-container-tournCr select{
+    width: 100%;
+   }
 }
 </style>

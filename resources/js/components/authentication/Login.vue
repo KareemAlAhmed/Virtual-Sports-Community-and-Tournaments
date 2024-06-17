@@ -137,7 +137,10 @@ export default {
                 .flex-container{
                     margin-left: 20px;
                     margin-right: 20px;
-                    height: 100vh;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    width: auto;
+                    align-items: baseline;
                 }
                 .flex-container h1{
                     font-size: 35px;

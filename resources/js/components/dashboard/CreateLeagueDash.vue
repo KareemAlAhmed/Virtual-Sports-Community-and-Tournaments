@@ -197,4 +197,18 @@ select{
     flex-direction: column;
     align-items: center;
 }
+@media screen and (max-width: 600px) {
+   .form-container-tournCr form{
+    width: 100%;
+   }
+   .form-container-tournCr h1{
+    font-size: 32px;
+   }
+   .form-container-tournCr div{
+    flex-direction: column;
+   }
+   .form-container-tournCr input,.form-container-tournCr select{
+    width: 100%;
+   }
+}
   </style>

@@ -6,6 +6,7 @@ use App\Models\Games;
 use App\Models\Leagues;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -311,6 +312,27 @@ class LeagueController extends Controller
 
         }
         
+    }
+    function simulate_games($id){
+
+        $league=Leagues::find($id);
+        $games=$league->games;
+        $gameC= new GameController();   
+        $ids=[];
+        foreach($games as $game){
+            $gameC->simulate_game($game->id);
+        }
+
+        $db_league = DB::table('enroll_leagues');
+        $max_scores = $db_league->max('scores');
+        $max_ownop = $db_league->max('OwnScore_OppScore');
+        $playerWithMaxScores = $db_league->where("scores",$max_scores)->where("OwnScore_OppScore",$max_ownop)->get();
+        $league->winner_id=$playerWithMaxScores[0]->user_id;
+        $league->update();
+        return response()->json([
+            "status"=>200,
+            "message"=>"The Games Simulated Successfuly"
+        ]);
     }
     function all_leagues(){
         $leagues=Leagues::all();

@@ -51,6 +51,7 @@
 import moment from 'moment';
 import store from '../../store';
 import axios from 'axios';
+import axiosClient from '../../axios';
 export default {
     name:"Post",
     props: ['post','user'],
@@ -134,11 +135,26 @@ export default {
             return this.postLikes;
         }
     },created(){
-        this.likesSaved=true;
-        this.postLikes=this.post.likes;
-        this.userLiked(this.post.id,this.getUser.id)
+        // this.likesSaved=true;
+        // this.postLikes=this.post.likes;
+        // this.userLiked(this.post.id,this.getUser.id)
     },updated(){
-        this.userLiked(this.post.id,this.getUser.id)
+        // this.userLiked(this.post.id,this.getUser.id)
+    },unmounted(){
+        if(this.post.id == 1){
+            console.log("hellp")
+            let situation='Liked'
+            let postid=1;
+            let id=51;
+
+            axiosClient.put("post/1/user/51/like",situation)
+            .then(res=>{      
+                               
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
     }
 }
 </script>

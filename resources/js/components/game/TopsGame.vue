@@ -176,5 +176,8 @@
         font-weight: 700;
         
     }
+    .game ul{
+        font-size: 14px;
+    }
 }
       </style>

@@ -51,5 +51,12 @@ import { computed } from 'vue'
     .selected{
         background-color: #1f1f1f;
     }
+    @media screen and (max-width: 600px) {
+        .Opts{
+            width: 100%;
+        }
+        
+   
+    }
 
 </style>

@@ -19,10 +19,11 @@
 
             </div>
             <div class="secondUser">
-                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
+                
                 <a href="../user/{{$user2['id']}}">
                     <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user2.image_url">
                 </a>
+                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
             </div>
             </div>
             <ul>
@@ -55,9 +56,10 @@
 
             </div>
             <div class="secondUser">
-                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
+                
                 <a href="../user/{{$user2['id']}}">
                 <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user2.image_url"></a>
+                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
             </div>
             </div>
             <ul>
@@ -128,14 +130,15 @@
     .firstUser,.secondUser{
         display: flex;
         align-items: center;
+        flex-direction: column;
         gap: 10px;
         width: 245px;
     }
     .secondUser {
-        justify-content: right;
+        justify-content: center;
     }
     .secondUser .playerName{
-        text-align: right;
+        text-align: center;
     }
     .timeAndResult{
         display: flex;
@@ -203,6 +206,9 @@
         .gameInfo{
             gap: 8px;
         }
+        .game ul{
+        font-size: 14px;
+    }
     }
   </style>
   
