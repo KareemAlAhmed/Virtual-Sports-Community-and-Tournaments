@@ -18,27 +18,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(1)->create(['id'=>1,'image_url'=>'images.jpeg']);
-        // User::factory(1)->create(['id'=>51,"name"=>"kareem",'image_url'=>'images.jpeg',"password"=>"$2y$10$5./GxZT0iTzuZVagUFAlOe8V.WUIi8zSCh4fWvLRRrZ.IHa7uCUDm"]);
-        // User::factory(1)->create(['id'=>2,'image_url'=>'images.jpeg']);
-        // User::factory(1)->create(['id'=>3,'image_url'=>'images.jpeg']);
-        // User::factory(1)->create(['id'=>4,'image_url'=>'images.jpeg']);
-        // Posts::factory(5)->create(['user_id'=>1,'image_url'=>'images.jpeg']);
-        // Posts::factory(5)->create(['user_id'=>2,'image_url'=>'images.jpeg']);
-        // Posts::factory(5)->create(['user_id'=>3,'image_url'=>'images.jpeg']);
-        // Posts::factory(5)->create(['user_id'=>4,'image_url'=>'images.jpeg']);
+        User::factory(1)->create(['id'=>1,"name"=>"kareem","email"=>"karimahmad@gmail.com",'image_url'=>'images.jpeg',"password"=>"$2y$10$5./GxZT0iTzuZVagUFAlOe8V.WUIi8zSCh4fWvLRRrZ.IHa7uCUDm"]);
+        User::factory(1)->create(['id'=>5,'image_url'=>'images.jpeg']);
+        User::factory(1)->create(['id'=>2,'image_url'=>'images.jpeg']);
+        User::factory(1)->create(['id'=>3,'image_url'=>'images.jpeg']);
+        User::factory(1)->create(['id'=>4,'image_url'=>'images.jpeg']);
+        Posts::factory(5)->create(['user_id'=>1,'image_url'=>'images.jpeg']);
+        Posts::factory(5)->create(['user_id'=>2,'image_url'=>'images.jpeg']);
+        Posts::factory(5)->create(['user_id'=>3,'image_url'=>'images.jpeg']);
+        Posts::factory(5)->create(['user_id'=>4,'image_url'=>'images.jpeg']);
+        $this->call(LeaguesSeeder::class);
+        $this->call(TournamentsSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(UserSeeder::class);
         $users=User::all();
-        // for($i = 0; $i < 5;$i++){
-        //    $tourn=new enrollLeagueController();
-        //    $tourn->enroll($users[$i]['id'],1);
-        // }
+        for($i = 0; $i < 10;$i++){
+           $tourn=new enrollLeagueController();
+           $tourn->enroll($users[$i]['id'],1);
+        }
         for($i = 0; $i < 16;$i++){
            $tourn=new enrollTournController();
-           $tourn->enroll($users[$i]['id'],12);
+           $tourn->enroll($users[$i]['id'],1);
         }
         
-        // $this->call(LeaguesSeeder::class);
-        // $this->call(TournamentsSeeder::class);
+        
     //    User::factory(1)->create(['id'=>1]);
     //    User::factory(1)->create(['id'=>2]);
     //    User::factory(1)->create(['id'=>3]);

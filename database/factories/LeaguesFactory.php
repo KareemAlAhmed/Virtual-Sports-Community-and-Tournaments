@@ -16,17 +16,19 @@ class LeaguesFactory extends Factory
      */
     public function definition(): array
     {
+        $types=["fortnite","dota","CS","LOL","PUBG","apex","football","Overwatch","fifa"];
+
         return [
             'name' => fake()->name(),
             'description' => fake()->text(),
-            'maxPlaces' => fake()->numberBetween(1,100),
-            'remainingPlaces' => fake()->numberBetween(1,100),
+            'maxPlaces' => 10,
+            'remainingPlaces' => 10,
             'rewards' => fake()->numberBetween(1,100),
             'requirements'=>fake()->text(),
-            'sportType'=>fake()->word(),
+            'sportType'=>$types[array_rand($types,1)],
             'startDate'=>fake()->date(),
             'endDate'=>fake()->date(),
-            'organizer_id'=>'51',
+            'organizer_id'=>'1',
         ];
     }
 }

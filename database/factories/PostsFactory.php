@@ -22,8 +22,7 @@ class PostsFactory extends Factory
             'video_url'=>fake()->word(),
             'content'=>fake()->text(),
             'user_id'=>User::factory(),
-            'liked_users'=>json_encode([]),
-            'shared_users'=>json_encode([]),
+
         ];
     }
 }

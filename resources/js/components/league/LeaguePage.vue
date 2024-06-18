@@ -58,9 +58,9 @@
                         </li><!-- #post-## -->
                         <p style="margin-bottom: 1.5rem;padding: 0 20px;line-height: 1.5rem;">{{league.description}}</p>  
                         <div class="actions">
-                                <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="simulateLeague(league.id);">Simulate League</button>
-                                <button v-if="cuurentUserId == league.owner.id" name="submit" class="sbt" @click="generateMatches(league.id);">Generate Matches</button>
-                                <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='0'" name="submit" class="sbt" @click="deleteLeague(league.id);">DELETE</button>
+                                <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="simulateLeague(league.id);">Simulate League</button>
+                                <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="generateMatches(league.id);">Generate Matches</button>
+                                <button v-if="cuurentUserId == league.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="deleteLeague(league.id);">DELETE</button>
                     
                                 <!-- <form method="get" action="../api/tournament/{{$tourn['id']}}/edit" style="display: flex;justify-content: flex-end;">
                                     @csrf

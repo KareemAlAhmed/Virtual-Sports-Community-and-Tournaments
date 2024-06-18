@@ -77,4 +77,7 @@ class User extends Authenticatable
     function scores(){
         return $this->hasMany(enrollLeague::class,"user_id");
     }
+    function likes(){
+        return $this->hasMany(Like::class,"user_id");
+    }
 }

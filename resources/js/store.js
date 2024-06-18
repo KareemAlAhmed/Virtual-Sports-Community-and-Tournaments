@@ -94,8 +94,12 @@ const store=createStore({
             games:false,
             createTourn:false,
             createLeague:false,
-        },userProfileData:{}
-        
+        },userProfileData:{},
+        commentStatus:false
+        ,currentPost:{
+            comments:{},
+            loading:false,
+        }
     },
     getters:{},
     actions:{
@@ -531,8 +535,16 @@ const store=createStore({
                 this.dispatch("notifyError")
                 console.log(err)
             })
-        },likeOrUnlikePost({commit,dispatch,state},info){
-            axiosClient.put("post/"+info.postId+"/user/"+info.userId+"/like",info)
+        },likeAPost({commit,dispatch,state},info){
+            axiosClient.post("user/"+info.userId+"/like/post/"+info.postId,info)
+            .then(res=>{      
+                               
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },UnlikeAPost({commit,dispatch,state},info){
+            axiosClient.delete("user/"+info.userId+"/unlike/post/"+info.postId,info)
             .then(res=>{      
                                
             })
@@ -555,6 +567,26 @@ const store=createStore({
                 state.notification.message=res.data.message
                 this.dispatch("notifySuccess")   
                 this.dispatch("getCurrentTourn",id)   
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },placeComment({commit,dispatch,state},info){
+            axiosClient.post("user/"+info.userId+"/commentOn/post/"+info.postId,info)
+            .then(res=>{      
+                this.commit("setCommentStatus",true);
+            })
+            .catch(err=>{
+                state.notification.message=JSON.parse(err.response.data.errors)["text"]
+                this.dispatch("notifyError")
+                this.commit("setCommentStatus",false);
+    
+            })
+        },getCurrentPostComments({commit,dispatch,state},postId){
+            axios.get("api/post/"+postId+"/comments")
+            .then(res=>{
+                this.commit("setCurrentPost",res.data)
+                console.log(res.data)
             })
             .catch(err=>{
                 console.log(err)
@@ -662,6 +694,11 @@ const store=createStore({
             state.selectedTab=tab;
         },setUserProfileData(state,info){
             state.userProfileData=info;
+        },setCommentStatus(state,info){
+            state.commentStatus=info
+        },setCurrentPost(state,info){
+            state.currentPost.comments=info.comments;
+            state.currentPost.loading=true;
         }
     },
     modules:{}

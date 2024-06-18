@@ -16,6 +16,6 @@ class TournamentsSeeder extends Seeder
     public function run(): void
     {
         $types=["fortnite","dota","CS","LOL","PUBG","apex","football","Overwatch","fifa"];
-        Tournaments::factory(10)->create(["sportType"=>array_rand($types,1)]);
+        Tournaments::factory(10)->create(["sportType"=>$types[array_rand($types,1)]]);
     }
 }

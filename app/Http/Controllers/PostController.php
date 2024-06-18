@@ -165,10 +165,10 @@ class PostController extends Controller
                 'user'=>$post->user],200)]);
 
         }else{
-            return redirect('/')->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The wanted Post doesnt exist',
-            ],404)]);
+            ],404);
         }
     }
 
@@ -212,5 +212,19 @@ class PostController extends Controller
         return response()->json([
             "posts"=>$posts
         ],200);
+    }
+    function getComments($id){
+        $post=Posts::find($id);
+        if(!isset($post)){
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The wanted Post doesnt exist',
+            ],404);
+        }
+        return response()->json([
+            'status'=>200,
+            'comments'=>$post->comments,
+        ],200);
+               
     }
 }

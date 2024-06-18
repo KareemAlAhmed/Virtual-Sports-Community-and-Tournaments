@@ -56,9 +56,9 @@
                     <p  class="description">{{tourn.description}}</p>  
     
                     <div class="actions">
-                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="simulateTourn(tourn.id);">Simulate Tourn</button>
-                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="generateMatches(tourn.id);">Generate Matches</button>
-                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'" name="submit" class="sbt" @click="deleteTourn(tourn.id);">DELETE</button>
+                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="simulateTourn(tourn.id);">Simulate Tourn</button>
+                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="generateMatches(tourn.id);">Generate Matches</button>
+                        <button v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='1'" name="submit" class="sbt" @click="deleteTourn(tourn.id);">DELETE</button>
                         <template v-if="isGuest == false">
                             <button v-if="!isjoined" name="submit" class="sbt" @click="join(cuurentUserId,tourn.id);">JOIN</button>   
                             <button v-else name="submit"  class="sbt disabledbtn" disabled>JOINED</button>
@@ -78,7 +78,7 @@
                                     <td class="tg-0lax">Id<br></td>
                                     <td class="tg-0lax">Username<br></td>
                                     <td class="tg-0lax mobVersion">Email<br></td>
-                                    <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'">Actions<br></td>    
+                                    <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='1'">Actions<br></td>    
                                 </tr>
                             </thead>
                             <tbody>
@@ -89,7 +89,7 @@
                                                 <td class="tg-0lax mobVersion" :class="tourn.winner_id != null && member.id == tourn.winner_id ? 'winner' : null">{{member.email}}<br></td>
                                                 
                                                 <!-- @if(auth()->user()?->can('admin') || $tourn['organizer_id'] == auth()->user()?->id) -->
-                                                <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='51'">
+                                                <td class="tg-0lax" v-if="cuurentUserId == tourn.owner.id || cuurentUserId =='1'">
                                                 <!-- <form method="post" action="../api/kick/user/{{$member['id']}}/tournament/{{$tourn['id']}}"> -->
                                                     <!-- @csrf   
                                                     @method('DELETE') -->

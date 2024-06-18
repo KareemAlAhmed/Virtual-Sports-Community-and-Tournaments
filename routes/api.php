@@ -4,13 +4,16 @@ use App\Http\Controllers\acheiveController;
 use App\Http\Controllers\acheivement;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authData;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\enrollLeagueController;
 use App\Http\Controllers\enrollTournController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\getData;
 use App\Http\Controllers\LeagueController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TournamentController;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +79,14 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 
 
     
+    Route::post('user/{userId}/commentOn/post/{postId}',[CommentController::class, 'create']);// to enroll a user in a specific tournament 
+    Route::delete('delete/comment/{commentID}',[CommentController::class, 'delete']);// to enroll a user in a specific tournament 
+    Route::get('get/comment/{commentId}',[CommentController::class, 'show']);// to enroll a user in a specific tournament 
+    Route::put('update/comment/{commentId}',[CommentController::class, 'update']);// to enroll a user in a specific tournament 
+    
+    Route::post('user/{userId}/like/post/{postId}',[LikeController::class, 'create']);// to enroll a user in a specific tournament 
+    Route::delete('user/{userId}/unlike/post/{postId}',[LikeController::class, 'delete']);// to enroll a user in a specific tournament 
+    
     Route::post('enroll/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'enroll']);// to enroll a user in a specific tournament 
     Route::delete('kick/user/{userId}/tournament/{tournId}',[enrollTournController::class, 'kick']);// to kick a user from a specific tournament
     
@@ -97,6 +108,10 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('post/{postId}/comments',[PostController::class, 'getComments']);// to enroll a user in a specific tournament 
+
+
 
 Route::get('{id}/games',[GameController::class,'user_games']); // to show a league
 Route::get('game/all',[GameController::class,'all']); // to get all games
