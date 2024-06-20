@@ -1,12 +1,11 @@
 <!-- ModalComponent.vue -->
 <template>
-    <div class="modal" >
+    <div class="modal" @click="test">
       <div class="modal-content">
         <button @click="$emit('close')">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
         </button>
         <!-- Modal content -->
-         {{ console.log(getComments) }}
          <template v-if="getComments.length ==0">
             <p class="noComm">There is no comments yet.</p>
          </template>
@@ -29,6 +28,13 @@ import store from '../../store'
       getComments(){
         return store.state.currentPost.comments;
       }
+    },methods:{
+      test(e){
+        if(e.target.classList.contains("modal")){
+            
+          document.querySelector(".modal-content > button").click()
+        }
+      }
     }
   }
   </script>
@@ -45,18 +51,19 @@ import store from '../../store'
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 9;
   }
   
   .modal-content {
-    background-color: #191919;
-    padding: 20px;
+    background-color: var(--post-color);;
+    /* padding: 20px; */
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     width: 50%;
     height: 90%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    /* gap: 15px; */
     overflow-y: scroll;
   }
   .modal button{
@@ -71,7 +78,7 @@ import store from '../../store'
     width: 50px;
     height: 50px;
     fill: white;
-    background-color: #191919;
+    background-color: var(--post-color);;
     border-radius: 100px;
   }
   .noComm{
@@ -80,5 +87,21 @@ import store from '../../store'
     font-weight: 700;
     text-align: center;
   }
+  @media screen and (max-width: 600px) {
+  .modal {
+    align-items: flex-start;
+  }
+    .modal-content{
+      width: calc(100% - 20px);
+      margin-top: 60px;
+    }
+    .modal button{
+      right: 10px;
+      top: 5px;
+    }
+    .noComm{
+      margin-top: 20px;
+    }
+}
   </style>
   

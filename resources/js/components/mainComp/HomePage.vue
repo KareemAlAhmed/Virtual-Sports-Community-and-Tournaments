@@ -2,7 +2,7 @@
      <div class="mainContainer" style="overflow-x: hidden;">
             <div class="centerContainer">
       
-                <div class="post postCont">
+                <div class="post ">
                     <div class="imageAndOtherOpt">
                         <div v-if="!isGuest" class="userImage">
                             <router-link :to="/userProfile/+getUser.id "><img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+getUser.image_url" alt=""></router-link>                         
@@ -16,7 +16,8 @@
                                 
                                 <li> 
                                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M448 80c8.8 0 16 7.2 16 16V415.8l-5-6.5-136-176c-4.5-5.9-11.6-9.3-19-9.3s-14.4 3.4-19 9.3L202 340.7l-30.5-42.7C167 291.7 159.8 288 152 288s-15 3.7-19.5 10.1l-80 112L48 416.3l0-.3V96c0-8.8 7.2-16 16-16H448zM64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z"/></svg>
-                                    <label for="image_url">Photos</label>                              </li>
+                                    <label for="image_url">Photos</label>                              
+                                </li>
                                 <li>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c7.6-4.2 16.8-4.1 24.3 .5l144 88c7.1 4.4 11.5 12.1 11.5 20.5s-4.4 16.1-11.5 20.5l-144 88c-7.4 4.5-16.7 4.7-24.3 .5s-12.3-12.2-12.3-20.9V168c0-8.7 4.7-16.7 12.3-20.9z"/></svg>    
                                     <label>Audios</label>
@@ -34,19 +35,23 @@
                     </div>
     
                     <div class="textEntering">
-                        
-                        <form action="api/post/user/{{auth()->check() ? auth()->user()->id : 0}}" method="POST" id="posting" enctype="multipart/form-data" >
-                            <!-- @csrf -->
-                            <input type="file" name="image_url"  id="image_url" style="display: none;"/>
+                            <input type="file" name="image_url" @change="changePhoto"  id="image_url" style="display: none;"/>
                             <input type="file" name="video_url"  id="video_url" style="display: none;"/>
                             <!-- @php
                             $user= auth()->check() ? auth()->user()->name : 'Client';
                             @endphp -->
-                            <textarea name="content" v-model="postContent" :placeholder="'What is on your mind ,'+fullName+ '?'"></textarea>
-                        </form>
+                            <textarea name="content" v-model="post.content" :placeholder="'What is on your mind ,'+fullName+ '?'"></textarea>
                     </div>
 
-                    <div class="submiting">
+                    <div class="submiting" >
+                        <div class="selectedImg" v-if="post.image_url != null">
+                            <div class="wrapped">
+                                <p>{{ post.image_url.name.replace(" ","") }}</p>
+                                <div class="cancelImg" @click="post.image_url=null">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
+                                </div>
+                            </div>
+                        </div>
                        <div v-if="get_token" >
                             <button @click="onSubmit">Submit</button>          
                         </div>
@@ -128,7 +133,10 @@ export default {
         image_url: 'post-51-300x188.jpg',
         created_at:"2024-02-26 11:37:43"
       },
-      postContent:""
+      post:{
+        content:"",
+        image_url:null
+      }
       
     };
   },computed:{
@@ -151,14 +159,23 @@ export default {
             return store.state.user.token ? store.state.user.data : null;
         }
   },methods:{
-        onSubmit(){
-            let info={
-                id:this.getUser.id,
-                content:this.postContent
-            }
+        onSubmit(e){
+                e.preventDefault();
 
-            store.dispatch("createPost",info);
-            this.postContent=""        }
+                const formData = new FormData();
+                    formData.append("image_url",this.post.image_url);
+                    formData.append("content",this.post.content);
+                    // formData.append("video_url",this.post.video_url);
+                    formData.append("id",this.getUser.id);
+
+                store.state.errorMessages={}
+                
+                store.dispatch("createPost",formData)
+                this.post.content="" 
+                this.post.image_url=null 
+            },changePhoto(e){
+                this.post.image_url=e.target.files[0];
+            }
   },created(){
         store.dispatch("getPosts")
     } 
@@ -176,15 +193,14 @@ export default {
     }
     
 
-    .postCont{
-        background-color: var(--post-color);
-    }
+
     .centerContainer .post {
         padding: 30px 25px 25px;
         display: flex;
         flex-direction: column;
         gap: 25px;
         width: 100%;
+        background-color: var(--post-color);
     }
     .imageAndOtherOpt{
         display: flex;
@@ -245,13 +261,14 @@ export default {
     .submiting {
         display: flex;
         justify-content: flex-end;
+        position: relative;
     }
     .submiting button{
         cursor: pointer;
         border: none;
         
-        box-shadow: 2px 2px 7px #121212;
-        background: #121212;
+        box-shadow: 2px 2px 7px var(--background-color);
+        background: var(--background-color);
         color: white;
         width: 90px;
         transition: all 1s;
@@ -278,8 +295,8 @@ export default {
         cursor: pointer;
         border: none;
         
-        box-shadow: 2px 2px 7px #121212;
-        background: #121212;
+        box-shadow: 2px 2px 7px var(--background-color);
+        background: var(--background-color);
         color: white;
         width: calc( 100% / 3 );
         transition: all 0.3s;
@@ -292,7 +309,7 @@ export default {
         gap: 5px;
     }
     .reactions button:hover{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     .reactions svg{
         fill: white;
@@ -329,6 +346,28 @@ export default {
             background-color: red;
             padding: 10px 25px 10px 25px;
         }
+        .selectedImg{
+            left: 0;
+            position: absolute;
+            color: white;
+            font-weight: 600;
+            padding: 10px 15px;
+            border-radius: 100px;
+            background-color: var(--back-color);
+        }
+        .cancelImg{
+            position: absolute;
+            right: -15px;
+            top: -10px;
+            width: 25px;
+            height: 25px;
+        }
+        .cancelImg svg{
+            width: 100%;
+            height: 100%;
+            fill: white;
+            cursor: pointer;
+        }
     label{
         cursor: pointer;
     }
@@ -341,6 +380,9 @@ export default {
         }
         .centerContainer{
             width: 100%;
+        }
+        .centerContainer .post {
+            gap: 10px;
         }
         .userImage img{
             width: 50px;

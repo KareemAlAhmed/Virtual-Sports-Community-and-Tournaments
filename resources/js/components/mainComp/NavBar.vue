@@ -330,7 +330,7 @@ export default {
                 cursor: pointer;
             }
             button.siteLink:hover{
-                background-color: #1f1f1f;
+                background-color: var(--hover-color);
             }
             #mainNavigation {
             transition : transform 200ms linear;
@@ -378,7 +378,7 @@ export default {
             justify-content: center;
             flex-direction: column;
 
-            background: #1f1f1f;
+            background: var(--hover-color);
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
             }
 
@@ -405,8 +405,8 @@ export default {
                 cursor: pointer;
             border: none !important;
             border-radius: 8px;
-            box-shadow: 2px 2px 7px #121212;
-            background: #121212 !important;
+            box-shadow: 2px 2px 7px var(--background-color);
+            background: var(--background-color) !important;
             color: rgba(255, 255, 255, 0.8) !important;
             width: 90px !important;
             transition: all 1s;
@@ -455,7 +455,7 @@ export default {
                 padding: 10px;
             }
             .popup a:hover{
-                background-color: #1f1f1f;
+                background-color: var(--hover-color);
             }
             .user svg{
                 width: 15px;
@@ -481,7 +481,7 @@ export default {
                 display: none;
             }
             .mobileMenu{
-                background-color: #121212;
+                background-color: var(--background-color);;
                 position: absolute;
                 width: 0;
                 right: 0;
@@ -674,7 +674,7 @@ export default {
                 height: 0;
                 transition: all 0.3s ease;
                 overflow: hidden;
-                background-color: #191919;
+                background-color: var(--post-color);;
             }
             .mobilePopUp button{
                 height: fit-content;
@@ -686,7 +686,7 @@ export default {
                 height: 170px;
             }
             .activeMenuOpt{
-                background-color: #191919;
+                background-color: var(--post-color);;
             }
             .auth svg{
                 fill: white;

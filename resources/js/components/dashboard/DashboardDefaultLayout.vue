@@ -34,7 +34,7 @@
 <style scoped>
     .wrapped{
         width: calc(85% - 5px);
-        background-color: #191919;
+        background-color: var(--post-color);;
         padding: 5px 0px;
     }
     @media screen and (max-width: 600px) {

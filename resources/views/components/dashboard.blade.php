@@ -14,11 +14,11 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        background-color: #191919;
+        background-color: var(--post-color);;
     }
     .sideContainer{
         width: 75%;
-        background-color: #191919;
+        background-color: var(--post-color);;
     }
     .dashBoardOptions{
         list-style: none;
@@ -34,10 +34,10 @@
         cursor: pointer;
     }
     .dashBoardOptions li:hover{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     .selected{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     .dashBoardOptions a{
         width: 100%;

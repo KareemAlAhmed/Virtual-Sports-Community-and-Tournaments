@@ -227,7 +227,7 @@
     /* margin-top: 5px; */
     padding: 20px;
     border-radius: 12px;
-    background: #1f1f1f;
+    background: var(--hover-color);
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
 }
 .form-container-tournCr span{
@@ -240,7 +240,7 @@
     border: none;
     border: solid rgb(143, 143, 143) 1px;
     background-color: white ;
-    color: #1f1f1f;
+    color: var(--hover-color);
     height: 35px;
     width: 300px;
     padding-left: 5px;
@@ -255,7 +255,7 @@
     cursor: pointer;
     border: none;
     border-radius: 8px;
-    box-shadow: 2px 2px 7px #121212;
+    box-shadow: 2px 2px 7px var(--background-color);
     transition: all 1s;
 }
 

@@ -6,7 +6,7 @@
 <style>
     .mainContainer{
         min-height: 80vh;
-        background-color: #191919;
+        background-color: var(--post-color);;
         border-radius: 12px;
         margin: 45px 165px;
         padding: 15px 15px;
@@ -162,8 +162,8 @@ h2 svg:hover{
 .sbt{
     cursor: pointer;
     border: none;
-    box-shadow: 2px 2px 7px #121212;
-    background: #121212;
+    box-shadow: 2px 2px 7px var(--background-color);
+    background: var(--background-color);
     color: white;
     width: fit-content;
     padding: 3px 10px;
@@ -176,8 +176,8 @@ h2 svg:hover{
     align-self: flex-end;
     cursor: pointer;
     border: none;
-    box-shadow: 2px 2px 7px #121212;
-    background: #121212;
+    box-shadow: 2px 2px 7px var(--background-color);
+    background: var(--background-color);
     color: white;
     width: 90px;
     transition: all 1s;
@@ -229,7 +229,7 @@ h2 svg:hover{
             width: 100%;
         }
         .tg td{
-            border-color:#121212;
+            border-color:var(--background-color);
             border-style:solid;
             border-width:1px;
             font-family:Arial, sans-serif;
@@ -239,7 +239,7 @@ h2 svg:hover{
             word-break:normal;
         }
         .tg th{
-            border-color:#121212;
+            border-color:var(--background-color);
             border-style:solid;
             border-width:1px;
             font-family:Arial, sans-serif;

@@ -129,7 +129,7 @@ thead td{
 }
 
 tr:hover {
-    background-color: #1f1f1f;
+    background-color: var(--hover-color);
     cursor: pointer;
 }
 

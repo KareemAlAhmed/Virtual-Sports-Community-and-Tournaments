@@ -74,7 +74,7 @@ export default {
             justify-content: center;
             flex-direction: column;
 
-            background: #1f1f1f;
+            background: var(--hover-color);
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
             }
 
@@ -101,8 +101,8 @@ export default {
                 cursor: pointer;
             border: none !important;
             border-radius: 8px;
-            box-shadow: 2px 2px 7px #121212;
-            background: #121212 !important;
+            box-shadow: 2px 2px 7px var(--background-color);
+            background: var(--background-color) !important;
             color: rgba(255, 255, 255, 0.8) !important;
             width: 90px !important;
             transition: all 1s;

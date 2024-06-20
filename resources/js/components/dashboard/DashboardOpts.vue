@@ -37,7 +37,7 @@ import { computed } from 'vue'
         display: flex;
         flex-direction: column;
         font-size: 22px;
-        background-color: #191919;
+        background-color: var(--post-color);;
         height: fit-content;
         width: 15%;
     }
@@ -46,10 +46,10 @@ import { computed } from 'vue'
         cursor: pointer;
     }
     .Opts a:hover{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     .selected{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     @media screen and (max-width: 600px) {
         .Opts{

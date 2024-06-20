@@ -1,7 +1,7 @@
 <style>
     .mainContainer{
         min-height: 80vh;
-        background-color: #191919;
+        background-color: var(--post-color);;
         border-radius: 12px;
         margin: 45px 165px;
         padding: 15px 15px;

@@ -29,7 +29,7 @@
                         <br>
                         <span class="subtitle">PHOTO:</span>
                         <br>
-                        <input type="file" name="image_url" value="" style="margin-top: 3px;">
+                        <input type="file" name="image_url" @change="changePhoto" style="margin-top: 3px;">
                         <br>
                         <br>
                         <input type="submit" value="SUBMIT" class="submit-btn" style="margin-left: 50%;transform: translateX(-50%);">
@@ -42,22 +42,38 @@
             </div>
         </div>
  </template>
- <script setup>
+ <script >
 import router from '../../router.js';
 import store from '../../store.js';
+export default {
+    name:"Login",
+    data(){
+        return{
+            user:{
+                name:'',
+                email:'',
+                password:'',
+                bio:'',
+                image_url:''
+            }
+        }
+    },methods:{
+        register(ev){
+            ev.preventDefault();
+            const formData = new FormData();
+            formData.append("image_url",this.user.image_url);
+            formData.append("name",this.user.name);
+            formData.append("email",this.user.email);
+            formData.append("password",this.user.password);
+            formData.append("bio",this.user.bio);
+            store.dispatch('register',formData)
+        },changePhoto(e){
+                this.user.image_url=e.target.files[0];
+            }
+    }
+}
 
-    const user={
-        name:'',
-        email:'',
-        password:'',
-        bio:'',
-        image_url:''
-    }
-    function register(ev){
-        ev.preventDefault();
-        store.dispatch('register',user)
-        
-    }
+    
  
  </script>
  <style scoped>
@@ -87,7 +103,7 @@ import store from '../../store.js';
             justify-content: center;
             flex-direction: column;
 
-            background: #1f1f1f;
+            background: var(--hover-color);
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
             }
 
@@ -114,8 +130,8 @@ import store from '../../store.js';
                 cursor: pointer;
             border: none !important;
             border-radius: 8px;
-            box-shadow: 2px 2px 7px #121212;
-            background: #121212 !important;
+            box-shadow: 2px 2px 7px var(--background-color);
+            background: var(--background-color) !important;
             color: rgba(255, 255, 255, 0.8) !important;
             width: 90px !important;
             transition: all 1s;

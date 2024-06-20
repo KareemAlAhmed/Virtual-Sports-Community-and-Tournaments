@@ -23,7 +23,7 @@
                 min-height: 100vh;
                 
                 font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-                background: #121212; /* fallback for old browsers */
+                background: var(--background-color); /* fallback for old browsers */
                 overflow-x: hidden;
                 -webkit-user-select: none;
                 -khtml-user-select: none;
@@ -77,7 +77,7 @@
                 cursor: pointer;
             }
             button.siteLink:hover{
-                background-color: #1f1f1f;
+                background-color: var(--hover-color);
             }
             #mainNavigation {
             transition : transform 200ms linear;
@@ -122,7 +122,7 @@
             justify-content: center;
             flex-direction: column;
 
-            background: #1f1f1f;
+            background: var(--hover-color);
             box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
             }
 
@@ -149,8 +149,8 @@
                 cursor: pointer;
             border: none !important;
             border-radius: 8px;
-            box-shadow: 2px 2px 7px #121212;
-            background: #121212 !important;
+            box-shadow: 2px 2px 7px var(--background-color);
+            background: var(--background-color) !important;
             color: rgba(255, 255, 255, 0.8) !important;
             width: 90px !important;
             transition: all 1s;
@@ -165,7 +165,7 @@
                 position: absolute;
                 right: 0;
                 color: white;
-                background-color: #191919;
+                background-color: var(--post-color);;
                 /* padding: 7px 13px; */
                 width: 130px;
                 display: flex;
@@ -199,7 +199,7 @@
                 padding: 10px;
             }
             .popup a:hover{
-                background-color: #1f1f1f;
+                background-color: var(--hover-color);
             }
             .user svg{
                 width: 15px;

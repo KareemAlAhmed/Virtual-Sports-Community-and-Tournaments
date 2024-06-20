@@ -99,7 +99,8 @@ const store=createStore({
         ,currentPost:{
             comments:{},
             loading:false,
-        }
+            data:{}
+        },postToEditId:sessionStorage.getItem("postToEditId")
     },
     getters:{},
     actions:{
@@ -170,12 +171,7 @@ const store=createStore({
                 })
             })
         },register({commit},user){
-            axios.post("http://127.0.0.1:8000/api/register",JSON.stringify(user),{
-                headers:{
-                    "Content-Type":"application/json",
-                    Accept:"application/json"
-                }
-            })
+            axios.post("http://127.0.0.1:8000/api/register",user)
             .then((res)=>{
                 commit("setUser",res.data);
                 commit("setNotify",res.data.message,"success")
@@ -524,7 +520,7 @@ const store=createStore({
             })
             .catch(err1=>console.log(err1))
         },createPost({commit,dispatch,state},info){
-            axiosClient.post("post/user/"+info.id,info)
+            axiosClient.post("post/user/"+info.get("id"),info)
             .then(res=>{                                     
                     state.notification.message=res.data.message
                     this.dispatch("notifySuccess") 
@@ -582,6 +578,26 @@ const store=createStore({
                 this.commit("setCommentStatus",false);
     
             })
+        },deleteComment({commit,dispatch,state},info){
+            axiosClient.delete("delete/comment/"+info.commentId)
+            .then(res=>{      
+                this.dispatch("getCurrentPostComments",info.postId)
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },editComment({commit,dispatch,state},info){
+            axiosClient.put("update/comment/"+info.id,info)
+            .then(res=>{      
+                this.dispatch("getCurrentPostComments",info.postId)
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+            })
+            .catch(err=>{
+                console.log(err)
+            })
         },getCurrentPostComments({commit,dispatch,state},postId){
             axios.get("api/post/"+postId+"/comments")
             .then(res=>{
@@ -591,7 +607,49 @@ const store=createStore({
             .catch(err=>{
                 console.log(err)
             })
-        }
+        },deletePost({commit,dispatch,state},postId){
+            axiosClient.delete("post/"+postId+"/delete")
+            .then(res=>{      
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")  
+                this.dispatch("getPosts") 
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },editPost({commit,dispatch,state},info){
+            axiosClient.post("post/"+info.get("id")+"/edit",info)
+            .then(res=>{      
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess") 
+                router.push({name:"HomePage"})  
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },getPost({commit,dispatch,state},id){
+            axios.get("/api/post/"+id)
+            .then(res=>{      
+                this.commit("setCurrentPostData",res.data.Post)
+
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },sharePost({commit,dispatch,state},info){
+            axiosClient.post("post/"+info.postId+"/sharedBy/"+info.userId)
+            .then(res=>{      
+                console.log(res.data)
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+                this.dispatch("getPosts")
+                window.scrollTo(0, 0)
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+            })
+        }  
     },
     mutations:{
         logout:(state)=>{
@@ -699,6 +757,9 @@ const store=createStore({
         },setCurrentPost(state,info){
             state.currentPost.comments=info.comments;
             state.currentPost.loading=true;
+        },setCurrentPostData(state,info){
+            state.currentPost.data=info;
+            console.log(state.currentPost)
         }
     },
     modules:{}

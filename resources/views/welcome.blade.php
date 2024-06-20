@@ -35,13 +35,14 @@
                 --hover-cart: #44454b;
                 --background-color:#121212 ;
                 --post-color:#191919;
+                --hover-color:#1f1f1f;
             }
             body{
                 max-width: 100vw;
                 min-height: 100vh;
                 
                 font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-                background: #121212; /* fallback for old browsers */
+                background: var(--background-color); /* fallback for old browsers */
                 overflow-x: hidden;
                 -webkit-user-select: none;
                 -khtml-user-select: none;
@@ -155,7 +156,7 @@
                 cursor: pointer;
             }
             button.siteLink:hover{
-                background-color: #1f1f1f;
+                background-color: var(--hover-color);
             }
             #mainNavigation {
             transition : transform 200ms linear;

@@ -32,7 +32,7 @@ use App\Models\User;
     width: 30%;
     height: fit-content;
     padding: 20px 23px ;
-    background-color: #191919;
+    background-color: var(--post-color);;
     }
     .sideContainer h4{
         
@@ -51,7 +51,7 @@ use App\Models\User;
     .sideContainer h4 span{
         display: inline-block;
         padding-right: 18px;
-        background-color: #191919;
+        background-color: var(--post-color);;
     }
     .sideContainer h4::after{
         content: "";
@@ -66,7 +66,7 @@ use App\Models\User;
     } */
 
     .postCont{
-        background-color: #191919;
+        background-color: var(--post-color);;
     }
     .post {
         padding: 30px 25px 25px;
@@ -135,8 +135,8 @@ use App\Models\User;
         cursor: pointer;
         border: none;
         
-        box-shadow: 2px 2px 7px #121212;
-        background: #121212;
+        box-shadow: 2px 2px 7px var(--background-color);
+        background: var(--background-color);
         color: white;
         width: 90px;
         transition: all 1s;
@@ -170,8 +170,8 @@ use App\Models\User;
         cursor: pointer;
         border: none;
         
-        box-shadow: 2px 2px 7px #121212;
-        background: #121212;
+        box-shadow: 2px 2px 7px var(--background-color);
+        background: var(--background-color);
         color: white;
         width: calc( 100% / 3 );
         transition: all 0.3s;
@@ -184,7 +184,7 @@ use App\Models\User;
         gap: 5px;
     }
     .reactions button:hover{
-        background-color: #1f1f1f;
+        background-color: var(--hover-color);
     }
     .reactions svg{
         fill: white;

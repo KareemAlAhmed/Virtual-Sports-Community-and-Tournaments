@@ -150,7 +150,7 @@
     border: none;
     border: solid rgb(143, 143, 143) 1px;
     background-color: white ;
-    color: #1f1f1f;
+    color: var(--hover-color);
     height: 35px;
     width: 300px;
     padding-left: 5px;
@@ -165,7 +165,7 @@
     cursor: pointer;
     border: none;
     border-radius: 8px;
-    box-shadow: 2px 2px 7px #121212;
+    box-shadow: 2px 2px 7px var(--background-color);
     transition: all 1s;
 }
 

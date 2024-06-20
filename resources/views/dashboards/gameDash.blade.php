@@ -37,7 +37,7 @@ $games=Games::all()
             cursor: pointer;
         }
         .tg .tg-0lax:hover{
-            background-color: #1f1f1f;
+            background-color: var(--hover-color);
         }
         .tg tbody tr{
             height: 50px;

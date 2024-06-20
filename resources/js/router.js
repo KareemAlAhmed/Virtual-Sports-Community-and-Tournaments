@@ -24,6 +24,7 @@ import GamesDash from "./components/dashboard/GamesDash.vue"
 import CreateTournDash from "./components/dashboard/CreateTournDash.vue"
 import CreateLeagueDash from "./components/dashboard/CreateLeagueDash.vue"
 import UserPage from "./components/User/UserPage.vue"
+import EditPost from "./components/minicomponent/PostEditPage.vue"
 import store from "./store"
 const routes=[
 
@@ -49,6 +50,12 @@ const routes=[
                 name: 'Register',
                 component:Register,
                 meta:{isGuest:true}
+            },
+            {
+                path:"/post/:id/edit",
+                name: 'EditPost',
+                component:EditPost,
+                meta:{isGuest:false}
             },
             {
               path:"/userProfile/:id",

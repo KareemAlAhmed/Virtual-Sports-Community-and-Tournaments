@@ -8,7 +8,7 @@ $joinedLeague=$joined->original['Leagues'];
 <style>
     .mainContainer{
         min-height: 80vh;
-        background-color: #191919;
+        background-color: var(--post-color);;
         border-radius: 12px;
         margin: 45px 165px;
         padding: 15px 15px;
@@ -17,7 +17,7 @@ $joinedLeague=$joined->original['Leagues'];
         width: 70%;
         min-height: 80vh;
         margin: 45px 15%;
-        background-color: #191919;
+        background-color: var(--post-color);;
         border-radius: 12px;
     } */
     .nk-breadcrumbs{

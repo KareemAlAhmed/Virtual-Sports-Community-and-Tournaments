@@ -16,7 +16,7 @@
         flex-direction: column;
         align-items: center;
         gap: 20px;
-        background-color: #191919;
+        background-color: var(--post-color);;
         padding: 20px 45px;
         height: fit-content;
     }
@@ -78,15 +78,15 @@
         gap: 15px;
     }
     .wrapper .selected{
-        background-color: #1f1f1f !important;
+        background-color: var(--hover-color) !important;
     }
     .wrapper button.siteLink{
-        background-color: #191919;
+        background-color: var(--post-color);;
         padding: 15px;
     }
     .wrapper .tournSum{
         width: 100%;
-        background-color: #191919;
+        background-color: var(--post-color);;
         height: 200px;
         display: flex;
         gap: 20px;
@@ -112,7 +112,7 @@
     }
     .noWinning{
         width: 100%;
-        background-color: #191919;
+        background-color: var(--post-color);;
         height: 200px;
         display: flex;
         justify-content: center;

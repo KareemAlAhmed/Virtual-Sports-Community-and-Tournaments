@@ -44,7 +44,8 @@ class AuthController extends Controller
             $user->bio=$request->input("bio");
             $user->email=$request->input("email");
             if($request->hasFile('image_url')){
-                $user->image_url=$request->image_url->getClientOriginalName();   
+                $name=$request->image_url->getClientOriginalName();
+                $user->image_url=str_replace(" ","",$name);   
                 $request->image_url->storeAs('public/UserProfilePic',$user->image_url);
             }else{
                 $user->image_url='images.jpeg';

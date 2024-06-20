@@ -17,8 +17,8 @@ class PostController extends Controller
             if($request->input('content') || $request->hasFile('image_url') || $request->hasFile('video_url')){
                 $val=Validator::make($request->all(),[
                 'content'=>$request->input('content') != null ? 'sometimes|min:5' : '',
-                'image_url'=>$request->image_url != null ? 'sometimes|min:5' : '',
-                'video_url'=>$request->video_url != null ? 'sometimes|min:5' : '',
+                // 'image_url'=>$request->image_url != null ? 'sometimes|min:5' : '',
+                // 'video_url'=>$request->video_url != null ? 'sometimes|min:5' : '',
                 ]);
                 if($val->fails()){                    
                         response()->json([
@@ -40,8 +40,6 @@ class PostController extends Controller
                         $post->video_url=$request->video_url->getClientOriginalName();              
                         $request->video_url->storeAs('public/postVideo',$post->video_url);
                     }
-                    $post->liked_users=json_encode([]);
-                    $post->shared_users=json_encode([]);
                     $post->save();
                     return response()->json([
                         'message'=>'The Post created successfuly',
@@ -63,19 +61,59 @@ class PostController extends Controller
             'errors'=>'user not found',
         ],404);
     }
+    function share($postid,$userId){
+        $user=User::find($userId);
+        $post=Posts::find($postid);
+        $fromUser=User::find($post->user_id);
+        if(!isset($post)){
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The wanted Post doesnt exist',
+            ],404);
+        }
+        if(!isset($user)){
+            return response()->json([
+                'status'=>404,
+                'errors'=>'The User Not Found',
+            ],404);
+        }
+        if($userId == $post->user_id){
+            return response()->json([
+                'status'=>404,
+                'errors'=>'You Cant Share Your Own Post!',
+            ],404);
+        }
+
+        $newpost= new Posts;
+        $newContent= "Shared From " . $fromUser->name . " : ".$post->content;
+        $newpost->content=$newContent;
+        $newpost->image_url=$post->image_url;
+        $newpost->video_url=$post->video_url;                 
+        $newpost->user_id=$user->id;
+
+        $newpost->save();
+        return response()->json([
+            'message'=>'The Post Shared Successfully',
+            'Post'=>$post],201);              
+        
+           
+        
+        
+    }
     function show( $id){
         $post=Posts::find($id);
         if(!$post){
            
-                return redirect('/')->with('error',[response()->json([
+                return response()->json([
                     'status'=>404,
                     'errors'=>'The wanted Post doesnt exist',
-                ],404)]);
+                ],404);
         }else{
             
-            return redirect('/')->with('response',[response()->json([
+            return response()->json([
                 'status'=>200,
-                'Post'=>$post],200)]);
+                'Post'=>$post
+            ],200);
         }
     }
     function edit($id){
@@ -92,11 +130,12 @@ class PostController extends Controller
                 'Post'=>$post],200)]);
         }
     }
-    function update(Request $request, int $postId){
+    function update($postId,Request $request){
+        // return $request->hasFile("image_url");
         $val=Validator::make($request->all(),[
             'content'=>$request->input('content') != null ? 'sometimes|min:5' : '',
-            'image_url'=>$request->image_url != null ? 'sometimes|min:5' : '',
-            'video_url'=>$request->video_url != null ? 'sometimes|min:5' : '',
+            // 'image_url'=>$request->image_url != null ? 'sometimes|min:5' : '',
+            // 'video_url'=>$request->video_url != null ? 'sometimes|min:5' : '',
         ]);
         if($val->fails()){
             return response()->json([
@@ -106,6 +145,7 @@ class PostController extends Controller
         }else{
             $post=Posts::find($postId);
 
+                
                 if($post ){
                     if($request->input('content') || $request->hasFile('image_url') || $request->hasFile('video_url')){
                         if($request->input('content')){
@@ -113,7 +153,8 @@ class PostController extends Controller
                         }           
                    
                         if($request->hasFile('image_url')){
-                            $post->image_url=$request->image_url->getClientOriginalName();              
+                            $name=$request->image_url->getClientOriginalName();
+                            $post->image_url=str_replace(" ","",$name);             
                             $request->image_url->storeAs('public/postImage',$post->image_url);
                         }
                         if($request->hasFile('video_url')){
@@ -122,22 +163,22 @@ class PostController extends Controller
                         }
                         $post->update();
 
-                        return redirect('/')->with('response',[response()->json([
+                        return response()->json([
                             'message'=>'The Post updated successfuly',
-                            'Post'=>$post],200)]);
+                            'Post'=>$post],200);
                     }else{
-                        return redirect('/')->with('error',[response()->json([
+                        return response()->json([
                             'status'=>404,
                             'errors'=>'There is no content or image or video',
-                        ],404)]);
+                        ],404);
                                                    
                     }
                     
                 }else{
-                    return redirect('/')->with('error',[response()->json([
+                    return response()->json([
                         'status'=>404,
                         'errors'=>'The wanted Post doesnt exist',
-                    ],404)]);
+                    ],404);
                 }
         }
     }
@@ -145,15 +186,15 @@ class PostController extends Controller
         $post=Posts::find($id);
         if($post){
             $post->delete();
-            return redirect('/')->with('response',[response()->json([
+            return response()->json([
                 'message'=>'The Post deleted successfuly',
-                'status'=>200],200)]);
+                'status'=>200],200);
 
         }else{
-            return redirect('/')->with('error',[response()->json([
+            return response()->json([
                 'status'=>404,
                 'errors'=>'The wanted Post doesnt exist',
-            ],404)]);
+            ],404);
         }
     }
     function user($id){
