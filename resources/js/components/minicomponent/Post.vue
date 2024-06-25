@@ -213,15 +213,40 @@ export default {
 }
 </script>
 <style >
+
+    .pod{
+        padding: 30px 25px 25px;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        width: 100%;
+        background-color: var(--post-color);
+    }
+    .postCont .imageAndOtherOpt {
+    justify-content: space-between;
+}
+.imageAndOtherOpt{
+        display: flex;
+        gap: 25px;
+        align-items: center;
+        color: white;
+    }
+    .userImage{
+         width: 50px;
+         height: 50px;
+    }
+    .userImage img{
+        width: 100%;
+        height: 100%;
+        border-radius: 50px;
+    }
      .sidePost{
         display: flex;
         gap: 17px;
         margin-bottom: 30px;
         cursor: pointer;
     }
-    .postCont .imageAndOtherOpt{
-        justify-content: space-between;
-    }
+
     .sidePost img{
         width: 95px;
         height: 75px;
@@ -277,6 +302,7 @@ export default {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        margin-bottom: 15px;
     }
     .postReactionsInfo p{
         color: white;
@@ -284,6 +310,45 @@ export default {
         display: flex;
         gap: 5px;
         margin-left: 10px;
+    }
+    .reactions{
+        display: flex;
+        justify-content: center;
+    }
+
+    .reactions button{
+        cursor: pointer;
+        border: none;
+        
+        box-shadow: 2px 2px 7px var(--background-color);
+        background: var(--background-color);
+        color: white;
+        width: calc( 100% / 3 );
+        transition: all 0.3s;
+        height: 35px;
+        font-weight: 600;
+        font-size: 17px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+    .reactions button:hover{
+        background-color: var(--hover-color);
+    }
+    .reactions svg{
+        fill: white;
+        margin-bottom: 5px;
+        transition: all 0.1s;
+    }
+    .content{
+        width: 100%;
+    }
+    .content p{
+        color: white;
+        font-size: 21px;
+        font-weight: 600;  
+        margin-bottom: 10px;
     }
     .likeicon{
         height: 20px;
@@ -327,6 +392,7 @@ export default {
 }
 .reactionaInfo{
     display: flex;
+    margin-top: 5px;
 }
 .freeze{
     overflow: hidden;

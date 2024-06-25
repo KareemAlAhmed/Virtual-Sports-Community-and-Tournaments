@@ -23,27 +23,51 @@
                         <div class="name">{{getUser.name}}<span>#{{getUser.id}}</span></div>
                     </div>
 
+                    <div class="actions" v-if="!currentUser">
+                            <template v-if="!isFollowRequested">
+                                <button v-if="!isFollowed" class="follow" @click="createFollowingReq(getId,getUser.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+                                    <p>Follow</p>
+                                </button>
+                                <button v-if="isFollowed"  class="followed" @click="cancelFollowingRequest(getId,getUser.id)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+                                    <p>Followed</p>
+                                </button>
+                            </template>
+                            <button v-if="isFollowRequested" class="cancelRequest" @click="cancelFollowingRequest(getId,getUser.id)">
+                                <svg class="mobileVersion" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
+                                Cancel Request
+                            </button>
+                        <button>Message</button>
+                    </div>
+
                     <hr style="width: 100%;">
 
                     <div class="bio">
                         <p style="color: white;font-weight: bold;font-size: 20px;" >Biography:</p>
                         <p>{{getUser.bio}}</p>
                     </div>
-
                     <hr style="width: 100%;">
 
                     <div class="records" style="width: 100%;">
                         <p style="color: white;font-weight: bold;font-size: 20px;margin-bottom: 5px;" >Titles:</p>
-                        <p>Winning Tournaments : <span class="winning" >{{getAcheivs.tournsWon.length}}</span></p>
-                        <p>Winning Leagues : <span class="winning" >{{getAcheivs.leaguesWon.length}}</span></p>
-                        <p>Winning Games : <span class="winning" >{{getAcheivs.gamesWon.length}}</span></p>
+                        <p>Winning Tournaments : <span class="winning" >{{getUserData.acheivements.tournsWon.length}}</span></p>
+                        <p>Winning Leagues : <span class="winning" >{{getUserData.acheivements.leaguesWon.length}}</span></p>
+                        <p>Winning Games : <span class="winning" >{{getUserData.acheivements.gamesWon.length}}</span></p>
 
                         <!-- <p><span class="winning">Winning Tournaments :</span> {{$winningTourns}}</p>
                         <p><span class="winning">Winning Leagues :</span> {{$winningLeagues}}</p> -->
                     </div>
 
+                    <hr style="width: 100%;">
+                    <div class="social">
+                        <p style="color: white;font-weight: bold;font-size: 20px;margin-bottom: 5px;" >Social:</p>
+                        <p>Following : {{ getUserSocialInfo.followed.length }}</p>
+                        <p>Followers : {{ getUserSocialInfo.followers.length }}</p>
+                        <p>Posts : {{ getUserData.posts.length }}</p>
                     </div>
-
+                    </div>
+                    
 
                     <div class="sideContainer">
                     <div class="wrapper" style="width: 100%;height:100%">
@@ -64,18 +88,23 @@
                                     <button  :class="getSelected === 'Games' ? 'selected siteLink gameNav' :'siteLink gameNav'">Games</button>
 
                             </div>      
+                            <div class="games" @click="setSelected('Posts')">
+                            
+                                    <button  :class="getSelected === 'Posts' ? 'selected siteLink gameNav' :'siteLink gameNav'">Posts</button>
+
+                            </div>      
                         </div>
 
                         <div class="recordsContent">
                             
                                 <template v-if="getSelected === 'Tourns'">                              
-                                    <div v-if="getAcheivs.tournsWon.length === 0" class="noWinning">
+                                    <div v-if="getUserData.acheivements.tournsWon.length === 0" class="noWinning">
                                         <p>The User didnt won Any Tournament .</p>
                                     </div>
                             
 
                                     <template v-else>
-                                        <div class="tournSum" v-for="tourn in getAcheivs.tournsWon" :key="tourn.id">
+                                        <div class="tournSum" v-for="tourn in getUserData.acheivements.tournsWon" :key="tourn.id">
                                             <img :src="'http://127.0.0.1:8000/storage/gamesLogo/'+tourn.sportType+'.png' " alt="http://127.0.0.1:8000/storage/images.jpeg">
                                             <div class="tournInfo">
                                                 <p class="tournName">{{tourn.name}}</p>
@@ -89,12 +118,12 @@
                                 </template>
 
                                 <template v-if="getSelected ==='Leagues'">
-                                        <div class="noWinning"  v-if="getAcheivs.leaguesWon.length === 0">
+                                        <div class="noWinning"  v-if="getUserData.acheivements.leaguesWon.length === 0">
                                             <p>The User didnt won Any League .</p>
                                         </div>
                                     
                                         <template v-else>
-                                            <div class="tournSum" v-for="league in getAcheivs.leaguesWon" :key="league.id">
+                                            <div class="tournSum" v-for="league in getUserData.acheivements.leaguesWon" :key="league.id">
                                                 <img :src="'http://127.0.0.1:8000/storage/gamesLogo/'+league.sportType+'.png' " alt="http://127.0.0.1:8000/storage/images.jpeg">
                                                 <div class="tournInfo">
                                                     <p class="tournName">{{league.name}}</p>
@@ -108,12 +137,12 @@
                                 </template>
                                 
                                 <template v-if="getSelected==='Games'">
-                                    <div class="noWinning" v-if="getAcheivs.gamesWon.length === 0">
+                                    <div class="noWinning" v-if="getUserData.acheivements.gamesWon.length === 0">
                                         <p>The User didnt won Any Game .</p>
                                     </div>
                             
                                     <template v-else>
-                                        <div class="tournSum" v-for="game in getAcheivs.gamesWon" :key="game.id">
+                                        <div class="tournSum" v-for="game in getUserData.acheivements.gamesWon" :key="game.id">
                                             <img :src="'http://127.0.0.1:8000/storage/gamesLogo/'+game.sportType+'.png' " alt="http://127.0.0.1:8000/storage/images.jpeg">
                                             <div class="tournInfo">
                                                 <p class="tournName">Against {{game.firstUserName == getUser.name ? game.secondUserName : game.firstUserName}}</p>
@@ -125,8 +154,16 @@
                                         </div>
                                     </template> 
                                 </template>     
-                                
+
+                                <template v-if="getSelected === 'Posts'">
+                                    <div class="noWinning" v-if="getUserData.posts.length === 0">
+                                        <p>The User Didnt Post Anything Yet .</p>
+                                    </div>
                             
+                                    <template v-else>
+                                        <Post v-for="post in getUserData.posts" :key="post.id" :post='post' :user="post.user"></Post>
+                                    </template> 
+                                </template>
                                         
 
                         </div>
@@ -143,14 +180,16 @@
 
     import moment from 'moment';
     import router from "../../router";
+    import Post from '../minicomponent/Post.vue';
 
     export default {
         name:"UserPage",
         components: {
-
+            "Post":Post
         },data(){
             return{
-                selectedTab:"Tourns"
+                selectedTab:"Tourns",
+                currentUser:true
             }  
         },
         computed:{
@@ -160,12 +199,27 @@
                 return `${store.state.user.name[0].toLocaleUpperCase() +store.state.user.name.slice(1)}`;
             },getUser(){
                 return store.state.userProfileData;        
-            },getAcheivs(){
-                return store.state.user.acheivements;
+            },getUserData(){
+                return store.state.user;
             },getId(){
                 return store.state.user.id;
             },getSelected(){
                 return store.state.selectedTab;
+            },getUserSocialInfo(){
+                if(this.currentUser){
+                    let info={
+                        "followers":store.state.user.followers,
+                        "followed":store.state.user.followed,
+                        "followingRequests":store.state.user.followingRequests,
+                    }
+                    return info;
+                }else{
+                    return store.state.userSocialInfo;
+                }
+            },isFollowed(){
+                return store.state.currentUser.followed;
+            },isFollowRequested(){
+                return store.state.currentUser.requestSent;
             }
             },methods: { 
                 format_date(value){
@@ -174,11 +228,23 @@
                 }},
                 setSelected(select){
                     store.commit("setSelectedTab",select)             
+                },createFollowingReq(followerId,followedId){
+                    store.dispatch("createFollowingRequest",{followerId,followedId})
+                },cancelFollowingRequest(followerId,followedId){
+                    store.dispatch("cancelFollowingRequest",{followerId,followedId})
                 }
         },created() {
             const userId = this.$route.params.id;
+            const currentID=this.getId;
             store.dispatch("getUserProf",userId)
             store.dispatch("getUserAcheivements",userId)
+            store.dispatch("getUserPosts",userId)
+            store.dispatch("getCurrentUserSocial",userId)
+            store.dispatch("isFollowingTrue",{currentID,userId})
+            store.dispatch("isFollowRequested",{currentID,userId})
+            if(currentID !== userId){
+                this.currentUser = false
+            }
         }
 }
       </script>
@@ -186,7 +252,7 @@
   .mainContainer{
         min-height: 90vh;
         max-width: 100vw;
-        padding: 50px 180px;
+        /* padding: 50px 180px; */
         display: flex;
         gap: 20px;
     }
@@ -238,7 +304,17 @@
     .records p:nth-child(2)
     ,.records p:nth-child(3)
     ,.records p:nth-child(4){
-        color: white;
+        color: #ffffff33;
+        margin-left: 10px;
+        margin-bottom: 3px;
+    }
+    .social{
+        width: 100%;
+    }
+    .social p:nth-child(2)
+    ,.social p:nth-child(3)
+    ,.social p:nth-child(4){
+        color: #ffffff33;
         margin-left: 10px;
         margin-bottom: 3px;
     }
@@ -246,6 +322,7 @@
     .listContainer{
                 position: relative;
                 display: flex;
+                
             }
    
     .wrapper .listContainer{
@@ -355,7 +432,51 @@
   animation: dot-pulse-after 1.5s infinite linear;
   animation-delay: 0.5s;
 }
+.actions{
+    display: flex;
+    gap: 10px;
+}
+.actions button{
+    margin-left: -5px;
+    border: none;
+    padding: 15px;
 
+    min-width: 115px;
+    background-color: var(--background-color);
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+.actions button:hover{
+    background-color: var(--back-color);
+    
+}
+.followed,.follow{
+    background-color: var(--back-color) !important;
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+}
+.followed svg,.follow svg{
+    width: 15px;
+    height: 20px;
+    fill: white;
+}
+.cancelRequest{
+    display: flex;
+    gap: 10px;
+}
+.cancelRequest svg{
+    width: 15px;
+    height: 15px;
+    fill: white;
+}
+
+.recordsContent .post{
+    background-color: var(--post-color);
+    padding: 15px;
+}
 @keyframes dot-pulse-before {
   0% {
     box-shadow: 9984px 0 0 -5px;
@@ -402,7 +523,7 @@
         padding: 0;
    }
    .wrapper .listContainer{
-        gap: 8px;
+        gap: 10px;
         width: 100%;
    }
    .wrapper button.siteLink{
@@ -425,5 +546,23 @@
         margin-top: 25px;
         font-size: 15px;
     }
-}
+    .centerContainer .post {
+            gap: 10px;
+        }
+        .userImage img{
+            width: 50px;
+        }   
+        .listContainer{
+            overflow: scroll;
+        }
+        .mobileVersion{
+            display: none;
+        }
+        .cancelRequest{
+            display: flex;
+            font-size: 15px !important;
+        }
+    }
+
+
       </style>

@@ -42,7 +42,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
+    // protected $with=['followedUsers',"followingUsers","followingRequests"];
     function posts(){
         return $this->hasMany(Posts::class);
     }
@@ -79,5 +79,14 @@ class User extends Authenticatable
     }
     function likes(){
         return $this->hasMany(Like::class,"user_id");
+    }
+    function followedUsers(){
+        return $this->hasMany(Follower::class,"follower_id")->where("status","Accepted");
+    }
+    function followingUsers(){
+        return $this->hasMany(Follower::class,"followed_id")->where("status","Accepted");
+    }
+    function followingRequests(){
+        return $this->hasMany(Follower::class,"followed_id")->where("status","Pending");
     }
 }

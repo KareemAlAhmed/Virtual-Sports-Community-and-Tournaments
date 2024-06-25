@@ -6,10 +6,10 @@
         <div class="gameInfo">
 
             <div class="firstUser">
-                <a href="../user/{{$user1['id']}}">
+                <router-link :to="/userProfile/+game.user1.id ">
                     <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user1.image_url">
-                </a>
-                <a href="../user/{{$user1['id']}}" class="playerName">{{game.firstUserName}}</a>
+                </router-link>
+                <router-link :to="/userProfile/+game.user1.id " class="playerName"> {{game.firstUserName}}</router-link>
             </div>
             <div class="timeAndResult">
                 <a href="#" style="text-align: center;">
@@ -20,10 +20,10 @@
             </div>
             <div class="secondUser">
                 
-                <a href="../user/{{$user2['id']}}">
+                <router-link :to="/userProfile/+game.user2.id ">
                     <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user2.image_url">
-                </a>
-                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
+                </router-link>
+                <router-link :to="/userProfile/+game.user2.id " class="playerName">{{game.secondUserName}}</router-link>
             </div>
             </div>
             <ul>
@@ -43,10 +43,10 @@
     <template v-else >
         <div class="gameInfo">
             <div class="firstUser">
-                <a href="../user/{{$user1['id']}}">
+                <router-link :to="/userProfile/+game.user1.id ">
                    
-                <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user1.image_url"></a>
-                <a href="../user/{{$user1['id']}}" class="playerName">{{game.firstUserName}}</a>
+                <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user1.image_url"></router-link>
+                <router-link :to="/userProfile/+game.user1.id " class="playerName">{{game.firstUserName}}</router-link>
             </div>
             <div class="timeAndResult">
                 <a href="#" style="text-align: center;">
@@ -57,9 +57,9 @@
             </div>
             <div class="secondUser">
                 
-                <a href="../user/{{$user2['id']}}">
-                <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user2.image_url"></a>
-                <a href="../user/{{$user2['id']}}" class="playerName">{{game.secondUserName}}</a>
+                <router-link :to="/userProfile/+game.user2.id ">
+                <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+game.user2.image_url"></router-link>
+                <router-link :to="/userProfile/+game.user2.id " class="playerName">{{game.secondUserName}}</router-link>
             </div>
             </div>
             <ul>

@@ -13,7 +13,7 @@
                     </router-link> 
                     <div class="tourns" @mouseenter="tournOpt= !tournOpt" @mouseleave="tournOpt= !tournOpt">
                         <router-link to="/tournaments/tops">
-                            <button class="siteLink tourn">Tournaments</button>
+                            <button class="siteLink">Tournaments</button>
                         </router-link> 
 
                         <div class="popup tournPop" v-if="tournOpt">                                     
@@ -27,7 +27,7 @@
 
                     <div class="leagues" @mouseenter="leagueOpt= !leagueOpt" @mouseleave="leagueOpt= !leagueOpt">
                         <router-link to="/leagues/tops">
-                            <button class="siteLink league">Leagues</button>
+                            <button class="siteLink">Leagues</button>
                         </router-link> 
                         <div v-if="leagueOpt" class="popup leaguePop">                                     
                             <router-link to="/leagues/tops">Top Leagues</router-link>                             
@@ -45,6 +45,17 @@
                             <template v-if="!isGuest">                       
                                 <router-link to="/games/mygames">My Games</router-link>
                             </template>                              
+                        </div>
+                    </div>
+                    <div class="social" @mouseenter="socialOpt= !socialOpt" @mouseleave="socialOpt= !socialOpt"> 
+                        <router-link to="/social">
+                            <button class="siteLink">Social</button>
+                        </router-link>
+                        <div v-if="socialOpt" class="popup gamePop">                                     
+                            <router-link to="/social/followers">Followers</router-link>  
+                            <router-link to="/social/following">Following</router-link>  
+                            <router-link to="/social/followingRequests">Follow Requests</router-link>  
+                            <router-link to="/social/search">Find User</router-link>                              
                         </div>
                     </div>
                     
@@ -126,6 +137,16 @@
                     </template> 
                 </div>
             </div>
+            <div class="socialOpt">
+                <button class="navMenuOpt" @click="activateSocialPop(isGuest)">Social</button>
+                <div   class="mobilePopUp">
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/followers">Followers</router-link></button>
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/following">Following</router-link></button>
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/followingRequests">Follow Requests</router-link></button>
+                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/search">Find User</router-link></button>
+ 
+                </div>
+            </div>
             <template v-if="!get_token">
                 <div class="auth">
                     <button class="navMenuOpt" @click="displayMenu"><router-link to="/register">Register</router-link></button>
@@ -173,6 +194,7 @@ export default {
             tournOpt:false,
             leagueOpt:false,
             gameOpt:false,
+            socialOpt:false,
             nameText:"hello",
             navMobille:false,
         }
@@ -207,6 +229,13 @@ export default {
                 document.querySelector(".leagueOpt div").classList.remove("popUpActive2")
                 document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
             }
+            if(document.querySelector(".socialOpt div").classList.contains("popUpActive")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".socialOpt div").classList.contains("popUpActive3")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive3")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }
         },activateTournPop(isGuest){
 
             if(document.querySelector(".leagueOpt div").classList.contains("popUpActive")){
@@ -224,6 +253,13 @@ export default {
                 document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
             }
      
+            if(document.querySelector(".socialOpt div").classList.contains("popUpActive")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".socialOpt div").classList.contains("popUpActive3")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive3")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }
             if(isGuest){
                 document.querySelector(".tournOpt div").classList.toggle("popUpActive")
             }else{
@@ -246,6 +282,13 @@ export default {
                 document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
             }
             
+            if(document.querySelector(".socialOpt div").classList.contains("popUpActive")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".socialOpt div").classList.contains("popUpActive3")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive3")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }
             if(isGuest){
                 document.querySelector(".leagueOpt div").classList.toggle("popUpActive")
             }else{
@@ -268,6 +311,13 @@ export default {
                 document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
             }
             
+            if(document.querySelector(".socialOpt div").classList.contains("popUpActive")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".socialOpt div").classList.contains("popUpActive3")){
+                document.querySelector(".socialOpt div").classList.remove("popUpActive3")
+                document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
+            }
 
             if(isGuest){
                 document.querySelector(".gameOpt div").classList.toggle("popUpActive")
@@ -275,6 +325,36 @@ export default {
                 document.querySelector(".gameOpt div").classList.toggle("popUpActive2")
             }
             document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")          
+        },activateSocialPop(isGuest){
+            if(document.querySelector(".leagueOpt div").classList.contains("popUpActive")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".leagueOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".leagueOpt div").classList.remove("popUpActive2")
+                document.querySelector(".leagueOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".gameOpt div").classList.contains("popUpActive")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".gameOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".gameOpt div").classList.remove("popUpActive2")
+                document.querySelector(".gameOpt button").classList.toggle("activeMenuOpt")
+            }
+            if(document.querySelector(".tournOpt div").classList.contains("popUpActive")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }else if(document.querySelector(".tournOpt div").classList.contains("popUpActive2")){
+                document.querySelector(".tournOpt div").classList.remove("popUpActive2")
+                document.querySelector(".tournOpt button").classList.toggle("activeMenuOpt")
+            }
+
+
+            if(isGuest){
+                document.querySelector(".socialOpt div").classList.toggle("popUpActive")
+            }else{
+                document.querySelector(".socialOpt div").classList.toggle("popUpActive3")
+            }
+            document.querySelector(".socialOpt button").classList.toggle("activeMenuOpt")
         }
         },mounted() {
             this.user=this.getUser
@@ -463,10 +543,10 @@ export default {
                 margin-top: 2px;
                 fill: white;
             }
-            .tourns,.leagues,.games,.authen{
+            .tourns,.leagues,.games,.authen,.social{
                 position: relative;
             }
-            .tourns a,.leagues a,.games a,.authen a{
+            .tourns a,.leagues a,.games a,.authen a,.social a{
                 height: 100%;
                 width: 100%;
                 display: block;
@@ -491,6 +571,7 @@ export default {
                 flex-direction: column;
                 align-items: center;
                 z-index: 9;
+                overflow-y: scroll;
             }
             .loadMenu{
                 width: 100%;
@@ -684,6 +765,9 @@ export default {
             }
             .popUpActive2{
                 height: 170px;
+            }
+            .popUpActive3{
+                height: 340px;
             }
             .activeMenuOpt{
                 background-color: var(--post-color);;

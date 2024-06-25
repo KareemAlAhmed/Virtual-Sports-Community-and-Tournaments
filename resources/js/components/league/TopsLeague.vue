@@ -65,16 +65,16 @@
                 }
             }
         },created(){
-            store.dispatch("getLeagues")
+            store.dispatch("getAllLeagues")
             if(sessionStorage.getItem("CurrentLeague") != ""){
                 sessionStorage.removeItem("CurrentLeague");
             }
         },
         computed:{
             getLeagues(){
-                return store.state.leagues.data;
+                return store.state.allLeagues.leagues;
             },isLoading(){
-                return store.state.leagues.loading;
+                return store.state.allLeagues.loading;
             }
         }
       }

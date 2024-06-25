@@ -71,7 +71,6 @@ export default {
       getError(){
           return store.state.errorMessages;
       },getTourns(){
-        console.log(store.state.currentUserTourns)
         return store.state.currentUserTourns;
       },getUserId(){    
         return store.state.user.id;

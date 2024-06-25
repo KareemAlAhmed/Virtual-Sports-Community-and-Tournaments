@@ -60,16 +60,16 @@
                 }
             }
         },created(){
-            store.dispatch("getTourns")
+            store.dispatch("getAllTourns")
             if(sessionStorage.getItem("currentTourn") != ""){
                 sessionStorage.removeItem("currentTourn");
             }
         },
         computed:{
             getTourns(){
-                return store.state.tourns.data;
+                return store.state.allTourns.tourns;
             },isLoading(){
-                return store.state.tourns.loading;
+                return store.state.allTourns.loading;
             }
         }
   }

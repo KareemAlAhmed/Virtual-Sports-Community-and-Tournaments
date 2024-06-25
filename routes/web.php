@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Hello;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\enrollLeagueController;
@@ -41,6 +42,10 @@ use Illuminate\Support\Facades\Http;
 //     return view('welcome');
 
 // });
+Route::get('/broadcast',function(){
+    echo("hello");
+    broadcast("new Hello()");
+}); 
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');

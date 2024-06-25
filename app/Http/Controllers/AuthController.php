@@ -12,6 +12,7 @@ use App\Services\FlashMessage;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -315,5 +316,12 @@ class AuthController extends Controller
             "status"=>200,
             "users"=>$users
         ]);
+    }
+    function search(string $name){
+        $user = DB::table('users')
+                ->where('name', 'like', "%".$name ."%")
+                ->orWhere('email', 'like', "%".$name ."%")
+                ->get();
+        return $user;
     }
 }

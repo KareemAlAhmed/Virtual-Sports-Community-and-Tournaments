@@ -1,12 +1,8 @@
 <template>
-  <div class="form-container-tournCr">
-       
-       <form  id="createTournForm" action="../api/tourn/user/{{auth()->user()->id}}" >
-       <!-- @csrf -->
-           <h1>
-            Create Tournament 
-           </h1>
-           <br>
+  <div class="form-container-tournCr">      
+       <form  id="createTournForm">
+           <h1>Create Tournament</h1><br>
+
            <div class="nameInpt">   
                <span>Name:</span>
                <input type="text" name="name" value="" required v-model="tourn.name">
@@ -39,7 +35,6 @@
                     <option value="football">Football</option>
                     <option value="Overwatch">Overwatch</option>
                     <option value="fifa">FIFA 24</option>
-
                </select>
            </div>
            <div>
@@ -62,26 +57,21 @@
                <template v-if="JSON.stringify(getError) !== '{}'" >
                    <p v-for="error in getError" :key="error">****{{ error[0] }}</p>
                </template>
-               
-
-
-           </div> 
+            </div> 
 
            <input type="submit" value="SUBMIT" @click="onSubmit" class="submitTourn" style="margin-left: 50%;transform: translateX(-50%);">
-       </form>
-   <!-- @endif -->
+        </form>
    </div>
 </template>
 
 <script>
-import store from '../../store';
-import router from '../../router';
-import moment from 'moment';
-export default {
-    name:"CreateTournDash",
-    
-    data(){
-          return{
+    import store from '../../store';
+    import router from '../../router';
+    import moment from 'moment';
+    export default {
+        name:"CreateTournDash",      
+        data(){
+            return{
                 tourn:{
                     name:"",
                     description:"",
@@ -93,128 +83,125 @@ export default {
                     endDate:"",
                     type:"",
                 },error:""
-          }  
-      },methods:{
-        onSubmit(e){
-            e.preventDefault();
-            console.log("hello")
-            store.state.errorMessages={}
-            const date1 = moment(this.tourn.startDate);
-            const date2 = moment(this.tourn.endDate);
-            if (date1.isAfter(date2)) {
-                store.state.errorMessages["date"]=["The Start Date is after the End Date!"]
-            } else {
-                store.dispatch("createTourn",this.tourn)
-                
-                this.tourn.name=""
-                this.tourn.description=""
-                this.tourn.rewards=""
-                this.tourn.requirements=""
-                this.tourn.maxPlaces=""
-                this.tourn.sportType=""
-                this.tourn.startDate=""
-                this.tourn.endDate=""
-                this.tourn.type=""
-                this.error=""
+            }  
+        },methods:{
+            onSubmit(e){
+                e.preventDefault();
+                console.log("hello")
+                store.state.errorMessages={}
+                const date1 = moment(this.tourn.startDate);
+                const date2 = moment(this.tourn.endDate);
+                if (date1.isAfter(date2)) {
+                    store.state.errorMessages["date"]=["The Start Date is after the End Date!"]
+                } else {
+                    store.dispatch("createTourn",this.tourn)                  
+                    this.tourn.name=""
+                    this.tourn.description=""
+                    this.tourn.rewards=""
+                    this.tourn.requirements=""
+                    this.tourn.maxPlaces=""
+                    this.tourn.sportType=""
+                    this.tourn.startDate=""
+                    this.tourn.endDate=""
+                    this.tourn.type=""
+                    this.error=""
+                }
+            }
+        },computed:{
+            getError(){
+                return store.state.errorMessages;
             }
         }
-      },computed:{
-        getError(){
-            return store.state.errorMessages;
-        }
-      }
 
-}
+    }
 </script>
 
 <style scoped>
-.form-container-tournCr h1{
-    color: white;
-    text-align: center;
-    font-size: 45px;
-    font-weight: 800;
- }
+    .form-container-tournCr h1{
+        color: white;
+        text-align: center;
+        font-size: 45px;
+        font-weight: 800;
+    }
 
- .form-container-tournCr {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    /* margin-top: 5px; */
-    padding: 20px;
-    border-radius: 12px;
-    /* background: var(--hover-color); */
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
-}
-.form-container-tournCr span{
-    font-size: 22px;
-    color: white;
-    font-weight: 700;
-    width: 160px;
-}
-.form-container-tournCr input {
-    border: none;
-    border: solid rgb(143, 143, 143) 1px;
-    background-color: white ;
-    color: var(--hover-color);
-    height: 35px;
-    width: 300px;
-    padding-left: 5px;
-    font-size: 18px;
-    font-weight: 600;
-}
-.form-container-tournCr div{
-    display: flex;
-    margin-bottom: 25px;
-}
-.form-container-tournCr .submitTourn {
-    cursor: pointer;
-    border: none;
-    border-radius: 8px;
-    box-shadow: 2px 2px 7px var(--background-color);
-    transition: all 1s;
-}
+    .form-container-tournCr {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
+    }
+    .form-container-tournCr span{
+        font-size: 22px;
+        color: white;
+        font-weight: 700;
+        width: 160px;
+    }
+    .form-container-tournCr input {
+        border: none;
+        border: solid rgb(143, 143, 143) 1px;
+        background-color: white ;
+        color: var(--hover-color);
+        height: 35px;
+        width: 300px;
+        padding-left: 5px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .form-container-tournCr div{
+        display: flex;
+        margin-bottom: 25px;
+    }
+    .form-container-tournCr .submitTourn {
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 2px 2px 7px var(--background-color);
+        transition: all 1s;
+    }
 
-.form-container-tournCr .submitTourn:hover {
-    color: white;
-    background-color: var(--background-color);
-    box-shadow: none;
-}
-select{
-    width: 300px;
-    height: 35px;
-    font-size: 18px;
-    font-weight: 600;
-}
-.errorslist{
-    display: flex;
-    margin-bottom: 25px;
-    flex-direction: column;
-    color: red;
-    gap: 5px;
-}
+    .form-container-tournCr .submitTourn:hover {
+        color: white;
+        background-color: var(--background-color);
+        box-shadow: none;
+    }
+    select{
+        width: 300px;
+        height: 35px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .errorslist{
+        display: flex;
+        margin-bottom: 25px;
+        flex-direction: column;
+        color: red;
+        gap: 5px;
+    }
 
-.errors{
-    background-color: transparent;
-    color: red;
-    font-weight: bold;
-    display: flex;
-    margin-bottom: 25px;
-    flex-direction: column;
-    align-items: center;
-}
-@media screen and (max-width: 600px) {
-   .form-container-tournCr form{
-    width: 100%;
-   }
-   .form-container-tournCr h1{
-    font-size: 32px;
-   }
-   .form-container-tournCr div{
-    flex-direction: column;
-   }
-   .form-container-tournCr input,.form-container-tournCr select{
-    width: 100%;
-   }
-}
+    .errors{
+        background-color: transparent;
+        color: red;
+        font-weight: bold;
+        display: flex;
+        margin-bottom: 25px;
+        flex-direction: column;
+        align-items: center;
+    }
+    @media screen and (max-width: 600px) {
+        .form-container-tournCr form{
+            width: 100%;
+        }
+        .form-container-tournCr h1{
+            font-size: 32px;
+        }
+        .form-container-tournCr div{
+            flex-direction: column;
+        }
+        .form-container-tournCr input,.form-container-tournCr select{
+            width: 100%;
+        }
+    }
 </style>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\Hello;
 use App\Http\Controllers\acheiveController;
 use App\Http\Controllers\acheivement;
 use App\Http\Controllers\AuthController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\authData;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\enrollLeagueController;
 use App\Http\Controllers\enrollTournController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\getData;
 use App\Http\Controllers\LeagueController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\TournamentController;
 use App\Models\Comment;
+use App\Models\Follower;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +31,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //Protected route(should user be authenticated)
-
+Route::get('/broadcast',function(){
+    broadcast(new Hello());
+}); //To let a user get the acheivement
+Route::get('user/{userId}/getFollowers',[FollowerController::class,'getUserFollower']); //To let a user get the acheivement
+Route::get('user/{userId}/getFollowed',[FollowerController::class,'getUserFollowed']); //To let a user get the acheivement
 Route::get('tournament/all',[TournamentController::class,'all_tourn']); // to get the games of a tournament
 Route::get('league/all',[LeagueController::class,'all']); // to get the games of a league
 Route::group(['middleware'=>['auth:sanctum']],function(){
@@ -102,6 +109,20 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('game/{gameId}/winner','getWinner'); // to get the user that won a specific game
     });
     Route::delete('user/{id}/delete',[AuthController::class,'delete']); // to get the acheivements of a specific user
+
+    Route::controller(FollowerController::class)->group(function () {
+        Route::post('user/{followerId}/follow/{followedId}','request'); // to create an acheivement
+        Route::delete('user/{followerId}/cancelFollowingOf/{followedId}','cancelFollowing'); // to get the acheivement info for edit
+        Route::put('user/{followedId}/accept/requestOf/{followerId}','acceptReq');// to update the info of an acheivement
+        Route::put('user/{followedId}/deny/requestOf/{followerId}','denyReq');// to delete an acheivement       
+        Route::get('user/{userId}/getFollowingReqguest','getUserFollowingRequests'); //To let a user get the acheivement
+        Route::get('user/{followerId}/isFollowing/{followedId}','isFollowing'); //To let a user get the acheivement
+        Route::get('user/{followerId}/isFollowRequest/{followedId}','followRequested'); //To let a user get the acheivement
+    });
+
+
+
+
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -110,7 +131,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('post/{postId}/comments',[PostController::class, 'getComments']);// to enroll a user in a specific tournament 
 
-
+Route::get("search/user/{name:slug}",[AuthController::class,"search"]);
 
 Route::get('{id}/games',[GameController::class,'user_games']); // to show a league
 Route::get('game/all',[GameController::class,'all']); // to get all games
@@ -163,3 +184,4 @@ Route::get('user/{id}/tournaments/games',[AuthController::class,'tournGames']); 
 Route::get('users/all',[AuthController::class,'all_users']); // to get all users
 Route::get('tourns/all',[TournamentController::class,'all_tourn']); // to get all tourns
 Route::get('leagues/all',[LeagueController::class,'all_leagues']); // to get all leagues
+

@@ -21,15 +21,11 @@ export default {
           posts:{}
         }  
     },created(){
-
-      store.dispatch("getTourns")
-
-      store.dispatch("getGames")
+      store.dispatch("getAllTourns")
+      store.dispatch("getAllGames")
       if(store.state.user.token){
-        store.dispatch("getCurrentUser",store.state.user.id)
-        
-     }
-     
+        store.dispatch("getCurrentUser",store.state.user.id)     
+     }    
     }
 }
 </script>

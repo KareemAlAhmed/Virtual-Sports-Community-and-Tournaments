@@ -25,9 +25,7 @@ import { computed } from 'vue'
             },currentOpt(){
                 return store.state.currentDash;
             }
-        }  
-        
-        
+        }         
     }
 </script>
 
@@ -54,9 +52,7 @@ import { computed } from 'vue'
     @media screen and (max-width: 600px) {
         .Opts{
             width: 100%;
-        }
-        
-   
+        }  
     }
 
 </style>

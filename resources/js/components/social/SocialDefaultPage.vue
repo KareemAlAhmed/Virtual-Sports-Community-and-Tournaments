@@ -1,7 +1,7 @@
 <template>
     <div class="mainPage">
         <div class="mainContainer">
-            <DashOpts />
+            <SocialOptions />
             <div class="wrapped">
                 <router-view></router-view>
             </div> 
@@ -12,15 +12,14 @@
 <script>
     import { computed } from 'vue'
     import store from '../../store'
-    import Login from '../authentication/Login.vue'
-    import DashOpts from "./DashboardOpts.vue"
+    import SocialOptions from './SocialOptions.vue';
     export default {
-        name:"DashboardDefaultLayout",
+        name:"SocialDefaultPage",
         computed:{
             getUser(){
                 return store.state.user;
             } 
-        },components:{DashOpts}        
+        },components:{SocialOptions}        
     }
 </script>
 
