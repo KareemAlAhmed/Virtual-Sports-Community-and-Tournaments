@@ -32,7 +32,6 @@
                             </ul>
                         </div>
                     </div>
-    {{ console.log(getUser) }}
                     <div class="textEntering">
                             <input type="file" name="image_url" @change="changePhoto"  id="image_url" style="display: none;"/>
                             <input type="file" name="video_url"  id="video_url" style="display: none;"/>
@@ -66,13 +65,12 @@
                         </p>
                         <div class="col-3">
                             <div class="snippet" data-title="dot-pulse">
-                            <div class="stage">
-                                <div class="dot-pulse"></div>
+                                <div class="stage">
+                                    <div class="dot-pulse"></div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
-                
-                    </div>
+                        </div>             
+                </div>
                     
                     <template v-else>
                         <template v-for="post in getPost" :key="post.id">
@@ -156,7 +154,9 @@ export default {
                 return store.state.user.id == null ? true : false;
         },getUser(){
             return store.state.user.token ? store.state.user.data : null;
-        }
+        },isThereSuccess(){
+                return store.state.notification.message;
+            }
   },methods:{
         onSubmit(e){
                 e.preventDefault();
@@ -177,6 +177,14 @@ export default {
             }
   },created(){
         store.dispatch("getPosts")
+        store.dispatch("getCurrentUserSocial",sessionStorage.getItem("Id"))
+
+        if(this.isThereSuccess != '' && (this.isThereSuccess.slice(0,7) == "Welcome" ||  this.isThereSuccess.slice(0,7) == "Logout")){
+            store.dispatch("notifySuccess")
+            setTimeout(()=>{
+                store.state.notification.message=null;
+            })
+        }
     } 
 
 }

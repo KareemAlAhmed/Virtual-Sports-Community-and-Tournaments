@@ -5,6 +5,7 @@ use App\Http\Controllers\acheiveController;
 use App\Http\Controllers\acheivement;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\authData;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\enrollLeagueController;
 use App\Http\Controllers\enrollTournController;
@@ -119,8 +120,8 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
         Route::get('user/{followerId}/isFollowing/{followedId}','isFollowing'); //To let a user get the acheivement
         Route::get('user/{followerId}/isFollowRequest/{followedId}','followRequested'); //To let a user get the acheivement
     });
-
-
+  
+   
 
 
 });
@@ -128,7 +129,11 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+Route::controller(ChatController::class)->group(function () {
+    Route::get("chats/between/{ownerId}/{withUserId}","getChats");
+    Route::post('user/{userId}/send/To/{receiverId}','send'); // to create an acheivement
+    Route::get('user/{userId}/contacts','getContact'); // to create an acheivement
+});
 Route::get('post/{postId}/comments',[PostController::class, 'getComments']);// to enroll a user in a specific tournament 
 
 Route::get("search/user/{name:slug}",[AuthController::class,"search"]);

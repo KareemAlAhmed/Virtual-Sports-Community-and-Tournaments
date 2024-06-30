@@ -1,7 +1,7 @@
 <template>
     <div class="followedLIst">
-        <h1  class="noResults" v-if="getUser.followed.length == 0">You Are Not Following Any User.</h1>
-      <UserCart v-for="user in getUser.followed" :key="user.id" :user="user" type='followed'/>
+        <h1  class="noResults" v-if="getUser.followed == null || getUser.followed.length == 0">You Are Not Following Any User.</h1>
+        <UserCart v-for="user in getUser.followed" :key="user.id" :user="user" type='followed'/>
     </div>
   </template>
   
@@ -18,7 +18,7 @@
           }
       },
       created(){
-          store.dispatch("getCurrentUserSocial",this.getUser.id)
+        //   store.dispatch("getCurrentUserSocial",this.getUser.id)
       }  
   }
   </script>
@@ -36,5 +36,12 @@
     color: white;
     font-size: 40px;
     text-align: center;
+  }
+  @media screen and (max-width: 600px) {
+    .noResults{
+
+      font-size: 32px;
+
+    }
   }
   </style>

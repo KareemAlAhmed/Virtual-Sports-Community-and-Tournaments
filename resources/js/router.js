@@ -30,6 +30,9 @@ import FollowerPage from "./components/social/FollowerPage.vue"
 import FollowingPage from "./components/social/FollowingPage.vue"
 import SearchUser from "./components/social/SearchUser.vue"
 import FollowReqPage from "./components/social/FollowingRequest.vue"
+import MessageDefaultPage from "./components/message/MessageDefaultLayout.vue"
+import ChatRoom from "./components/message/ChatRoom.vue"
+import MessageContact from "./components/message/RecentContact.vue"
 import store from "./store"
 const routes=[
   {
@@ -210,6 +213,24 @@ const routes=[
             name: 'FollowReqPage',
             component: FollowReqPage,
           },
+        ]
+      },{
+        path:"messages",
+        name:"MessageDefaultPage",
+        component:MessageDefaultPage,
+        meta:{isGuest:false},
+        children: [
+          {
+            path: 'contacts',
+            name: 'MessageContact',
+            component: MessageContact,
+          },
+          {
+            path: 'chatRoom/with/:id',
+            name: 'ChatRoom',
+            component: ChatRoom,
+          },
+          
         ]
       }
     ]

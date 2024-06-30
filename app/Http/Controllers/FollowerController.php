@@ -144,15 +144,20 @@ class FollowerController extends Controller
                 "errors"=>"The User Doesnt Exist!"
             ],404);
         }
-        $users=[];
-        foreach($user->followingRequests as $follower){
+        $toUser=[];
+        foreach($user->followingRequestsToUser as $follower){
             $userF=User::find($follower->follower_id);
-            array_push($users,$userF);
+            array_push($toUser,$userF);
         }
-
+        $fromUser=[];
+        foreach($user->followingRequestsFromUser as $follower){
+            $userF=User::find($follower->followed_id);
+            array_push($fromUser,$userF);
+        }
         return response()->json([
             "status"=>200,
-            "Users"=>$users
+            "toUser"=>$toUser,
+            "fromUser"=>$fromUser
         ],200);
     }   
 

@@ -10,24 +10,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class Hello implements ShouldBroadcast
+class UserLoggedin implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
+    public $userName="";
+    public $userId=0;
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    
+    public function __construct(string $name,$id)
     {
-        //
+        $this->userName=$name;
+        $this->userId=$id;
     }
-
-    public function broadcastWith(){
+    function broadcastWith(){
         return[
-            'hello'=>'there'
+            "name"=>$this->userName,
+            "id"=>$this->userId,
+            "message"=>"Logged in"
         ];
     }
-
     /**
      * Get the channels the event should broadcast on.
      *

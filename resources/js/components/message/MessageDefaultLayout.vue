@@ -1,10 +1,7 @@
 <template>
     <div class="mainPage">
         <div class="mainContainer">
-            <DashOpts />
-            <div class="wrapped">
-                <router-view></router-view>
-            </div> 
+            <router-view></router-view>         
        </div>
     </div> 
 </template>
@@ -12,24 +9,31 @@
 <script>
     import { computed } from 'vue'
     import store from '../../store'
-    import Login from '../authentication/Login.vue'
-    import DashOpts from "./DashboardOpts.vue"
+    import MessageContact from "./RecentContact.vue"
     export default {
-        name:"DashboardDefaultLayout",
+        name:"MessageDefaultPage",
         computed:{
             getUser(){
                 return store.state.user;
             } 
-        },components:{DashOpts},
-
+        },components:{MessageContact} ,   
     }
 </script>
 
 <style scoped>
+    .mainContainer{
+        /* height: calc(100vh - 70px - 90px); */
+        min-height: 100%;
+        justify-content: center
+    }
     .wrapped{
         width: calc(85% - 5px);
         background-color: var(--post-color);;
         padding: 5px 0px;
+        max-height: 100%;
+    }
+    .stopScroll{
+        height: 100%;
     }
     @media screen and (max-width: 600px) {
         .mainContainer{

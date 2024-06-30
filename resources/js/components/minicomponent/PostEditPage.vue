@@ -97,7 +97,6 @@ import store from '../../store'
             },created(){
                 if(this.getCurrentPostToEdit != null && !this.getPostInfo.loading ){
                     store.dispatch("getPost",this.getCurrentPostToEdit)
-                    console.log("true")
                 }
             }
       }

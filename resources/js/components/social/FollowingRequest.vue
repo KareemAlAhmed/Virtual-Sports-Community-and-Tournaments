@@ -1,7 +1,7 @@
 <template>
     <div class="followingReqList">
-      <h1  class="noResults" v-if="getUser.followingRequests.length == 0">There is No Follow Requests.</h1>
-      <UserCart v-for="user in getUser.followingRequests" :key="user.id" :user="user" type='request'/>
+      <h1  class="noResults" v-if="getUser.followingRequestsToUser == null || getUser.followingRequestsToUser.length == 0">There is No Follow Requests.</h1>
+      <UserCart v-for="user in getUser.followingRequestsToUser" :key="user.id" :user="user" type='request'/>
     </div>
   </template>
   
@@ -18,7 +18,7 @@
           }
       },
       created(){
-          store.dispatch("getCurrentUserSocial",this.getUser.id)
+        //   store.dispatch("getCurrentUserSocial",this.getUser.id)
       }  
   }
   </script>
@@ -36,5 +36,12 @@
     color: white;
     font-size: 40px;
     text-align: center;
+  }
+  @media screen and (max-width: 600px) {
+    .noResults{
+
+      font-size: 32px;
+
+    }
   }
   </style>

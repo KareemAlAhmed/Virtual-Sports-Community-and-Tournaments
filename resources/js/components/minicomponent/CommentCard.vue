@@ -76,7 +76,6 @@ export default {
             store.dispatch("editComment",{id,text,postId})
             this.editMode=false;
         },displayMenu(){
-            console.log(this.commentOpt)
             this.commentOpt= !this.commentOpt
         }
     },created(){

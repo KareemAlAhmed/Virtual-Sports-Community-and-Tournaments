@@ -82,6 +82,7 @@
                                         <!-- "openMenu = (e)=> e.target.className.split(' ')[1] == 'user' ? null : openMenu = false" -->
                                         <!-- <a href="#" x-on:mouseover = "openMenu = true" >Dashboard</a> -->
                                         <router-link to="/dashboard">Dashboard</router-link>  
+                                        <router-link to="/messages/contacts">Messages</router-link>  
                                         <!-- @endcan --> 
                                         <a href="#" x-on:mouseover = "openMenu = true"  @click="(e)=> logout(e)">Logout</a>
                                     </div>
@@ -107,69 +108,72 @@
         <div class="mobileMenu">
             
             <div class="home">
-                <button class="navMenuOpt" @click="displayMenu"><router-link to="/" >Home</router-link></button>
+                <router-link to="/" ><button class="navMenuOpt" @click="displayMenu">Home</button></router-link>
             </div>
             <div class="tournOpt">
                 <button class="navMenuOpt" @click="activateTournPop(isGuest)">Tournaments</button>
                 <div class="mobilePopUp">                                     
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/tournaments/tops">Top Tournaments</router-link></button>                             
+                    <router-link to="/tournaments/tops"><button class="navMenuOpt" @click="displayMenu">Top Tournaments</button></router-link>                        
                     <template v-if="!isGuest">
-                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/tournaments/mytourns">My Tournament</router-link></button>                                                           
+                        <router-link to="/tournaments/mytourns"><button class="navMenuOpt" @click="displayMenu">My Tournament</button></router-link>                                                           
                     </template>
                 </div>
             </div>
             <div class="leagueOpt">
                 <button class="navMenuOpt" @click="activateLeaguePop(isGuest)">Leagues</button>
                 <div class="mobilePopUp">    
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/leagues/tops">Top Leagues</router-link></button>                                              
+                    <router-link to="/leagues/tops"><button class="navMenuOpt" @click="displayMenu">Top Leagues</button></router-link>                                        
                     <template v-if="!isGuest">                      
-                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/leagues/myleague">My Leagues</router-link>  </button>                          
+                        <router-link to="/leagues/myleague"><button class="navMenuOpt" @click="displayMenu">My Leagues</button></router-link>                          
                     </template>
                 </div>
             </div>
             <div class="gameOpt">
                 <button class="navMenuOpt" @click="activateGamePop(isGuest)">Games</button>
                 <div   class="mobilePopUp">
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/games/tops">Top Games</router-link></button>
+                    <router-link to="/games/tops"><button class="navMenuOpt" @click="displayMenu">Top Games</button></router-link>
                      
                     <template v-if="!isGuest">   
-                        <button class="navMenuOpt" @click="displayMenu"><router-link to="/games/mygames">My Games</router-link></button>                                           
+                        <router-link to="/games/mygames"><button class="navMenuOpt" @click="displayMenu">My Games</button></router-link>                                          
                     </template> 
                 </div>
             </div>
             <div class="socialOpt">
                 <button class="navMenuOpt" @click="activateSocialPop(isGuest)">Social</button>
                 <div   class="mobilePopUp">
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/followers">Followers</router-link></button>
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/following">Following</router-link></button>
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/followingRequests">Follow Requests</router-link></button>
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/social/search">Find User</router-link></button>
+                    <router-link to="/social/followers"><button class="navMenuOpt" @click="displayMenu">Followers</button></router-link>
+                    <router-link to="/social/following"><button class="navMenuOpt" @click="displayMenu">Following</button></router-link>
+                    <router-link to="/social/followingRequests"><button class="navMenuOpt" @click="displayMenu">Follow Requests</button></router-link>
+                    <router-link to="/social/search"><button class="navMenuOpt" @click="displayMenu">Find User</button></router-link>
  
                 </div>
             </div>
             <template v-if="!get_token">
                 <div class="auth">
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/register">Register</router-link></button>
+                    <router-link to="/register"><button class="navMenuOpt" @click="displayMenu">Register</button></router-link>
                 </div>
                 <div class="auth">
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/Login">Login</router-link></button>
+                    <router-link to="/Login"><button class="navMenuOpt" @click="displayMenu">Login</button></router-link>
                 </div>
             </template>
 
             <template v-else>
                 <div class="auth">                        
-                            <button class="navMenuOpt" @click="displayMenu">                                                        
+                                                                                   
                                 <router-link :to="/userProfile/+getUser.id " x-on:mouseover = "openMenu = true" id="opt"  class="use OPT">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
-                                    {{fullName}} 
+                                    <button class="navMenuOpt" @click="displayMenu"> 
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
+                                        {{fullName}} 
+                                    </button>
                                 </router-link>
-                            </button>                  
-                        <!-- @can('admin') -->
-                    
+                                             
                 </div> 
 
                 <div  class="auth">
-                    <button class="navMenuOpt" @click="displayMenu"><router-link to="/dashboard">Dashboard</router-link></button>                                       
+                    <router-link to="/dashboard"><button class="navMenuOpt" @click="displayMenu">Dashboard</button></router-link>                                       
+                </div>   
+                <div  class="auth">
+                    <router-link to="/messages/contacts"><button class="navMenuOpt" @click="displayMenu">Message</button></router-link>                                       
                 </div>   
                 <div class="auth">
                     <button class="navMenuOpt" @click="(e)=> {displayMenu();logout(e)}">Logout</button>
@@ -207,6 +211,7 @@ export default {
             document.querySelector("body").classList.toggle('disabl_scrolling')
             document.querySelector(".mainPage").classList.toggle("stopScroll")
             document.querySelector(".mobileMenu").classList.toggle("loadMenu")
+            document.querySelector("#app").classList.toggle("appExpand")
 
             if(document.querySelector(".tournOpt div").classList.contains("popUpActive")){
                 document.querySelector(".tournOpt div").classList.remove("popUpActive")
@@ -750,6 +755,20 @@ export default {
             }
             .mobileMenu div{
                 width: 100%;
+            }
+            .mobileMenu a{
+                height: 100%;
+                width: 100%;
+                display: block;
+            }
+            .popUpActive1 a {
+                height: fit-content !important;
+            }
+            .popUpActive2 a {
+                height: fit-content !important;
+            }
+            .popUpActive3 a {
+                height: fit-content !important;
             }
             .mobilePopUp{
                 height: 0;

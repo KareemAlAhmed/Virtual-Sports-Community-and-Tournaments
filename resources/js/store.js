@@ -23,9 +23,12 @@ const store=createStore({
                 loading:false
             },
             posts:{},
-            followers:[],
-            followed:[],
-            followingRequests:[]
+            followers:sessionStorage.getItem("followers")!=null ? JSON.parse(sessionStorage.getItem("followers")) : [],
+            followed:sessionStorage.getItem("followers")!=null ? JSON.parse(sessionStorage.getItem("followed")) : [],
+            followingRequestsToUser:sessionStorage.getItem("followers")!=null ?  JSON.parse(sessionStorage.getItem("followingRequestsToUser")) : [],
+            followingRequestsFromUser:sessionStorage.getItem("followers")!=null ? JSON.parse(sessionStorage.getItem("followingRequestsFromUser")) : [],
+            contacts:sessionStorage.getItem("contacts")!=null ? JSON.parse(sessionStorage.getItem("contacts")) : [],
+
         },
         posts:{
             data:{},
@@ -90,7 +93,8 @@ const store=createStore({
         ,userSocialInfo:{
             followers:[],
             following:[],
-            followRequests:[]
+            followRequestsToUser:[],
+            followRequestsFromUser:[]
         }
         ,commentStatus:false
         ,currentPost:{
@@ -108,7 +112,10 @@ const store=createStore({
             findUser:false,
         },currentSearch:{
             data:{},
-            loading:false
+            loading:false,
+        },currrentMessagingUser:{
+            data:sessionStorage.getItem("messgingUser")!=null ? JSON.parse(sessionStorage.getItem("messgingUser")) : [],
+            msgs:[]         
         }
     },
     getters:{},
@@ -118,7 +125,7 @@ const store=createStore({
             .then((res)=>{
                 commit("setUser",res.data);             
                 commit("setNotify",res.data.message,"success")
-                router.push({name:"HomePage"})
+                // router.push({name:"HomePage"})
             }).catch(err=>console.log(err))           
         },logout({state,commit}){
             axiosClient.post('/logout')
@@ -130,16 +137,24 @@ const store=createStore({
                     state.notification.message="Logout Successully"
                     this.dispatch("notifySuccess")
                 }
+                
                 router.push({name:"HomePage"})        
             })
             .catch(err=>console.log(err))
             
-        },login({commit},user){
+        },login({commit,state},user){
             axios.post("http://127.0.0.1:8000/api/login",user)
             .then((res)=>{
                 commit("setUser",res.data)
-                commit("setNotify",res.data.message,"success")
+                commit("updateUserSocial",res.data)
+                this.dispatch("getContact",res.data.user.id)
+ 
+                state.notification.message=res.data.message
+                // this.dispatch("notifySuccess")
+                // setTimeout(()=>{
+                store.dispatch("getCurrentUserSocial",res.data.user.id)
                 router.push({name:"HomePage"})
+                // },1000)
             })               
             .catch(err=>{
                 console.log(err)
@@ -391,7 +406,6 @@ const store=createStore({
                 this.dispatch("getCurrentTourn",info.tournId)
             })
             .catch(error=>{
-                console.log(error.response.status)
                 if(error.response.status === 401){
                     state.notification.message="You Need To Sign in First!"
                 }else{
@@ -619,11 +633,13 @@ const store=createStore({
                     let followed=re.data.following;
                     axiosClient.get("user/"+ userId + "/getFollowingReqguest")
                     .then(re2=>{
-                        let requests=re2.data.Users
+                        let requestsTo=re2.data.toUser
+                        let requestsFrom=re2.data.fromUser
+                        console.log(followed)
                         if(state.user.id != null && userId == state.user.id){
-                            this.commit("updateUserSocial",{followers,followed,requests})
+                            this.commit("updateUserSocial",{followers,followed,requestsTo,requestsFrom})
                         }else{
-                            this.commit("setUserSocialInfo",{followers,followed,requests})
+                            this.commit("setUserSocialInfo",{followers,followed,requestsTo,requestsFrom})
                         }
                     }).catch(err=> console.log(err))
                 }).catch(error=> console.log(error))
@@ -655,7 +671,6 @@ const store=createStore({
         },isFollowingTrue({commit,dispatch,state},info){
             axiosClient.get("user/"+info.currentID+"/isFollowing/"+info.userId)
             .then(res=>{      
-                console.log(res.data)
                 this.commit("setCurrentUserFollowed",res.data) 
             })
             .catch(err=>{
@@ -666,7 +681,6 @@ const store=createStore({
         },isFollowRequested({commit,dispatch,state},info){
             axiosClient.get("user/"+info.currentID+"/isFollowRequest/"+info.userId)
             .then(res=>{      
-                console.log(res.data)
                 this.commit("setCurrentUserRequest",res.data)   
             })
             .catch(err=>{
@@ -701,10 +715,26 @@ const store=createStore({
                 let data=re.data;
                 let loading =true;
                 this.commit("setCurrentSearch",{data,loading})
-                console.log(re)
             })
             .catch(err=>console.log(err))
-        }
+        },sendMessage({commit,dispatch,state},info){
+            axiosClient.post("user/"+info.id+"/send/To/"+info.receiverId,info)
+            .then(res=>{      
+                this.dispatch("getContact",info.id)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },getContact({commit,dispatch,state},userId){
+            axiosClient.get("user/"+userId+"/contacts")
+            .then(res=>{      
+                this.commit("setUserContacts",res.data)
+
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        },
     },
     mutations:{
         logout:(state)=>{
@@ -713,6 +743,11 @@ const store=createStore({
             sessionStorage.removeItem("TOKEN");
             sessionStorage.removeItem("Name");
             sessionStorage.removeItem("Id");
+            sessionStorage.removeItem("followers")
+            sessionStorage.removeItem("followed")
+            sessionStorage.removeItem("followingRequestsToUser")
+            sessionStorage.removeItem("followingRequestsFromUser")
+            sessionStorage.removeItem("contacts")
             state.user.id=null;
         },
         setUser:(state,userData)=>{
@@ -723,10 +758,18 @@ const store=createStore({
             sessionStorage.setItem("TOKEN",userData.token);
             sessionStorage.setItem("Name",userData.name);
             sessionStorage.setItem("Id",userData.user.id);
+            // router.push({name:"HomePage"})
         },updateUserSocial(state,userData){
             state.user.followers=userData.followers;
             state.user.followed=userData.followed;
-            state.user.followingRequests=userData.requests;
+            state.user.followingRequestsToUser=userData.requestsTo;
+            state.user.followingRequestsFromUser=userData.requestsFrom;
+
+            sessionStorage.setItem("followers", userData.followers != null ? JSON.stringify(userData.followers) : null)
+            sessionStorage.setItem("followed", userData.followed != null  ? JSON.stringify(userData.followed) : null)
+            sessionStorage.setItem("followingRequestsToUser",userData.followingRequestsToUser != null  ? JSON.stringify(userData.followingRequestsToUser) : null)
+            sessionStorage.setItem("followingRequestsFromUser", userData.followingRequestsFromUser != null  ?JSON.stringify(userData.followingRequestsFromUser) : null)
+
         },getUser:(state,userData)=>{
           let  data=JSON.stringify(userData.user)
             state.user.data=JSON.parse(data);
@@ -799,7 +842,8 @@ const store=createStore({
         },setUserSocialInfo(state,info){
             state.userSocialInfo.followers=info.followers;
             state.userSocialInfo.followed=info.followed;
-            state.userSocialInfo.followRequests=info.requests;
+            state.userSocialInfo.followingRequestsToUser=info.requestsTo;
+            state.userSocialInfo.followRequestsFromUser=info.requestsFrom;
         },setCommentStatus(state,info){
             state.commentStatus=info
         },setCurrentPost(state,info){
@@ -816,6 +860,15 @@ const store=createStore({
         },setCurrentSearch(state,info){
             state.currentSearch.data=info.data
             state.currentSearch.loading=info.loading
+        },setCurrrentMessagingUser(state,info){
+            state.currrentMessagingUser.data=info
+
+            sessionStorage.setItem("messgingUser",info != null ? JSON.stringify(info) : null)
+        },setCurrrentMessagingUserData(state,info){
+            state.currrentMessagingUser.msgs=info.chat
+        },setUserContacts(state,info){
+            state.user.contacts=info;
+            sessionStorage.setItem("contacts", info != null ? JSON.stringify(info) : null)
         }
     },
     modules:{}

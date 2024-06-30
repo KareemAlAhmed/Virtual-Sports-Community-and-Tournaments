@@ -86,7 +86,11 @@ class User extends Authenticatable
     function followingUsers(){
         return $this->hasMany(Follower::class,"followed_id")->where("status","Accepted");
     }
-    function followingRequests(){
+    function followingRequestsToUser(){
         return $this->hasMany(Follower::class,"followed_id")->where("status","Pending");
     }
+    function followingRequestsFromUser(){
+        return $this->hasMany(Follower::class,"follower_id")->where("status","Pending");
+    }
+ 
 }

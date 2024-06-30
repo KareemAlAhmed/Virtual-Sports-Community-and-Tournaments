@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Http;
 // });
 Route::get('/broadcast',function(){
     echo("hello");
-    broadcast("new Hello()");
+    broadcast(new Hello());
 }); 
 Route::get('/{any}', function () {
     return view('welcome');

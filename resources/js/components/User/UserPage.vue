@@ -38,7 +38,7 @@
                                 <svg class="mobileVersion" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
                                 Cancel Request
                             </button>
-                        <button>Message</button>
+                        <button @click="goToChatRoom(this.getUser)">Message</button>
                     </div>
 
                     <hr style="width: 100%;">
@@ -62,7 +62,7 @@
                     <hr style="width: 100%;">
                     <div class="social">
                         <p style="color: white;font-weight: bold;font-size: 20px;margin-bottom: 5px;" >Social:</p>
-                        <p>Following : {{ getUserSocialInfo.followed.length }}</p>
+                        <p>Following : {{ getUserSocialInfo.followed == null ? 0 : getUserSocialInfo.followed.length}}</p>
                         <p>Followers : {{ getUserSocialInfo.followers.length }}</p>
                         <p>Posts : {{ getUserData.posts.length }}</p>
                     </div>
@@ -189,7 +189,8 @@
         },data(){
             return{
                 selectedTab:"Tourns",
-                currentUser:true
+                currentUser:true,
+                pageUserId:0
             }  
         },
         computed:{
@@ -210,7 +211,7 @@
                     let info={
                         "followers":store.state.user.followers,
                         "followed":store.state.user.followed,
-                        "followingRequests":store.state.user.followingRequests,
+                        "followingRequests":store.state.user.followingRequestsToUser,
                     }
                     return info;
                 }else{
@@ -232,10 +233,14 @@
                     store.dispatch("createFollowingRequest",{followerId,followedId})
                 },cancelFollowingRequest(followerId,followedId){
                     store.dispatch("cancelFollowingRequest",{followerId,followedId})
+                },goToChatRoom(user){
+                    store.commit("setCurrrentMessagingUser",{id:user.id,name:user.name,image_url:user.image_url})
+                    router.push("/messages/chatRoom/with/"+user.id)
                 }
         },created() {
             const userId = this.$route.params.id;
             const currentID=this.getId;
+            this.pageUserId=userId;
             store.dispatch("getUserProf",userId)
             store.dispatch("getUserAcheivements",userId)
             store.dispatch("getUserPosts",userId)

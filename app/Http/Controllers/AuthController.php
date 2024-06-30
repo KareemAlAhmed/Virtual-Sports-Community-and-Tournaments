@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLoggedin;
+use App\Events\UserLoggedOut;
 use App\Http\Requests\loginReq;
 use App\Http\Requests\siginReq;
 use App\Models\Acheivements;
@@ -84,10 +86,12 @@ class AuthController extends Controller
             'message'=>'Welcome Back ' . $user->name
         ];
         Auth::login($user);
+        broadcast(new UserLoggedin($user->name,$user->id));
         return response()->json($response,200);
     }
     function logout(Request $request){
         auth()->guard('web')->logout();
+        broadcast(new UserLoggedOut(auth()->user()->name,auth()->user()->id));
         auth()->user()->tokens()->delete();
 
         // $user=Auth::user();

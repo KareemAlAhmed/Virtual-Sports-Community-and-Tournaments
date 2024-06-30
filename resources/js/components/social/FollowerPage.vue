@@ -1,6 +1,6 @@
 <template>
   <div class="followerList">
-    <h1  class="noResults" v-if="getUser.followers.length == 0">There is No Followers.</h1>
+    <h1  class="noResults" v-if="getUser.followers == null || getUser.followers.length == 0">There is No Followers.</h1>
     <UserCart v-for="user in getUser.followers" :key="user.id" :user="user" type='followers'/>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
         }
     },
     created(){
-        store.dispatch("getCurrentUserSocial",this.getUser.id)
+        // store.dispatch("getCurrentUserSocial",this.getUser.id)
     }  
 }
 </script>
@@ -36,5 +36,12 @@ export default {
     color: white;
     font-size: 40px;
     text-align: center;
+  }
+  @media screen and (max-width: 600px) {
+    .noResults{
+
+      font-size: 32px;
+
+    }
   }
 </style>

@@ -26,6 +26,10 @@ export default {
       if(store.state.user.token){
         store.dispatch("getCurrentUser",store.state.user.id)     
      }    
+    },mounted(){
+        window.Echo.channel('channel')
+        .listen("UserLoggedin",(e)=>{
+        })
     }
 }
 </script>
@@ -33,7 +37,7 @@ export default {
   @media screen and (max-width: 600px) {
     .mainPage{
       overflow-x: hidden;
-      /* overflow-y: hidden; */
+      overflow-y: hidden;
     }
   }
 </style> 

@@ -5,21 +5,30 @@
                 <img :src="'http://127.0.0.1:8000/storage/UserProfilePic/'+user.image_url" alt="">
             </router-link>
         </div>
-        <div class="info">
-
+        <template class="mobileV">
+            <div class="info">
              <router-link :to="/userProfile/+user.id "><p class="userName">{{ user.name }}</p></router-link>
                 <router-link :to="/userProfile/+user.id "><p class="userEmail">{{ user.email }}</p></router-link>
         </div>
         <div class="actions">
-            <button v-if="type == 'followers'" class="actBtn" @click="cancelFollowing(user.id,getUser.id)">
+            <button v-if="userType == 'notFollower' || getCreateRe" class="actBtn" @click="createFollowingReq(getUser.id,user.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="follow" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+
+                <p>Follow</p>
+            </button>
+            <button v-if="userType == 'requestFromUser' || cancelFollow" class="actBtn" @click="removeFollowing(getUser.id,user.id)">
+                <svg class="mobileVersion" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
+                <p>Cancel Following</p>
+            </button>
+            <button v-if="userType == 'followers' || removeFollow" class="actBtn" @click="cancelFollowingRequest(user.id,getUser.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
                 <p>Remove</p>
             </button>
-            <button v-if="type == 'followed'" class="actBtn" @click="unFollowing(getUser.id,user.id)">
+            <button v-if="userType == 'followed' || unfollow" class="actBtn" @click="unFollowing(getUser.id,user.id)">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM471 143c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>
                 <p>Unfollow</p>
             </button>
-            <template v-if="type == 'request'">
+            <template v-if="userType == 'requestToUser'">
                 <button class="acceptBtn" @click="acceptRequest(user.id,getUser.id)">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
                     <p>Accept</p>
@@ -29,37 +38,170 @@
                     <p>Deny</p>
                 </button>
             </template>
-            <button v-else >Message</button>
+            <button v-if="userType !='SameUser' && userType !='requestToUser'" @click="goToChatRoom(user)">Message</button>
         </div>
+        </template>
     </div>
 </template>
 
 <script>
 import store from '../../store';
-
+import router from "../../router";
 export default {
     name:"UserCart",
-    props:["user","type"],
+    data(){
+        return{
+            userType:"",
+            createFollow:false,
+            cancelFollow:false,
+            unfollow:false,
+            accpetFollow:false,
+            removeFollow:false,
+            denyFollow:false,
+
+        }
+    },
+    props:["user","type","totnb"],
     methods:{
+        createFollowingReq(followerId,followedId){
+            store.dispatch("createFollowingRequest",{followerId,followedId})
+            this.userType ='requestFromUser'
+            this.createFollow= false;
+            this.cancelFollow=true;
+            this.unfollow=false;
+
+            this.accpetFollow=false;
+            this.removeFollow=false;
+            this.denyFollow=false;
+        },
         removeFollowing(followerId,followedId){
             store.dispatch("cancelFollowingRequest",{followerId,followedId})
             store.dispatch("getCurrentUserSocial",followedId)
+            this.userType ='notFollower'
+            this.createFollow=true;
+            this.cancelFollow=false;
+            this.unfollow=false;
+
+            this.accpetFollow=false;
+            this.removeFollow=false;
+            this.denyFollow=false;
+        },cancelFollowingRequest(followerId,followedId){
+            store.dispatch("cancelFollowingRequest",{followerId,followedId})
+            store.dispatch("getCurrentUserSocial",followedId)
+            this.userType ='notFollower'
+            this.createFollow=true;
+            this.cancelFollow=false;
+            this.unfollow=false;
+
+            this.accpetFollow=false;
+            this.removeFollow=false;
+            this.denyFollow=false;
         },
         unFollowing(followerId,followedId){
             store.dispatch("cancelFollowingRequest",{followerId,followedId})
             store.dispatch("getCurrentUserSocial",followerId)
+        this.userType ='notFollower'
+
+            this.createFollow=true;
+            this.cancelFollow=false;
+            this.unfollow=false;
+
+            this.accpetFollow=false;
+            this.removeFollow=false;
+            this.denyFollow=false;
         },acceptRequest(followerId,followedId){
             store.dispatch("acceptFollowRequest",{followerId,followedId})
             store.dispatch("getCurrentUserSocial",followedId)
+            this.accpetFollow=false;
+            this.userType ='followers'
+            this.createFollow=false;
+            this.cancelFollow=false;
+            this.unfollow=false;
+
+            this.removeFollow=true;
+            this.denyFollow=false;
         },denyRequest(followerId,followedId){
             store.dispatch("denyFollowRequest",{followerId,followedId})
             store.dispatch("getCurrentUserSocial",followedId)
-        }
+            this.denyFollow=false;
+            this.userType ='notFollower'
+            this.createFollow=true;
+            this.cancelFollow=false;
+
+            this.accpetFollow=false;
+            this.removeFollow=false;
+            this.unfollow=false;
+
+        },typeOfUer(cartUserID,currentUser,test){
+
+            // console.log(currentUser)
+
+            // console.log()
+            let found=false;
+            let type=""
+            if(currentUser.followed != null){
+                    currentUser.followed.forEach(element => {
+                        console.log(element.id)
+                        console.log(cartUserID)
+                        if(element.id ==cartUserID){                           
+                            found=true;
+                            this.unfollow=true;
+
+                            type="followed";
+                        }
+                });
+            }
+            if(currentUser.followers != null && !found){
+                    currentUser.followers.forEach(element => {
+                        if(element.id ==cartUserID){
+                            found=true;
+                            this.removeFollow=true,
+
+                            type= "followers";
+                        }
+                });
+            }
+            if(currentUser.followingRequestsToUser != null && !found){
+                    currentUser.followingRequestsToUser.forEach(element => {
+                        if(element.id ==cartUserID){
+                            found=true;
+                            type="requestToUser";
+                        }
+                });
+            }
+            if(currentUser.followingRequestsFromUser != null && !found){
+                    currentUser.followingRequestsFromUser.forEach(element => {
+                        if(element.id ==cartUserID){
+                            found=true;
+                            this.cancelFollow=true;
+                            type="requestFromUser";
+                        }
+                });
+            }
+            
+            if(cartUserID==this.getUser.id && !found){
+                type="SameUser";
+            }else if(!found){
+                type= "notFollower";
+                this.createFollow=true;
+            }
+            return type;
+        },goToChatRoom(user){
+                    store.commit("setCurrrentMessagingUser",{id:user.id,name:user.name,image_url:user.image_url})
+                    router.push("/messages/chatRoom/with/"+user.id)
+                }
     },computed:{
         getUser(){
             return store.state.user;
+        },getCreateRe(){
+            return this.createFollow;
         }
-    },
+
+    },created(){
+
+        this.userType=this.type
+        this.userType= this.typeOfUer(this.user.id,this.getUser,this.totnb)
+    }
 }
 </script>
 
@@ -137,5 +279,55 @@ export default {
 }
 .denyBtn{
     background-color: red !important;
+}
+.mobileV{
+    display: flex;
+    flex: 1;
+}
+@media screen and (max-width: 600px) {
+    .user{
+        height: fit-content;
+        gap: 5px;
+    }
+   .photo{
+        width: 100px;
+        height: 100px;
+   }
+   .user .photo a{
+        width: 100%;
+        height: 100%;
+        display: block;
+   }
+   .user .photo img{
+        width: 100%;
+        height: 100%;
+   }
+   .mobileV{
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        width: calc(100% - 145px);
+   }
+   .user .info{
+    width: fit-content;
+    flex: 0;
+    gap: 10px;
+   }
+   .user .info .userName{
+    font-size: 19px;
+    white-space: initial;
+   }
+   .user .info .userEmail{
+    font-size: 14px;
+    white-space: initial;
+   }
+   .user .actions{
+    gap: 10px;
+   }
+   .user .actions button{
+    min-width: 0px;
+    padding: 10px 5px;
+   }
 }
 </style>

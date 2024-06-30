@@ -87,7 +87,6 @@
         },methods:{
             onSubmit(e){
                 e.preventDefault();
-                console.log("hello")
                 store.state.errorMessages={}
                 const date1 = moment(this.tourn.startDate);
                 const date2 = moment(this.tourn.endDate);
