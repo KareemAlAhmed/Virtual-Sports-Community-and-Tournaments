@@ -635,7 +635,8 @@ const store=createStore({
                     .then(re2=>{
                         let requestsTo=re2.data.toUser
                         let requestsFrom=re2.data.fromUser
-                        console.log(followed)
+                        console.log(requestsTo)
+                        console.log(requestsFrom)
                         if(state.user.id != null && userId == state.user.id){
                             this.commit("updateUserSocial",{followers,followed,requestsTo,requestsFrom})
                         }else{
@@ -659,8 +660,20 @@ const store=createStore({
         },cancelFollowingRequest({commit,dispatch,state},info){
             axiosClient.delete("user/"+info.followerId+"/cancelFollowingOf/"+info.followedId)
             .then(res=>{      
-                this.commit("setCurrentUserFollowed",false)
+
                 this.commit("setCurrentUserRequest",false) 
+                state.notification.message=res.data.message
+                this.dispatch("notifySuccess")   
+            })
+            .catch(err=>{
+                state.notification.message=err.response.data.errors
+                this.dispatch("notifyError")
+            })
+        },unfollow({commit,dispatch,state},info){
+            axiosClient.delete("user/"+info.followerId+"/unfollow/"+info.followedId)
+            .then(res=>{      
+                this.commit("setCurrentUserFollowed",false)
+ 
                 state.notification.message=res.data.message
                 this.dispatch("notifySuccess")   
             })
@@ -767,9 +780,63 @@ const store=createStore({
 
             sessionStorage.setItem("followers", userData.followers != null ? JSON.stringify(userData.followers) : null)
             sessionStorage.setItem("followed", userData.followed != null  ? JSON.stringify(userData.followed) : null)
-            sessionStorage.setItem("followingRequestsToUser",userData.followingRequestsToUser != null  ? JSON.stringify(userData.followingRequestsToUser) : null)
-            sessionStorage.setItem("followingRequestsFromUser", userData.followingRequestsFromUser != null  ?JSON.stringify(userData.followingRequestsFromUser) : null)
+            sessionStorage.setItem("followingRequestsToUser",userData.requestsTo != null  ? JSON.stringify(userData.requestsTo) : null)
+            sessionStorage.setItem("followingRequestsFromUser", userData.requestsFrom != null  ?JSON.stringify(userData.requestsFrom) : null)
 
+        },updateUserSocialOneByOne(state,info){
+            if(info.type=="requestToUser"){
+                let list=state.user.followingRequestsToUser;
+                list.push(info.user)       
+                sessionStorage.setItem("followingRequestsToUser",JSON.stringify(list));
+            }
+            if(info.type=="requestFromUser"){
+                let list=state.user.followingRequestsFromUser;
+                list.push(info.receiver)       
+                sessionStorage.setItem("followingRequestsFromUser",JSON.stringify(list));
+            }
+            if(info.type=="unfollowReceiver"){
+                let list=state.user.followers;      
+                let newLIst = list.filter(function (e) {
+                    return e.id != info.user.id;
+                });    
+                sessionStorage.setItem("followers",JSON.stringify(newLIst));
+           }
+            if(info.type=="unfollowSender"){
+                let list=state.user.followed;      
+                let newLIst = list.filter(function (e) {
+                    return e.id != info.receiver.id;
+                });    
+                sessionStorage.setItem("followed",JSON.stringify(newLIst));
+           }
+            if(info.type=="acceptReq" || info.type=="denyReq" || info.type=="requestToUserCancel"){
+                let list=state.user.followingRequestsToUser;
+                let newLIst = list.filter(function (e) {
+                    return e.id != info.user.id;
+                });    
+                sessionStorage.setItem("followingRequestsToUser",JSON.stringify(newLIst));
+               if(info.type=="acceptReq"){
+                    let list2=state.user.followers;
+                    list2.push(info.user)       
+                    sessionStorage.setItem("followers",JSON.stringify(list2));
+               }
+            }
+
+            
+            if(info.type=="sendedReqDenied" ||info.type=="requestFromUserCancel" || info.type=="sendedReqAccepted"){
+                let list=state.user.followingRequestsFromUser;
+                let newLIst = list.filter(function (e) {
+                    return e.id != info.receiver.id;
+                });     
+                sessionStorage.setItem("followingRequestsFromUser", JSON.stringify(newLIst))
+                if(info.type=="sendedReqAccepted"){
+                    let list=state.user.followed;
+                    list.push(info.receiver)       
+                    sessionStorage.setItem("followed",JSON.stringify(list));
+                }
+
+            }
+
+            
         },getUser:(state,userData)=>{
           let  data=JSON.stringify(userData.user)
             state.user.data=JSON.parse(data);

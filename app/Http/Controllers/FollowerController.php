@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AccepetFollowRequest;
+use App\Events\CancelFollowRequest;
+use App\Events\DenyFollowRequest;
+use App\Events\FollowRequest;
+use App\Events\UnFollow;
 use App\Models\Follower;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,7 +14,7 @@ use Illuminate\Http\Request;
 class FollowerController extends Controller
 {
     function request($followerId,$followedId){
-        $follower=User::find($followedId);
+        $follower=User::find($followerId);
         $followed=User::find($followedId);
         if($followerId == $followedId){
             return response()->json([
@@ -48,6 +53,7 @@ class FollowerController extends Controller
         $followReq->follower_id=$followerId;
         $followReq->followed_id=$followedId;
         $followReq->save();
+        event(new FollowRequest($follower,$followed));
         return response()->json([
             "status"=>200,
             "message"=>"The Following Request Has Been Sent."
@@ -55,6 +61,8 @@ class FollowerController extends Controller
     }
 
     function acceptReq($followedId,$followerId){
+        $Follower=User::find($followerId);
+        $Followed=User::find($followedId);
         $request=Follower::where("follower_id",$followerId)->where("followed_id",$followedId)->where("status","Pending")->first();
         if(!isset($request)){
             return response()->json([
@@ -64,12 +72,15 @@ class FollowerController extends Controller
         }
         $request->status="Accepted";
         $request->update();
+        event(new AccepetFollowRequest($Follower,$Followed));
         return response()->json([
             "status"=>200,
             "message"=>"The Following Request Has Been Accepted."
         ],200);
     }
     function denyReq($followedId,$followerId){
+        $Follower=User::find($followerId);
+        $Followed=User::find($followedId);
         $request=Follower::where("follower_id",$followerId)->where("followed_id",$followedId)->where("status","Pending")->first();
         if(!isset($request)){
             return response()->json([
@@ -77,15 +88,17 @@ class FollowerController extends Controller
                 "errors"=>"The Following Request Doesnt Exist!"
             ],404);
         }
-        $request->status="Denied";
-        $request->update();
+        $request->delete();
+        event(new DenyFollowRequest($Follower,$Followed));
         return response()->json([
             "status"=>200,
             "message"=>"The Following Request Has Been Denied."
         ],200);
     }
     function cancelFollowing($followerId,$followedId){
-        $alreadySent=Follower::where("follower_id",$followerId)->where("followed_id",$followedId)->first();
+        $Follower=User::find($followerId);
+        $Followed=User::find($followedId);
+        $alreadySent=Follower::where("follower_id",$followerId)->where("followed_id",$followedId)->where("status","Pending")->first();
         if(!isset($alreadySent)){
             return response()->json([
                 "status"=>404,
@@ -93,12 +106,31 @@ class FollowerController extends Controller
             ],404);
         }
         $alreadySent->delete();
+        event(new CancelFollowRequest($Follower,$Followed));
+
         return response()->json([
             "status"=>200,
             "message"=>"The Following  Has Been Canceled."
         ],200);
     }
+    function unfollow($followerId,$followedId){
+        $Follower=User::find($followerId);
+        $Followed=User::find($followedId);
+        $alreadySent=Follower::where("follower_id",$followerId)->where("followed_id",$followedId)->where("status","Accepted")->first();
+        if(!isset($alreadySent)){
+            return response()->json([
+                "status"=>404,
+                "errors"=>"You Are Not Following The User!"
+            ],404);
+        }
+        $alreadySent->delete();
+        event(new UnFollow($Follower,$Followed));
 
+        return response()->json([
+            "status"=>200,
+            "message"=>"The Following  Has Been Canceled."
+        ],200);
+    }
     function getUserFollower($userId){
         $user=User::find($userId);
         if(!isset($user)){

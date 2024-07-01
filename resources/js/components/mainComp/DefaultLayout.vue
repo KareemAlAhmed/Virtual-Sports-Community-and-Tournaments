@@ -26,9 +26,54 @@ export default {
       if(store.state.user.token){
         store.dispatch("getCurrentUser",store.state.user.id)     
      }    
-    },mounted(){
-        window.Echo.channel('channel')
-        .listen("UserLoggedin",(e)=>{
+    },computed:{
+            getUser(){
+                return store.state.user;
+            }
+      },mounted(){
+        window.Echo.private('social')
+        .listen("FollowRequest",(e)=>{
+
+          if(this.getUser.id == e.receiver.id){
+            store.commit("updateUserSocialOneByOne",{type:'requestToUser',user:e.sender})
+          }
+          if(this.getUser.id == e.sender.id){
+            store.commit("updateUserSocialOneByOne",{type:'requestFromUser',user:e.sender,receiver:e.receiver})
+          }
+        })
+        .listen("AccepetFollowRequest",(e)=>{
+          console.log(e)
+          if(this.getUser.id == e.receiver.id){
+            store.commit("updateUserSocialOneByOne",{type:'acceptReq',user:e.sender})
+          }
+          if(this.getUser.id == e.sender.id){
+            store.commit("updateUserSocialOneByOne",{type:'sendedReqAccepted',user:e.sender,receiver:e.receiver})
+          }
+        })
+        .listen("DenyFollowRequest",(e)=>{
+          console.log(e)
+          if(this.getUser.id == e.receiver.id){
+            store.commit("updateUserSocialOneByOne",{type:'denyReq',user:e.sender})
+          }
+          if(this.getUser.id == e.sender.id){
+            store.commit("updateUserSocialOneByOne",{type:'sendedReqDenied',user:e.sender,receiver:e.receiver})
+          }
+        })
+        .listen("CancelFollowRequest",(e)=>{
+          if(this.getUser.id == e.receiver.id){
+            store.commit("updateUserSocialOneByOne",{type:'requestToUserCancel',user:e.sender})
+          }
+          if(this.getUser.id == e.sender.id){
+            store.commit("updateUserSocialOneByOne",{type:'requestFromUserCancel',user:e.sender,receiver:e.receiver})
+          }
+        })
+        .listen("UnFollow",(e)=>{
+          if(this.getUser.id == e.receiver.id){
+            store.commit("updateUserSocialOneByOne",{type:'unfollowReceiver',user:e.sender})
+          }
+          if(this.getUser.id == e.sender.id){
+            store.commit("updateUserSocialOneByOne",{type:'unfollowSender',user:e.sender,receiver:e.receiver})
+          }
         })
     }
 }

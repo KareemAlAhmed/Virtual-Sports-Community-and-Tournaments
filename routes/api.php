@@ -114,6 +114,7 @@ Route::group(['middleware'=>['auth:sanctum']],function(){
     Route::controller(FollowerController::class)->group(function () {
         Route::post('user/{followerId}/follow/{followedId}','request'); // to create an acheivement
         Route::delete('user/{followerId}/cancelFollowingOf/{followedId}','cancelFollowing'); // to get the acheivement info for edit
+        Route::delete('user/{followerId}/unfollow/{followedId}','unfollow'); // to get the acheivement info for edit
         Route::put('user/{followedId}/accept/requestOf/{followerId}','acceptReq');// to update the info of an acheivement
         Route::put('user/{followedId}/deny/requestOf/{followerId}','denyReq');// to delete an acheivement       
         Route::get('user/{userId}/getFollowingReqguest','getUserFollowingRequests'); //To let a user get the acheivement

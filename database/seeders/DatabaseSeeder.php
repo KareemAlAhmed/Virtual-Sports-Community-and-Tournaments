@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TournamentsSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(FollowerSeeder::class);
         $users=User::all();
         for($i = 0; $i < 10;$i++){
            $tourn=new enrollLeagueController();
@@ -40,20 +41,6 @@ class DatabaseSeeder extends Seeder
            $tourn=new enrollTournController();
            $tourn->enroll($users[$i]['id'],1);
         }
-        
-        
-    //    User::factory(1)->create(['id'=>1]);
-    //    User::factory(1)->create(['id'=>2]);
-    //    User::factory(1)->create(['id'=>3]);
-    //    User::factory(1)->create(['id'=>4]);
-    //    Posts::factory(5)->create(['user_id'=>1,'image_url'=>'images.jpeg']);
-    //    Posts::factory(5)->create(['user_id'=>2,'image_url'=>'images.jpeg']);
-    //    Posts::factory(5)->create(['user_id'=>3,'image_url'=>'images.jpeg']);
-    //    Posts::factory(5)->create(['user_id'=>4,'image_url'=>'images.jpeg']);
-        // $users=User::all();
-        // for($i = 0; $i < 4;$i++){
-        //    $tourn=new enrollLeagueController();
-        //    $tourn->enroll($users[$i]['id'],1);
-        // }
+
     }
 }
